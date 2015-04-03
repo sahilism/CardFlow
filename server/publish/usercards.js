@@ -1,12 +1,15 @@
 Meteor.publish('allusercards', function () {
 	if(this.userId){
-		var res=usercards.findOne({user_id: this.userId});
+		var res=userCards.findOne({user_id: this.userId});
+		var childcards=childCards.find({user_id:this.userId});
 		if(res){
-			return usercards.find({user_id: this.userId},{sort: {createdAt: -1}});
+			var parentcards= userCards.find({user_id: this.userId},{sort: {createdAt: -1}});
+			return [parentcards,childcards];
 		}
 		else{
-			usercards.insert({user_id:this.userId,cardTitle:"My First Card",createdAt: Date.now()});
-			return usercards.find({user_id: this.userId},{sort: {createdAt: -1}});
+			userCards.insert({user_id:this.userId,cardTitle:"My First Card",createdAt: Date.now()});
+			var parentcards= userCards.find({user_id: this.userId},{sort: {createdAt: -1}});
+			return [parentcards,childcards];
 		}
 	}
 	else{

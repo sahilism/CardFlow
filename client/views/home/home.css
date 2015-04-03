@@ -3,9 +3,8 @@ body {
 	sans-serif; 
 	font-size:12px; 
 	background-color: #fafafa; 
-	/*width:3180px;*/
-	/*min-width:1000px;*/
-	margin:0px 
+	margin:0px;
+	width: 100000px; 
 }
 .dropdown-menu > li > a{
 	padding: 0px 10px;

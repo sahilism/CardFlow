@@ -1,4 +1,4 @@
-userCards.allow({
+childCards.allow({
 	insert: function (userId, doc) {
 		return false;
 	},

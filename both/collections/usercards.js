@@ -1,1 +1,1 @@
-usercards = new Mongo.Collection('usercards');
+userCards = new Mongo.Collection('usercards');

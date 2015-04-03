@@ -1,7 +1,16 @@
 <template name="cards">
 <div class="cards-container">
-	{{#each usercards}}
-	<input type="email" id="{{_id}}" class="form-control inputtitle"  placeholder="Card" autocapitalize="none" autocorrect="off" value="{{cardTitle}}">
-	{{/each}}
+	<div class="cards-list">
+		{{#each usercards}}
+		<input type="text" id="{{_id}}" class="form-control card-input inputtitle"  placeholder="Card" autocapitalize="none" autocorrect="off" value="{{cardTitle}}">
+		{{/each}}
+	</div>
+	<div class="cards-list">
+		{{#if childCards}}
+			{{#each allchildcards}}
+				<input type="text" id="{{_id}}" class="form-control card-input childtitle"  placeholder="Card" autocapitalize="none" autocorrect="off" value="{{cardTitle}}">
+			{{/each}}
+		{{/if}}
+	</div>
 </div>
 </template>
