@@ -10,5 +10,8 @@ Router.route("/",{
 	}
 })
 Router.route("/home",{
-	template:"home"
+	template:"home",
+	waitOn:function(){
+		return Meteor.subscribe('allusercards');
+	}
 })

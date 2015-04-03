@@ -1,0 +1,1 @@
+usercards = new Mongo.Collection('usercards');

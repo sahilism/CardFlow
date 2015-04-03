@@ -1,3 +1,7 @@
 <template name="cards">
-	
+<div class="cards-container">
+	{{#each usercards}}
+	<input type="email" class="form-control inputtitle"  placeholder="Card" autocapitalize="none" autocorrect="off" value="{{card.title}}">
+	{{/each}}
+</div>
 </template>
