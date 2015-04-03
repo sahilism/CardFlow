@@ -21,7 +21,7 @@ Template.cards.helpers({
 
 Template.cards.events({
 	'focus .inputtitle':function(e,tmpl){
-		$('.inputtitle').css('background', 'transparent');
+		$('.inputtitle').css('background', '#fff');
 		$(e.currentTarget).css('background', 'lightyellow');
 		Session.set('isChildActive',true);
 		Session.set('activeParent',this._id);
