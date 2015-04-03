@@ -7,3 +7,6 @@ body {
 	min-width:1000px;
 	margin:0px 
 }
+.dropdown-menu > li > a{
+	padding: 0px 10px;
+}
