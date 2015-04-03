@@ -2,13 +2,11 @@ Meteor.publish('allusercards', function () {
 	if(this.userId){
 		var res=usercards.findOne({user_id: this.userId});
 		if(res){
-			return usercards.find({user_id: this.userId});
+			return usercards.find({user_id: this.userId},{sort: {createdAt: -1}});
 		}
 		else{
-			var card={};
-			card.title="My First Card";
-			usercards.insert({user_id:this.userId,card:card});
-			return usercards.find({user_id: this.userId});
+			usercards.insert({user_id:this.userId,cardTitle:"My First Card",createdAt: Date.now()});
+			return usercards.find({user_id: this.userId},{sort: {createdAt: -1}});
 		}
 	}
 	else{
