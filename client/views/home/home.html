@@ -1,3 +1,46 @@
 <template name="home">
-	<h5>user loggedin</h5><a id="logout">logout</a>
+	<nav class="navbar navbar-default navbar-fixed-top">
+      <div>
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">cardflow.io</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse" style="margin-right:10px;">
+          <ul class="nav navbar-nav navbar-right">
+            <li><i id="staricon" class="fa fa-star fa-lg" style="color: #aaa;margin-top:18px;"></i></li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i style="color: #aaa;" class="fa fa-bars fa-lg"></i></a>
+              <ul class="dropdown-menu" role="menu">
+                <li><a href="#">CardFlow</a></li>
+                <li class="divider"></li>
+                <li><a href="#">List</a></li>
+                <li class="divider"></li>
+                <li><a href="#">Timeline</a></li>
+                <li class="divider"></li>
+                <li><a href="#">kanban</a></li>
+                <li class="divider"></li>
+                <li><a href="#">Mindmap</a></li>
+              </ul>
+            </li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i style="color:#aaa" class="fa fa-cog fa-lg"></i></a>
+              <ul class="dropdown-menu" role="menu">
+                <li><a href="#">Logout</a></li>
+                <li class="divider"></li>
+                <li><a href="#">Search</a></li>
+                <li class="divider"></li>
+                <li><a href="#">Add new</a></li>
+                <li class="divider"></li>
+                <li><a href="#">Total cards:5686</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
 </template>

@@ -13,3 +13,4 @@ browser-policy
 useraccounts:bootstrap
 service-configuration
 useraccounts:core
+fortawesome:fontawesome
