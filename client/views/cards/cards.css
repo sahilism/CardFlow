@@ -2,8 +2,13 @@
 	width:300px;
 	border-radius:0px;
 	border: 0px;
-	background: transparent;
+	background: #fff;
 	margin:7px 3px;
+	outline: none;
+    border: none !important;
+  	-webkit-box-shadow: none !important;
+  	-moz-box-shadow: none !important;
+  	box-shadow: none !important;
 }
 .cards-container{
 	margin-top:60px;
