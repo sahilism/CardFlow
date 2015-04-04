@@ -39,6 +39,7 @@ Template.cards.events({
 			var res=userCards.insert({user_id:Meteor.userId(),is_root: true,has_children: false,createdAt:Date.now()});
 			console.log(res);
 			$("#"+res).focus();
+			$("#"+res).trigger('click');
 			Meteor.call('updatedcardTime', res);
 		}
 	},
