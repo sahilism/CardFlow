@@ -29,27 +29,18 @@ Template.cards.events({
 	'keydown .inputtitle': function (e,tmpl) {
 		if(e.keyCode === 9){
 			e.preventDefault(); 
-			/*Session.set('isChildActive',true);
-			Session.set('activeParent',this._id);
-			Meteor.call('createChildCard',this,function(e,r){
-				if(!e){
-					$("#"+r).focus();
-				}
-			});*/
 			e.stopPropagation();
 		}
-	},
-	'keyup .inputtitle': function (e,tmpl) {
 		if(e.keyCode === 13){
-			Meteor.call('createCard',function(e,r){
+			var id=userCards.insert({user_id:Meteor.userId()},function(e,r){
 				if(!e){
 					$("#"+r).focus();
 				}
 			});
 		}
-		else{
-			var card_text=e.currentTarget.value;
-			userCards.update({_id:this._id}, {$set: {cardTitle: card_text}});	
-		}
+	},
+	'change .inputtitle': function (e,tmpl) {
+		var card_text=e.currentTarget.value;
+		userCards.update({_id:this._id}, {$set: {cardTitle: card_text}});	
 	}
 });

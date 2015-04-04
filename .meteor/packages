@@ -14,3 +14,5 @@ useraccounts:bootstrap
 service-configuration
 useraccounts:core
 fortawesome:fontawesome
+meteorhacks:kadira
+aldeed:collection2
