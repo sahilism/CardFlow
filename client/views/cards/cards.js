@@ -32,7 +32,7 @@ Template.cards.events({
 			e.stopPropagation();
 		}
 		if(e.keyCode === 13){
-			var id=userCards.insert({user_id:Meteor.userId()},function(e,r){
+			userCards.insert({user_id:Meteor.userId(),is_root: true,has_children: false},function(e,r){
 				if(!e){
 					$("#"+r).focus();
 				}
