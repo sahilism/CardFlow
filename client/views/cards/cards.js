@@ -15,13 +15,13 @@ Template.cards.helpers({
 	},
 	allchildcards:function(){
 		var res=Session.get('activeParent');
-		return childCards.find({parentCard: res},{sort: {createdAt: 1}});
+		return userCards.find({parentCard: res},{sort: {createdAt: 1}});
 	}
 });
 
 Template.cards.events({
 	'focus .inputtitle':function(e,tmpl){
-		$('.inputtitle').css('background', 'transparent');
+		$('.inputtitle').css('background', '#fff');
 		$(e.currentTarget).css('background', 'lightyellow');
 		Session.set('isChildActive',true);
 		Session.set('activeParent',this._id);
