@@ -35,6 +35,7 @@ Template.cards.events({
 		if(e.keyCode === 13){
 			var res=userCards.insert({user_id:Meteor.userId(),is_root: true,has_children: false,createdAt:Date.now()});
 			$("#"+res).focus();
+			$("#"+res).trigger('click');
 			Meteor.call('updatedcardTime', res);
 		}
 	},
