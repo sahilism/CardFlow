@@ -9,6 +9,6 @@ Meteor.methods({
 		return res; 
 	},
 	updatedcardTime:function(id){
-		return userCards.update({_id:id}, {createdAt: Date.now()});
+		return userCards.update({_id:id}, {$set:{createdAt: Date.now()}});
 	}
 });
