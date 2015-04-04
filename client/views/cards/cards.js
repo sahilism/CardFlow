@@ -25,6 +25,7 @@ Template.cards.events({
 		if(e.keyCode === 9){
 			var res=userCards.insert({user_id:Meteor.userId(),is_root: false,has_children: false,parent_id:this._id,createdAt:Date.now()});
 			$("#"+res).focus();
+			$("#"+res).trigger('click');
 			Meteor.call('updatedcardTime', res);
 			e.preventDefault(); 
 		}
@@ -42,6 +43,7 @@ Template.cards.events({
 	'click #createRootCard':function(){
 		var res=userCards.insert({user_id:Meteor.userId(),is_root: true,has_children: false,createdAt:Date.now()});
 		$("#"+res).focus();
+		$("#"+res).trigger('click');
 		Meteor.call('updatedcardTime', res);
 	}
 });
@@ -59,11 +61,12 @@ Template.childcardstmpl.events({
 		if(e.keyCode === 9){
 			var res=userCards.insert({user_id:Meteor.userId(),is_root: false,has_children: false,parent_id:this._id,createdAt:Date.now()});
 			$("#"+res).focus();
+			$("#"+res).trigger('click');
 			Meteor.call('updatedcardTime', res);
 			e.preventDefault(); 
 		}
 		if(e.keyCode === 13){
-			var res=userCards.insert({user_id:Meteor.userId(),is_root: false,has_children: false,parent_id:this._id,createdAt:Date.now()});
+			var res=userCards.insert({user_id:Meteor.userId(),is_root: false,has_children: false,parent_id:this.parent_id,createdAt:Date.now()});
 			$("#"+res).focus();
 			$("#"+res).trigger('click');
 			Meteor.call('updatedcardTime', res);
@@ -77,6 +80,7 @@ Template.childcardstmpl.events({
 		var id=this.parent_id;
 		var res=userCards.insert({user_id:Meteor.userId(),is_root: false,has_children: false,parent_id:id,createdAt:Date.now()});
 		$("#"+res).focus();
+		$("#"+res).trigger('click');
 		Meteor.call('updatedcardTime', res);
 	}
 });
