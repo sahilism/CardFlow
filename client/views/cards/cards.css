@@ -28,3 +28,19 @@
   	margin: 0px;
   	padding: 0px;
 }
+
+.addCardButton{
+  outline: none;
+  border: 1px solid #f6f6f6;
+  margin-top: 1px;
+  float: right;
+  background-color: #fff;
+  display: inline-block;
+  cursor: pointer;
+  color: #777;
+  font-size: 12px;
+  padding: 4px 9px;
+  text-decoration: none;
+  margin-right: 10px;
+}
+}

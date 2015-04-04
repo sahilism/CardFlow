@@ -4,11 +4,18 @@
 		{{#each usercards}}
 		<input type="text" id="{{_id}}" class="card-input inputtitle"  placeholder="Card" autocapitalize="none" autocorrect="off" value="{{cardTitle}}">
 		{{/each}}
+		<input type="button" class="addCardButton" id="createRootCard" value="Add">
 	</div>
-	<div class="cards-list">
+	<div class="childcards-container">
+
+	</div>
+</div>
+</template>
+<template name="childcardstmpl">
+	<div class="cards-list child-cards-list">
 		{{#each allchildcards}}
 			<input type="text" id="{{_id}}" class="form-control card-input childtitle"  placeholder="Card" autocapitalize="none" autocorrect="off" value="{{cardTitle}}">
 		{{/each}}
+		<input type="button" class="addCardButton createSiblingCard" value="Add">
 	</div>
-</div>
 </template>
