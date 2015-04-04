@@ -1,7 +1,7 @@
 userCards.allow({
 	insert: function (userId, doc) {
 		if(doc.user_id === userId){
-			doc.createdAt= Date.now();
+			// doc.createdAt= Date.now();
 			return true;
 		}
 	},

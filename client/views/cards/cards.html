@@ -6,11 +6,9 @@
 		{{/each}}
 	</div>
 	<div class="cards-list">
-		{{#if childCards}}
-			{{#each allchildcards}}
-				<input type="text" id="{{_id}}" class="form-control card-input childtitle"  placeholder="Card" autocapitalize="none" autocorrect="off" value="{{cardTitle}}">
-			{{/each}}
-		{{/if}}
+		{{#each allchildcards}}
+			<input type="text" id="{{_id}}" class="form-control card-input childtitle"  placeholder="Card" autocapitalize="none" autocorrect="off" value="{{cardTitle}}">
+		{{/each}}
 	</div>
 </div>
 </template>

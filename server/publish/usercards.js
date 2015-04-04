@@ -6,7 +6,7 @@ Meteor.publish('allusercards', function () {
 			return parentcards;
 		}
 		else{
-			userCards.insert({user_id:this.userId,cardTitle:"My First Card",createdAt: Date.now()});
+			userCards.insert({user_id:this.userId,cardTitle:"My First Card",createdAt: Date.now(),is_root : true,has_children : false});
 			var parentcards= userCards.find({user_id: this.userId},{sort: {createdAt: -1}});
 			return parentcards;
 		}
