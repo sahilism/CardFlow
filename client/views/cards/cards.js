@@ -16,18 +16,14 @@ Template.cards.events({
 	'click .inputtitle':function(e,tmpl){
 		$('.inputtitle').css('background', '#fff');
 		$(e.currentTarget).css('background', 'lightyellow');
-		// $(e.currentTarget).nextAll('.child-cards-list').remove();
 		$(".child-cards-list").remove();
 		var childcards= userCards.find({parent_id: this._id},{sort: {createdAt: 1}});
-		// if(childcards.count() > 0){
-			var data={allchildcards: childcards,parent_id:this._id};
-			Blaze.renderWithData(Template.childcardstmpl, data, $(".childcards-container")[0]);
-		// }
+		var data={allchildcards: childcards,parent_id:this._id};
+		Blaze.renderWithData(Template.childcardstmpl, data, $(".childcards-container")[0]);
 	},
 	'keydown .inputtitle': function (e,tmpl) {
 		if(e.keyCode === 9){
 			var res=userCards.insert({user_id:Meteor.userId(),is_root: false,has_children: false,parent_id:this._id,createdAt:Date.now()});
-			$(".inputtitle").click();
 			$("#"+res).focus();
 			Meteor.call('updatedcardTime', res);
 			e.preventDefault(); 
@@ -54,24 +50,22 @@ Template.childcardstmpl.events({
 	'click .childtitle':function(e,tmpl){
 		$('.childtitle').css('background', '#fff');
 		$(e.currentTarget).css('background', 'lightyellow');
-		$(e.currentTarget).nextAll('.child-cards-list').remove();
+		$(e.currentTarget).parent().nextAll(".child-cards-list").remove();
 		var childcards= userCards.find({parent_id: this._id});
-		if(childcards.count() > 0){
-			var data={allchildcards: childcards};
-			Blaze.renderWithData(Template.childcardstmpl, data, $(".childcards-container")[0]);
-		}
+		var data={allchildcards: childcards,parent_id:this._id};
+		Blaze.renderWithData(Template.childcardstmpl, data, $(".childcards-container")[0]);
 	},
 	'keydown .childtitle': function (e,tmpl) {
 		if(e.keyCode === 9){
-			e.preventDefault(); 
-			e.stopPropagation();
 			var res=userCards.insert({user_id:Meteor.userId(),is_root: false,has_children: false,parent_id:this._id,createdAt:Date.now()});
 			$("#"+res).focus();
 			Meteor.call('updatedcardTime', res);
+			e.preventDefault(); 
 		}
 		if(e.keyCode === 13){
 			var res=userCards.insert({user_id:Meteor.userId(),is_root: false,has_children: false,parent_id:this._id,createdAt:Date.now()});
 			$("#"+res).focus();
+			$("#"+res).trigger('click');
 			Meteor.call('updatedcardTime', res);
 		}
 	},
