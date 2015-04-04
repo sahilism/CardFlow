@@ -20,6 +20,10 @@ Template.cards.events({
 		var childcards= userCards.find({parent_id: this._id},{sort: {createdAt: 1}});
 		var data={allchildcards: childcards,parent_id:this._id};
 		Blaze.renderWithData(Template.childcardstmpl, data, $(".childcards-container")[0]);
+		userCards.find({is_root: true}).forEach(function (doc) {
+			userCards.update({_id: doc._id}, {$set: {is_selected: false}});
+		});
+		userCards.update({_id: this._id}, {$set: {is_selected: true}});
 	},
 	'keydown .inputtitle': function (e,tmpl) {
 		if(e.keyCode === 9){
@@ -50,12 +54,16 @@ Template.cards.events({
 
 Template.childcardstmpl.events({
 	'click .childtitle':function(e,tmpl){
-		$('.childtitle').css('background', '#fff');
+		$('.'+this.parent_id).css('background', '#fff');
 		$(e.currentTarget).css('background', 'lightyellow');
 		$(e.currentTarget).parent().nextAll(".child-cards-list").remove();
 		var childcards= userCards.find({parent_id: this._id});
 		var data={allchildcards: childcards,parent_id:this._id};
 		Blaze.renderWithData(Template.childcardstmpl, data, $(".childcards-container")[0]);
+		userCards.find({parent_id: this.parent_id}).forEach(function (doc) {
+			userCards.update({_id: doc._id}, {$set: {is_selected: false}});
+		});
+		userCards.update({_id: this._id}, {$set: {is_selected: true}});
 	},
 	'keydown .childtitle': function (e,tmpl) {
 		if(e.keyCode === 9){
