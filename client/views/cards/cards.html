@@ -5,11 +5,11 @@
 		<input type="text" id="{{_id}}" class="card-input inputtitle"  autocapitalize="none" autocorrect="off" value="{{cardTitle}}" style="{{#if is_selected}}background:lightyellow;{{/if}}">
 		{{/each}}
 		<input type="button" class="addCardButton" id="createRootCard" value="Add">
-		{{expandChildren}}
 	</div>
 	<div class="childcards-container">
 
 	</div>
+	{{expandChildren}}
 </div>
 </template>
 <template name="childcardstmpl">

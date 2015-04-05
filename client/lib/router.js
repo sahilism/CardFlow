@@ -21,6 +21,11 @@ Router.route("/home",{
 	},
 	waitOn:function(){
 		return Meteor.subscribe('allusercards');
+	},
+	action:function(){
+		if(this.ready()){
+			this.render();
+		}
 	}
 })
 Router.route("/logout",{

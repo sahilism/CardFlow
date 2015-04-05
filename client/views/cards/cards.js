@@ -1,50 +1,53 @@
 Template.cards.created = function () {
-	Session.set('isChildActive',undefined);
+	Session.set('activeChild',undefined);
 	Session.set('activeParent',undefined);
 };
 Template.cards.destroyed = function () {
-	Session.set('isChildActive',undefined);
+	Session.set('activeChild',undefined);
 	Session.set('activeParent',undefined);
 };
 Template.cards.rendered = function () {
-		var res=userCards.find({is_selected: true,is_root: true});
-		res=res.fetch()[0];
-		Session.set('activeParent',res._id);
-		$("#"+res._id).trigger('click');
-		if(res){
-			autoExpandSelected(res._id);
-		}
-		/*userCards.find({is_selected: true,is_root: true}).observe({
-			added: function (newDocument) {
-				if(newDocument.is_selected && newDocument.is_root){
-					autoExpandSelected(newDocument._id);
-				}
-			}, 
-			changed: function (newDocument, oldDocument) {
-				
-			}, 
-			removed: function (oldDocument) {
-			}
-		});*/
+	var res=userCards.find({is_selected: true,is_root: true});
+	res=res.fetch()[0];
+	Session.set('activeParent',res._id);
+	$("#"+res._id).trigger('click');
+	if(res){
+		autoExpandSelected(res._id);
+	}
 };
 Template.childcardstmpl.rendered = function () {
 	userCards.find({is_selected: true,is_root: true}).observe({
 		added: function (newDocument) {
-			// autoExpandSelected(newDocument._id);
 			var card=userCards.findOne({is_selected: true,is_root: true});
 			var existingParent=Session.get('activeParent');
 			if(newDocument._id !== existingParent){
 				Session.set('activeParent',card._id);
 				$("#"+card._id).trigger('click');
 			}
-		}, 
-		changed: function (newDocument, oldDocument) {
-			
-		}, 
-		removed: function (oldDocument) {
 		}
 	});
+	/*userCards.find({is_root: {$ne: true}}).observe({
+		changed: function (newDocument,old) {
+			if(newDocument.is_selected && !newDocument.is_root && !old.is_selected){
+				var pid=getParentCard(newDocument._id);
+				var pcard=userCards.findOne({_id:pid});
+				if(pcard && pcard.is_selected){
+					console.log(newDocument);
+				}
+			}
+				
+		}
+	});*/
 };
+getParentCard = function(id){
+	var newcard= userCards.findOne({_id:id});
+	if(newcard && _.has(newcard,"parent_id")){
+		return getParentCard(newcard.parent_id);
+	}
+	else{
+		return newcard._id;
+	}
+}
 Template.cards.helpers({
 	usercards: function () {
 		return userCards.find({user_id:Meteor.userId(),is_root: true},{sort: {createdAt: 1}});
@@ -65,6 +68,7 @@ Template.cards.events({
 		$('.inputtitle').css('background', '#fff');
 		$(e.currentTarget).css('background', 'lightyellow');
 		$(".child-cards-list").remove();
+		Session.set('activeParent',this._id);
 		var childcards= userCards.find({parent_id: this._id},{sort: {createdAt: 1}});
 		var data={allchildcards: childcards,parent_id:this._id};
 		Blaze.renderWithData(Template.childcardstmpl, data, $(".childcards-container")[0]);
