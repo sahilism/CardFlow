@@ -6,12 +6,25 @@ Template.cards.destroyed = function () {
 	Session.set('isChildActive',undefined);
 	Session.set('activeParent',undefined);
 };
+Template.cards.rendered = function () {
+	var res=userCards.findOne({is_selected: true,is_root: true});
+	$("#"+res._id).trigger('click');
+	if(res){
+		autoExpandSelected(res._id);
+	}
+};
 Template.cards.helpers({
 	usercards: function () {
 		return userCards.find({user_id:Meteor.userId(),is_root: true},{sort: {createdAt: 1}});
 	}
 });
-
+var autoExpandSelected=function(id){
+	var expandElem=userCards.findOne({parent_id:id,is_selected: true});
+	if(expandElem){
+		$("#"+expandElem._id).trigger('click');
+		autoExpandSelected(expandElem._id);
+	}
+}
 Template.cards.events({
 	'click .inputtitle':function(e,tmpl){
 		$('.inputtitle').css('background', '#fff');
@@ -24,6 +37,7 @@ Template.cards.events({
 			userCards.update({_id: doc._id}, {$set: {is_selected: false}});
 		});
 		userCards.update({_id: this._id}, {$set: {is_selected: true}});
+		autoExpandSelected(this._id);
 	},
 	'keydown .inputtitle': function (e,tmpl) {
 		if(e.keyCode === 9){
