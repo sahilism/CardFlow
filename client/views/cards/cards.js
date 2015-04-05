@@ -7,18 +7,50 @@ Template.cards.destroyed = function () {
 	Session.set('activeParent',undefined);
 };
 Template.cards.rendered = function () {
-	// Tracker.autorun(function () {
 		var res=userCards.find({is_selected: true,is_root: true});
 		res=res.fetch()[0];
+		Session.set('activeParent',res._id);
 		$("#"+res._id).trigger('click');
 		if(res){
 			autoExpandSelected(res._id);
-		}	
-	// });
+		}
+		/*userCards.find({is_selected: true,is_root: true}).observe({
+			added: function (newDocument) {
+				if(newDocument.is_selected && newDocument.is_root){
+					autoExpandSelected(newDocument._id);
+				}
+			}, 
+			changed: function (newDocument, oldDocument) {
+				
+			}, 
+			removed: function (oldDocument) {
+			}
+		});*/
+};
+Template.childcardstmpl.rendered = function () {
+	userCards.find({is_selected: true,is_root: true}).observe({
+		added: function (newDocument) {
+			// autoExpandSelected(newDocument._id);
+			var card=userCards.findOne({is_selected: true,is_root: true});
+			var existingParent=Session.get('activeParent');
+			if(newDocument._id !== existingParent){
+				Session.set('activeParent',card._id);
+				$("#"+card._id).trigger('click');
+			}
+		}, 
+		changed: function (newDocument, oldDocument) {
+			
+		}, 
+		removed: function (oldDocument) {
+		}
+	});
 };
 Template.cards.helpers({
 	usercards: function () {
 		return userCards.find({user_id:Meteor.userId(),is_root: true},{sort: {createdAt: 1}});
+	},
+	expandChildren:function(){
+
 	}
 });
 var autoExpandSelected=function(id){
@@ -74,13 +106,14 @@ Template.childcardstmpl.events({
 		$('.'+this.parent_id).css('background', '#fff');
 		$(e.currentTarget).css('background', 'lightyellow');
 		$(e.currentTarget).parent().nextAll(".child-cards-list").remove();
-		var childcards= userCards.find({parent_id: this._id});
+		var childcards= userCards.find({parent_id: this._id},{sort: {createdAt: 1}});
 		var data={allchildcards: childcards,parent_id:this._id};
 		Blaze.renderWithData(Template.childcardstmpl, data, $(".childcards-container")[0]);
 		userCards.find({parent_id: this.parent_id}).forEach(function (doc) {
 			userCards.update({_id: doc._id}, {$set: {is_selected: false}});
 		});
 		userCards.update({_id: this._id}, {$set: {is_selected: true}});
+		autoExpandSelected(this._id);
 	},
 	'keydown .childtitle': function (e,tmpl) {
 		if(e.keyCode === 9){
