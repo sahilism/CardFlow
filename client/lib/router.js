@@ -11,7 +11,22 @@ Router.route("/",{
 })
 Router.route("/home",{
 	template:"home",
+	onBeforeAction:function(){
+		if(Meteor.user()){
+			this.next();
+		}
+		else{
+			Router.go("/");
+		}
+	},
 	waitOn:function(){
 		return Meteor.subscribe('allusercards');
+	}
+})
+Router.route("/logout",{
+	template:"loading",
+	onBeforeAction:function(){
+		Meteor.logout();
+		Router.go("/");
 	}
 })
