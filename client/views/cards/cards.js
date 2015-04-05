@@ -7,11 +7,14 @@ Template.cards.destroyed = function () {
 	Session.set('activeParent',undefined);
 };
 Template.cards.rendered = function () {
-	var res=userCards.findOne({is_selected: true,is_root: true});
-	$("#"+res._id).trigger('click');
-	if(res){
-		autoExpandSelected(res._id);
-	}
+	// Tracker.autorun(function () {
+		var res=userCards.find({is_selected: true,is_root: true});
+		res=res.fetch()[0];
+		$("#"+res._id).trigger('click');
+		if(res){
+			autoExpandSelected(res._id);
+		}	
+	// });
 };
 Template.cards.helpers({
 	usercards: function () {

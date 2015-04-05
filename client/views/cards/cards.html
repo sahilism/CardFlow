@@ -2,7 +2,7 @@
 <div class="cards-container">
 	<div class="cards-list">
 		{{#each usercards}}
-		<input type="text" id="{{_id}}" class="card-input inputtitle"  placeholder="Card" autocapitalize="none" autocorrect="off" value="{{cardTitle}}" style="{{#if is_selected}}background:lightyellow;{{/if}}">
+		<input type="text" id="{{_id}}" class="card-input inputtitle"  autocapitalize="none" autocorrect="off" value="{{cardTitle}}" style="{{#if is_selected}}background:lightyellow;{{/if}}">
 		{{/each}}
 		<input type="button" class="addCardButton" id="createRootCard" value="Add">
 	</div>
@@ -14,7 +14,7 @@
 <template name="childcardstmpl">
 	<div class="cards-list child-cards-list">
 		{{#each allchildcards}}
-			<input type="text" id="{{_id}}" class="form-control card-input childtitle {{parent_id}}"  placeholder="Card" autocapitalize="none" autocorrect="off" value="{{cardTitle}}" style="{{#if is_selected}}background:lightyellow;{{/if}}">
+			<input type="text" id="{{_id}}" class="form-control card-input childtitle {{parent_id}}"  autocapitalize="none" autocorrect="off" value="{{cardTitle}}" style="{{#if is_selected}}background:lightyellow;{{/if}}">
 		{{/each}}
 		<input type="button" class="addCardButton createSiblingCard" value="Add">
 	</div>
