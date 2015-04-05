@@ -11,9 +11,6 @@ Template.cards.rendered = function () {
 	res=res.fetch()[0];
 	Session.set('activeParent',res._id);
 	$("#"+res._id).trigger('click');
-	if(res){
-		autoExpandSelected(res._id);
-	}
 };
 Template.childcardstmpl.rendered = function () {
 	userCards.find({is_selected: true,is_root: true}).observe({
@@ -23,6 +20,7 @@ Template.childcardstmpl.rendered = function () {
 			if(newDocument._id !== existingParent){
 				Session.set('activeParent',card._id);
 				$("#"+card._id).trigger('click');
+				autoExpandSelected(newDocument._id);
 			}
 		}
 	});
@@ -59,9 +57,22 @@ Template.cards.helpers({
 var autoExpandSelected=function(id){
 	var expandElem=userCards.findOne({parent_id:id,is_selected: true});
 	if(expandElem){
-		$("#"+expandElem._id).trigger('click');
+		// $("#"+expandElem._id).trigger('click');
+		expandChildCards(expandElem);
 		autoExpandSelected(expandElem._id);
 	}
+}
+var expandChildCards=function(elem){
+	$('.'+elem.parent_id).css('background', '#fff');
+	$("#"+elem._id).css('background', 'lightyellow');
+	$("#"+elem._id).parent().nextAll(".child-cards-list").remove();
+	var childcards= userCards.find({parent_id: elem._id},{sort: {createdAt: 1}});
+	var data={allchildcards: childcards,parent_id:elem._id};
+	Blaze.renderWithData(Template.childcardstmpl, data, $(".childcards-container")[0]);
+	userCards.find({parent_id: elem.parent_id}).forEach(function (doc) {
+		userCards.update({_id: doc._id}, {$set: {is_selected: false}});
+	});
+	userCards.update({_id: elem._id}, {$set: {is_selected: true}});
 }
 Template.cards.events({
 	'click .inputtitle':function(e,tmpl){
