@@ -72,6 +72,9 @@ var expandChildCards=function(elem){
 	userCards.update({_id: elem._id}, {$set: {is_selected: true}});
 }
 Template.cards.events({
+	/*'mousedown .card':function(){
+		$("#"+this._id).trigger('mousedown');
+	},*/
 	'mousedown .inputtitle':function(e,tmpl){
 		$('.inputtitle').parent().css('background', '#fff');
 		$(e.currentTarget).parent().css('background', 'lightyellow');
@@ -88,17 +91,29 @@ Template.cards.events({
 	},
 	'keydown .inputtitle': function (e,tmpl) {
 		if(e.keyCode === 9){
-			var res=userCards.insert({user_id:Meteor.userId(),is_root: false,has_children: false,parent_id:this._id,createdAt:Date.now()});
-			$("#"+res).focus();
-			$("#"+res).trigger('mousedown');
-			Meteor.call('updatedcardTime', res);
+			var count=userCards.find({user_id:Meteor.userId()}).count();
+			if(count > 1000){
+				toastr.error("You have reached maximum number of cards: 1000");
+			}
+			else{
+				var res=userCards.insert({user_id:Meteor.userId(),is_root: false,has_children: false,parent_id:this._id,createdAt:Date.now()});
+				$("#"+res).focus();
+					$("#"+res).trigger('mousedown');
+					Meteor.call('updatedcardTime', res);
+			}
 			e.preventDefault(); 
 		}
 		if(e.keyCode === 13){
-			var res=userCards.insert({user_id:Meteor.userId(),is_root: true,has_children: false,createdAt:Date.now()});
-			$("#"+res).focus();
-			$("#"+res).trigger('mousedown');
-			Meteor.call('updatedcardTime', res);
+			var count=userCards.find({user_id:Meteor.userId()}).count();
+			if(count > 1000){
+				toastr.error("You have reached maximum number of cards: 1000");
+			}
+			else{
+				var res=userCards.insert({user_id:Meteor.userId(),is_root: true,has_children: false,createdAt:Date.now()});
+				$("#"+res).focus();
+				$("#"+res).trigger('mousedown');
+				Meteor.call('updatedcardTime', res);
+			}
 		}
 	},
 	'input .inputtitle,paste .inputtitle': function (e,tmpl) {
@@ -106,14 +121,23 @@ Template.cards.events({
 		userCards.update({_id:this._id}, {$set: {cardTitle: card_text}});	
 	},
 	'click #createRootCard':function(){
-		var res=userCards.insert({user_id:Meteor.userId(),is_root: true,has_children: false,createdAt:Date.now()});
-		$("#"+res).focus();
-		$("#"+res).trigger('mousedown');
-		Meteor.call('updatedcardTime', res);
+		var count=userCards.find({user_id:Meteor.userId()}).count();
+		if(count > 1000){
+			toastr.error("You have reached maximum number of cards: 1000");
+		}
+		else{
+			var res=userCards.insert({user_id:Meteor.userId(),is_root: true,has_children: false,createdAt:Date.now()});
+			$("#"+res).focus();
+			$("#"+res).trigger('mousedown');
+			Meteor.call('updatedcardTime', res);
+		}
 	}
 });
 
 Template.childcardstmpl.events({
+	/*'mousedown .card':function(){
+		$("#"+this._id).trigger('mousedown');
+	},*/
 	'mousedown .childtitle':function(e,tmpl){
 		$('.'+this.parent_id).parent().css('background', '#fff');
 		$(e.currentTarget).parent().css('background', 'lightyellow');
@@ -129,17 +153,29 @@ Template.childcardstmpl.events({
 	},
 	'keydown .childtitle': function (e,tmpl) {
 		if(e.keyCode === 9){
-			var res=userCards.insert({user_id:Meteor.userId(),is_root: false,has_children: false,parent_id:this._id,createdAt:Date.now()});
-			$("#"+res).focus();
-			$("#"+res).trigger('mousedown');
-			Meteor.call('updatedcardTime', res);
+			var count=userCards.find({user_id:Meteor.userId()}).count();
+			if(count > 1000){
+				toastr.error("You have reached maximum number of cards: 1000");
+			}
+			else{
+				var res=userCards.insert({user_id:Meteor.userId(),is_root: false,has_children: false,parent_id:this._id,createdAt:Date.now()});
+				$("#"+res).focus();
+				$("#"+res).trigger('mousedown');
+				Meteor.call('updatedcardTime', res);
+			}
 			e.preventDefault(); 
 		}
 		if(e.keyCode === 13){
-			var res=userCards.insert({user_id:Meteor.userId(),is_root: false,has_children: false,parent_id:this.parent_id,createdAt:Date.now()});
-			$("#"+res).focus();
-			$("#"+res).trigger('mousedown');
-			Meteor.call('updatedcardTime', res);
+			var count=userCards.find({user_id:Meteor.userId()}).count();
+			if(count > 1000){
+				toastr.error("You have reached maximum number of cards: 1000");
+			}
+			else{
+				var res=userCards.insert({user_id:Meteor.userId(),is_root: false,has_children: false,parent_id:this.parent_id,createdAt:Date.now()});
+				$("#"+res).focus();
+					$("#"+res).trigger('mousedown');
+					Meteor.call('updatedcardTime', res);
+			}
 		}
 	},
 	'input .childtitle,paste .childtitle': function (e,tmpl) {
@@ -148,9 +184,15 @@ Template.childcardstmpl.events({
 	},
 	'click .createSiblingCard':function(e,tmpl){
 		var id=this.parent_id;
-		var res=userCards.insert({user_id:Meteor.userId(),is_root: false,has_children: false,parent_id:id,createdAt:Date.now()});
-		$("#"+res).focus();
-		$("#"+res).trigger('mousedown');
-		Meteor.call('updatedcardTime', res);
+		var count=userCards.find({user_id:Meteor.userId()}).count();
+		if(count > 1000){
+			toastr.error("You have reached maximum number of cards: 1000");
+		}
+		else{
+		 	var res=userCards.insert({user_id:Meteor.userId(),is_root: false,has_children: false,parent_id:id,createdAt:Date.now()});
+			$("#"+res).focus();
+			$("#"+res).trigger('mousedown');
+			Meteor.call('updatedcardTime', res);		
+		}		
 	}
 });
