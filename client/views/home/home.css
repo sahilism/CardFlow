@@ -8,3 +8,17 @@ body {
 .dropdown-menu > li > a{
 	padding: 0px 10px;
 }
+#logo{
+	  cursor: pointer;
+	  width: 180px;
+	  color: #999;
+	  font-weight: 600;
+	  font-size: 2em;
+	  margin-left:5px;
+	  margin-top: 10px;
+	  margin-bottom: 0px;
+	  /*float: left;*/
+}
+.navbar-nav > li {
+	max-height: 40px;
+}
