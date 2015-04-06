@@ -60,9 +60,9 @@ var autoExpandSelected=function(id){
 	}
 }
 var expandChildCards=function(elem){
-	$('.'+elem.parent_id).css('background', '#fff');
-	$("#"+elem._id).css('background', 'lightyellow');
-	$("#"+elem._id).parent().nextAll(".child-cards-list").remove();
+	$('.'+elem.parent_id).parent().css('background', '#fff');
+	$("#"+elem._id).parent().css('background', 'lightyellow');
+	$("#"+elem._id).parent().parent().nextAll(".child-cards-list").remove();
 	var childcards= userCards.find({parent_id: elem._id},{sort: {createdAt: 1}});
 	var data={allchildcards: childcards,parent_id:elem._id};
 	Blaze.renderWithData(Template.childcardstmpl, data, $(".childcards-container")[0]);
@@ -73,8 +73,8 @@ var expandChildCards=function(elem){
 }
 Template.cards.events({
 	'mousedown .inputtitle':function(e,tmpl){
-		$('.inputtitle').css('background', '#fff');
-		$(e.currentTarget).css('background', 'lightyellow');
+		$('.inputtitle').parent().css('background', '#fff');
+		$(e.currentTarget).parent().css('background', 'lightyellow');
 		$(".child-cards-list").remove();
 		Session.set('activeParent',this._id);
 		var childcards= userCards.find({parent_id: this._id},{sort: {createdAt: 1}});
@@ -115,10 +115,9 @@ Template.cards.events({
 
 Template.childcardstmpl.events({
 	'mousedown .childtitle':function(e,tmpl){
-		console.log('mouse event');
-		$('.'+this.parent_id).css('background', '#fff');
-		$(e.currentTarget).css('background', 'lightyellow');
-		$(e.currentTarget).parent().nextAll(".child-cards-list").remove();
+		$('.'+this.parent_id).parent().css('background', '#fff');
+		$(e.currentTarget).parent().css('background', 'lightyellow');
+		$(e.currentTarget).parent().parent().nextAll(".child-cards-list").remove();
 		var childcards= userCards.find({parent_id: this._id},{sort: {createdAt: 1}});
 		var data={allchildcards: childcards,parent_id:this._id};
 		Blaze.renderWithData(Template.childcardstmpl, data, $(".childcards-container")[0]);
@@ -129,7 +128,6 @@ Template.childcardstmpl.events({
 		userCards.update({_id: this._id}, {$set: {is_selected: true}});
 	},
 	'keydown .childtitle': function (e,tmpl) {
-		console.log('keydown event');
 		if(e.keyCode === 9){
 			var res=userCards.insert({user_id:Meteor.userId(),is_root: false,has_children: false,parent_id:this._id,createdAt:Date.now()});
 			$("#"+res).focus();
@@ -145,7 +143,6 @@ Template.childcardstmpl.events({
 		}
 	},
 	'input .childtitle,paste .childtitle': function (e,tmpl) {
-		console.log('input event');
 		var card_text=e.currentTarget.value;
 		userCards.update({_id:this._id}, {$set: {cardTitle: card_text}});	
 	},

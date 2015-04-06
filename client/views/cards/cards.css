@@ -1,31 +1,35 @@
+.card{
+  width: 300px;
+  font-size: 12px;
+  line-height: 1.42857143;
+  color: #777;
+  background: #fff;
+  margin:2px 0px;
+  display: block;
+  height: 34px;
+  border: 1px solid #f6f6f6 !important;
+}
 .card-input{
-	width:300px;
-	border-radius:0px;
-	background: #fff;
-	margin:2px 0px;
-	display: block;
- 	height: 34px;
- 	padding: 8px 12px 5px 12px;
-  	font-size: 12px;
-  	line-height: 1.42857143;
-  	color: #777;
-	outline: none;
-    border: 1px solid #f6f6f6 !important;
-  	-webkit-box-shadow: none !important;
-  	-moz-box-shadow: none !important;
-  	box-shadow: none !important;
+  width:90%;
+  padding: 8px 12px 5px 12px;
+  border-radius:0px;
+  outline: none;
+  border: 0px !important;
+  -webkit-box-shadow: none !important;
+  -moz-box-shadow: none !important;
+  box-shadow: none !important;
 }
 .cards-container{
-	margin-top:60px;
-	margin-left: 10px;
-	margin-right: 10px;
-	width: 100000px; 
+  margin-top:60px;
+  margin-left: 10px;
+  margin-right: 10px;
+  width: 100000px; 
 }
 .cards-list{
-	width: 302px;
-  	float: left;
-  	margin: 0px;
-  	padding: 0px;
+  width: 302px;
+    float: left;
+    margin: 0px;
+    padding: 0px;
 }
 
 .addCardButton{
