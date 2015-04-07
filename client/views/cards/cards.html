@@ -20,7 +20,7 @@
 <template name="childcardstmpl">
 	<div class="cards-list child-cards-list">
 		{{#each allchildcards}}
-		<div class="card">
+		<div class="card child-card-div">
 			<input type="text" id="{{_id}}" class="card-input childtitle {{parent_id}}"  autocapitalize="none" autocorrect="off" value="{{cardTitle}}" style="{{#if is_selected}}background:lightyellow;{{/if}}">
 		 	{{#if has_children}}
 	       	 <i style="font-size: 6px;float:right;margin-top:12px;margin-right:10px;color:#EEE" class="fa fa-circle fa-sm yellow"></i>

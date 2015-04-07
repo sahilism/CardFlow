@@ -77,9 +77,9 @@ Template.cards.events({
 	/*'mousedown .card':function(){
 		$("#"+this._id).trigger('mousedown');
 	},*/
-	'mousedown .inputtitle':function(e,tmpl){
-		$('.inputtitle').parent().css('background', '#fff');
-		$(e.currentTarget).parent().css('background', 'lightyellow');
+	'mousedown .parent-card-div,touchstart .parent-card-div':function(e,tmpl){
+		$('.parent-card-div').css('background', '#fff');
+		$(e.currentTarget).css('background', 'lightyellow');
 		$(".child-cards-list").remove();
 		Session.set('activeParent',this._id);
 		var childcards= userCards.find({parent_id: this._id},{sort: {createdAt: 1}});
@@ -140,10 +140,10 @@ Template.childcardstmpl.events({
 	/*'mousedown .card':function(){
 		$("#"+this._id).trigger('mousedown');
 	},*/
-	'mousedown .childtitle':function(e,tmpl){
+	'mousedown .child-card-div,touchstart .child-card-div':function(e,tmpl){
 		$('.'+this.parent_id).parent().css('background', '#fff');
-		$(e.currentTarget).parent().css('background', 'lightyellow');
-		$(e.currentTarget).parent().parent().nextAll(".child-cards-list").remove();
+		$(e.currentTarget).css('background', 'lightyellow');
+		$(e.currentTarget).parent().nextAll(".child-cards-list").remove();
 		var childcards= userCards.find({parent_id: this._id},{sort: {createdAt: 1}});
 		var data={allchildcards: childcards,parent_id:this._id};
 		Blaze.renderWithData(Template.childcardstmpl, data, $(".childcards-container")[0]);
