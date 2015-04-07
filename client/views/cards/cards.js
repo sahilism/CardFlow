@@ -7,26 +7,44 @@ Template.cards.destroyed = function () {
 	Session.set('activeParent',undefined);
 };
 Template.cards.rendered = function () {
-	var res=userCards.find({is_selected: true,is_root: true});
-	res=res.fetch()[0];
-	if(res){
-		Session.set('activeParent',res._id);
-		$("#"+res._id).trigger('mousedown');
-	}
-};
-Template.childcardstmpl.rendered = function () {
-	/*userCards.find({$and: [{is_selected: true},{is_root: true}]}).observe({
+	// Tracker.autorun(function () {
+		var res=userCards.findOne({$and: [{user_id:Meteor.userId()},{is_selected: true},{is_root: true}]});
+		if(res){
+			Session.set('activeParent',res._id);
+			$("#"+res._id).trigger('mousedown');
+		}	
+	// });
+	userCards.find({$and: [{user_id:Meteor.userId()},{is_selected: true},{is_root: true}]}).observe({
 		added: function (newDocument) {
 			var card=userCards.findOne({is_selected: true,is_root: true});
 			var existingParent=Session.get('activeParent');
 			if(newDocument._id !== existingParent){
-				console.log('auto expanding');
 				Session.set('activeParent',card._id);
 				$("#"+card._id).trigger('mousedown');
 				autoExpandSelected(newDocument._id);
 			}
 		}
-	});*/
+	});
+	userCards.find({$and: [{is_root:  false}]}).observe({
+		changed: function (newDocument,oldDoc) {
+			if(newDocument.is_selected && !newDocument.is_root && !oldDoc.is_selected){
+				/*console.log('doc changed');
+				var pid=getParentCardSelect(newDocument._id);
+				$("#"+pid).parent().trigger('mousedown');*/
+				/*if(pid === false){
+					console.log('pid false');
+					var pcard=userCards.findOne({_id:pid});
+					if(pcard && pcard.is_selected){
+						console.log('triggering');
+						$("#"+newDocument._id).parent().trigger('mousedown');
+					}
+				}*/
+			}
+		}
+	});
+};
+Template.childcardstmpl.rendered = function () {
+	
 	/*userCards.find({is_root: {$ne: true}}).observe({
 		changed: function (newDocument,old) {
 			if(newDocument.is_selected && !newDocument.is_root && !old.is_selected){
@@ -40,10 +58,34 @@ Template.childcardstmpl.rendered = function () {
 		}
 	});*/
 };
+getParentCardSelect = function(id){
+	var newcard= userCards.findOne({_id:id});
+	if(newcard && _.has(newcard,"parent_id")){
+		var r=userCards.findOne({_id:newcard.parent_id});
+		if(r.is_selected){
+			return getParentCardSelect(r.parent_id)
+		}
+		else{
+			userCards.find({parent_id:newcard.parent_id}).forEach(function (doc) {
+				userCards.update({_id:doc._id},{$set:{is_selected: false}})
+			});
+			userCards.update({_id:newcard._id}, {$set: {is_selected: true}});
+		}
+	}
+	else{
+		return newcard._id;
+	}
+}
 getParentCard = function(id){
 	var newcard= userCards.findOne({_id:id});
 	if(newcard && _.has(newcard,"parent_id")){
-		return getParentCard(newcard.parent_id);
+		var r=userCards.findOne({_id:newcard.parent_id});
+		if(r && r.is_selected){
+			return getParentCard(newcard.parent_id);
+		}
+		else{
+			return false;
+		}
 	}
 	else{
 		return newcard._id;
