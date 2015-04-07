@@ -9,8 +9,10 @@ Template.cards.destroyed = function () {
 Template.cards.rendered = function () {
 	var res=userCards.find({is_selected: true,is_root: true});
 	res=res.fetch()[0];
-	Session.set('activeParent',res._id);
-	$("#"+res._id).trigger('mousedown');
+	if(res){
+		Session.set('activeParent',res._id);
+		$("#"+res._id).trigger('mousedown');
+	}
 };
 Template.childcardstmpl.rendered = function () {
 	/*userCards.find({$and: [{is_selected: true},{is_root: true}]}).observe({

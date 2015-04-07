@@ -1,5 +1,11 @@
 <template name="home">
-	<nav class="navbar navbar-default navbar-fixed-top">
+	{{> navbar}}
+  <body>
+    {{> cards}}
+  </body>
+</template>
+<template name="navbar">
+  <nav class="navbar navbar-default navbar-fixed-top">
       <div class="navbar-header">
         <h1 id="logo">cardflow.io</h1>
       </div>
@@ -8,7 +14,7 @@
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i style="color:#aaa" class="fa fa-cog fa-lg"></i></a>
             <ul class="dropdown-menu" role="menu">
-              <li><a href="/account">Logout</a></li>
+              <li><a href="/account">Account</a></li>
               <li class="divider"></li>
               <li><a href="/logout">Logout</a></li>
             </ul>
@@ -16,7 +22,4 @@
         </ul>
       </div><!--/.nav-collapse -->
   </nav>
-  <body>
-    {{> cards}}
-  </body>
 </template>

@@ -28,6 +28,14 @@ Router.route("/home",{
 		}
 	}
 })
+Router.route("/account",{
+	template:"profile",
+	action:function(){
+		if(Meteor.user()){
+			this.render();
+		}
+	}
+})
 Router.route("/logout",{
 	template:"loading",
 	onBeforeAction:function(){
