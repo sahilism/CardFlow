@@ -8,11 +8,11 @@ Template.cards.destroyed = function () {
 };
 Template.cards.rendered = function () {
 	// Tracker.autorun(function () {
-		var res=userCards.findOne({$and: [{user_id:Meteor.userId()},{is_selected: true},{is_root: true}]});
+		/*var res=userCards.findOne({$and: [{user_id:Meteor.userId()},{is_selected: true},{is_root: true}]});
 		if(res){
 			Session.set('activeParent',res._id);
 			$("#"+res._id).trigger('mousedown');
-		}	
+		}	*/
 	// });
 	userCards.find({$and: [{user_id:Meteor.userId()},{is_selected: true},{is_root: true}]}).observe({
 		added: function (newDocument) {
@@ -20,7 +20,7 @@ Template.cards.rendered = function () {
 			var existingParent=Session.get('activeParent');
 			if(newDocument._id !== existingParent){
 				Session.set('activeParent',card._id);
-				$("#"+card._id).trigger('mousedown');
+				$("#"+card._id).parent().trigger('mousedown');
 				autoExpandSelected(newDocument._id);
 			}
 		}
@@ -142,7 +142,7 @@ Template.cards.events({
 			else{
 				var res=userCards.insert({user_id:Meteor.userId(),is_root: false,has_children: false,parent_id:this._id,createdAt:Date.now()});
 				$("#"+res).focus();
-					$("#"+res).trigger('mousedown');
+					$("#"+res).parent().trigger('mousedown');
 					Meteor.call('updatedcardTime', res);
 			}
 			e.preventDefault(); 
@@ -155,9 +155,17 @@ Template.cards.events({
 			else{
 				var res=userCards.insert({user_id:Meteor.userId(),is_root: true,has_children: false,createdAt:Date.now()});
 				$("#"+res).focus();
-				$("#"+res).trigger('mousedown');
+				$("#"+res).parent().trigger('mousedown');
 				Meteor.call('updatedcardTime', res);
 			}
+		}
+		if(e.keyCode === 38){
+			$(e.currentTarget).parent().prev('.parent-card-div').find("input[type=text]").eq(0).focus();
+			$(e.currentTarget).parent().prev('.parent-card-div').trigger('mousedown');
+		}
+		if(e.keyCode === 40){
+			$(e.currentTarget).parent().next('.parent-card-div').find("input[type=text]").eq(0).focus();
+			$(e.currentTarget).parent().next('.parent-card-div').trigger('mousedown');
 		}
 	},
 	'input .inputtitle,paste .inputtitle': function (e,tmpl) {
@@ -172,7 +180,7 @@ Template.cards.events({
 		else{
 			var res=userCards.insert({user_id:Meteor.userId(),is_root: true,has_children: false,createdAt:Date.now()});
 			$("#"+res).focus();
-			$("#"+res).trigger('mousedown');
+			$("#"+res).parent().trigger('mousedown');
 			Meteor.call('updatedcardTime', res);
 		}
 	}
@@ -204,7 +212,7 @@ Template.childcardstmpl.events({
 			else{
 				var res=userCards.insert({user_id:Meteor.userId(),is_root: false,has_children: false,parent_id:this._id,createdAt:Date.now()});
 				$("#"+res).focus();
-				$("#"+res).trigger('mousedown');
+				$("#"+res).parent().trigger('mousedown');
 				Meteor.call('updatedcardTime', res);
 			}
 			e.preventDefault(); 
@@ -217,9 +225,17 @@ Template.childcardstmpl.events({
 			else{
 				var res=userCards.insert({user_id:Meteor.userId(),is_root: false,has_children: false,parent_id:this.parent_id,createdAt:Date.now()});
 				$("#"+res).focus();
-					$("#"+res).trigger('mousedown');
+					$("#"+res).parent().trigger('mousedown');
 					Meteor.call('updatedcardTime', res);
 			}
+		}
+		if(e.keyCode === 38){
+			$(e.currentTarget).parent().prev('.child-card-div').find("input[type=text]").eq(0).focus();
+			$(e.currentTarget).parent().prev('.child-card-div').trigger('mousedown');
+		}
+		if(e.keyCode === 40){
+			$(e.currentTarget).parent().next('.child-card-div').find("input[type=text]").eq(0).focus();
+			$(e.currentTarget).parent().next('.child-card-div').trigger('mousedown');
 		}
 	},
 	'input .childtitle,paste .childtitle': function (e,tmpl) {
@@ -235,7 +251,7 @@ Template.childcardstmpl.events({
 		else{
 		 	var res=userCards.insert({user_id:Meteor.userId(),is_root: false,has_children: false,parent_id:id,createdAt:Date.now()});
 			$("#"+res).focus();
-			$("#"+res).trigger('mousedown');
+			$("#"+res).parent().trigger('mousedown');
 			Meteor.call('updatedcardTime', res);		
 		}		
 	}
