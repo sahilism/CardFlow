@@ -36,3 +36,10 @@ AccountsTemplates.configure({
       },
     },*/
 });
+AccountsTemplates.configureRoute('signIn', {
+    name: 'signin',
+    path: '/login'});
+
+AccountsTemplates.configureRoute('signUp', {
+    name: 'signup',
+    path: '/signup'});
