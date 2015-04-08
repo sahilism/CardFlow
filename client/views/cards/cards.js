@@ -7,56 +7,13 @@ Template.cards.destroyed = function () {
 	Session.set('activeParent',undefined);
 };
 Template.cards.rendered = function () {
-	// Tracker.autorun(function () {
-		/*var res=userCards.findOne({$and: [{user_id:Meteor.userId()},{is_selected: true},{is_root: true}]});
-		if(res){
-			Session.set('activeParent',res._id);
-			$("#"+res._id).trigger('mousedown');
-		}	*/
-	// });
-	userCards.find({$and: [{user_id:Meteor.userId()},{is_selected: true},{is_root: true}]}).observe({
-		added: function (newDocument) {
-			var card=userCards.findOne({is_selected: true,is_root: true});
-			var existingParent=Session.get('activeParent');
-			if(newDocument._id !== existingParent){
-				Session.set('activeParent',card._id);
-				$("#"+card._id).parent().trigger('mousedown');
-				autoExpandSelected(newDocument._id);
-			}
-		}
-	});
-	userCards.find({$and: [{is_root:  false}]}).observe({
-		changed: function (newDocument,oldDoc) {
-			if(newDocument.is_selected && !newDocument.is_root && !oldDoc.is_selected){
-				/*console.log('doc changed');
-				var pid=getParentCardSelect(newDocument._id);
-				$("#"+pid).parent().trigger('mousedown');*/
-				/*if(pid === false){
-					console.log('pid false');
-					var pcard=userCards.findOne({_id:pid});
-					if(pcard && pcard.is_selected){
-						console.log('triggering');
-						$("#"+newDocument._id).parent().trigger('mousedown');
-					}
-				}*/
-			}
-		}
-	});
+	var res=userCards.findOne({$and: [{user_id:Meteor.userId()},{is_selected: true},{is_root: true}]});
+	if(res){
+		Session.set('activeParent',res._id);
+		$("#"+res._id).trigger('mousedown');
+	}
 };
 Template.childcardstmpl.rendered = function () {
-	
-	/*userCards.find({is_root: {$ne: true}}).observe({
-		changed: function (newDocument,old) {
-			if(newDocument.is_selected && !newDocument.is_root && !old.is_selected){
-				var pid=getParentCard(newDocument._id);
-				var pcard=userCards.findOne({_id:pid});
-				if(pcard && pcard.is_selected){
-					console.log(newDocument);
-				}
-			}
-				
-		}
-	});*/
 };
 getParentCardSelect = function(id){
 	var newcard= userCards.findOne({_id:id});
@@ -79,13 +36,13 @@ getParentCardSelect = function(id){
 getParentCard = function(id){
 	var newcard= userCards.findOne({_id:id});
 	if(newcard && _.has(newcard,"parent_id")){
-		var r=userCards.findOne({_id:newcard.parent_id});
-		if(r && r.is_selected){
+		/*var r=userCards.findOne({_id:newcard.parent_id});
+		if(r && r.is_selected){*/
 			return getParentCard(newcard.parent_id);
-		}
+		/*}
 		else{
 			return false;
-		}
+		}*/
 	}
 	else{
 		return newcard._id;
@@ -116,9 +73,6 @@ var expandChildCards=function(elem){
 	userCards.update({_id: elem._id}, {$set: {is_selected: true}});
 }
 Template.cards.events({
-	/*'mousedown .card':function(){
-		$("#"+this._id).trigger('mousedown');
-	},*/
 	'mousedown .parent-card-div,touchstart .parent-card-div':function(e,tmpl){
 		$('.parent-card-div').css('background', '#fff');
 		$(e.currentTarget).css('background', 'lightyellow');
@@ -127,9 +81,10 @@ Template.cards.events({
 		var childcards= userCards.find({parent_id: this._id},{sort: {createdAt: 1}});
 		var data={allchildcards: childcards,parent_id:this._id};
 		Blaze.renderWithData(Template.childcardstmpl, data, $(".childcards-container")[0]);
-		userCards.find({is_root: true,is_selected: true}).forEach(function (doc) {
-			userCards.update({_id: doc._id}, {$set: {is_selected: false}});
-		});
+		var p_id=userCards.findOne({$and: [{is_root: true},{is_selected: true}] });
+		if(p_id){
+			userCards.update({_id: p_id._id}, {$set: {is_selected: false}});
+		}
 		userCards.update({_id: this._id}, {$set: {is_selected: true}});
 		autoExpandSelected(this._id);
 	},
