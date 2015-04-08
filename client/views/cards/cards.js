@@ -7,26 +7,53 @@ Template.cards.destroyed = function () {
 	Session.set('activeParent',undefined);
 };
 Template.cards.rendered = function () {
-	var res=userCards.findOne({$and: [{user_id:Meteor.userId()},{is_selected: true},{is_root: true}]});
-	if(res){
-		Session.set('activeParent',res._id);
-		$("#"+res._id).trigger('mousedown');
-	}
+	Tracker.autorun(function () {
+		var res=userCards.findOne({$and: [{user_id:Meteor.userId()},{is_selected: true},{is_root: true}]});
+		if(res){
+			Session.set('activeParent',res._id);
+			$('.parent-card-div').css('background', '#fff');
+			$('#'+res._id).parent().css('background', 'lightyellow');
+			$(".child-cards-list").remove();
+			autoExpandSelected(res._id);
+		}
+	});
+	userCards.find({$and: [{user_id: Meteor.userId()}, {is_root: false} ]}).observe({
+		changed: function (newDocument, oldDocument) {
+			if(newDocument.is_selected && !oldDocument.is_selected){
+				var pres=userCards.findOne({_id: newDocument.parent_id});
+				if(pres && pres.is_selected){
+
+				}
+				else if(pres){
+					var ppid=userCards.findOne({$and: [{_id: pres.parent_id},{is_selected: true}]});
+					userCards.update({_id:ppid}, {$set: {is_selected: false}});
+					userCards.update({_id:pres._id}, {$set: {is_selected: true}});
+					$("#"+ppid._id).trigger('mousedown')
+				}
+				/*var res=getParentCardSelect(newDocument._id);
+				console.log(res);*/
+				/*if(res !== false){
+					$('.'+newDocument.parent_id).parent().css('background', '#fff');
+					$("#"+newDocument._id).parent().css('background', 'lightyellow');
+					$("#"+newDocument._id).parent().parent().nextAll(".child-cards-list").remove();
+					$("#"+newDocument._id).parent().trigger('mousedown');
+					// autoExpandSelected(newDocument._id);
+				}*/
+			}
+		} 
+	});
 };
 Template.childcardstmpl.rendered = function () {
 };
 getParentCardSelect = function(id){
 	var newcard= userCards.findOne({_id:id});
 	if(newcard && _.has(newcard,"parent_id")){
-		var r=userCards.findOne({_id:newcard.parent_id});
-		if(r.is_selected){
-			return getParentCardSelect(r.parent_id)
+		var r=userCards.find({_id:newcard.parent_id});
+		if(r && r.is_selected){
+			return getParentCard(newcard.parent_id);
 		}
 		else{
-			userCards.find({parent_id:newcard.parent_id}).forEach(function (doc) {
-				userCards.update({_id:doc._id},{$set:{is_selected: false}})
-			});
-			userCards.update({_id:newcard._id}, {$set: {is_selected: true}});
+			return false;
 		}
 	}
 	else{
@@ -36,13 +63,7 @@ getParentCardSelect = function(id){
 getParentCard = function(id){
 	var newcard= userCards.findOne({_id:id});
 	if(newcard && _.has(newcard,"parent_id")){
-		/*var r=userCards.findOne({_id:newcard.parent_id});
-		if(r && r.is_selected){*/
-			return getParentCard(newcard.parent_id);
-		/*}
-		else{
-			return false;
-		}*/
+		return getParentCard(newcard.parent_id);
 	}
 	else{
 		return newcard._id;
@@ -60,36 +81,45 @@ var autoExpandSelected=function(id){
 		autoExpandSelected(expandElem._id);
 	}
 }
+var autoExpandSelectedRoot=function(){
+
+}
 var expandChildCards=function(elem){
 	$('.'+elem.parent_id).parent().css('background', '#fff');
 	$("#"+elem._id).parent().css('background', 'lightyellow');
 	$("#"+elem._id).parent().parent().nextAll(".child-cards-list").remove();
-	var childcards= userCards.find({parent_id: elem._id},{sort: {createdAt: 1}});
+	var childcards= userCards.find({parent_id: elem.parent_id},{sort: {createdAt: 1}});
 	var data={allchildcards: childcards,parent_id:elem._id};
 	Blaze.renderWithData(Template.childcardstmpl, data, $(".childcards-container")[0]);
-	var p_id=userCards.findOne({$and: [{parent_id: elem.parent_id},{is_selected: true}] });
+	/*var p_id=userCards.findOne({$and: [{parent_id: elem.parent_id},{is_selected: true}] });
 	if(p_id){
 		userCards.update({_id: p_id._id}, {$set: {is_selected: false}});
 	}
-	userCards.update({_id: elem._id}, {$set: {is_selected: true}});
+	userCards.update({_id: elem._id}, {$set: {is_selected: true}});*/
 }
 Template.cards.events({
 	'mousedown .parent-card-div,touchstart .parent-card-div':function(e,tmpl){
+		console.log('moude down');
 		$('.parent-card-div').css('background', '#fff');
 		$(e.currentTarget).css('background', 'lightyellow');
 		$(".child-cards-list").remove();
 		Session.set('activeParent',this._id);
+		
+		var p_id=userCards.findOne({$and: [{is_root: true},{is_selected: true}] });
+		if(p_id){
+			/*if(p_id._id === this._id){
+				return;
+			}*/
+			userCards.update({_id: p_id._id}, {$set: {is_selected: false}});
+		}
 		var childcards= userCards.find({parent_id: this._id},{sort: {createdAt: 1}});
 		var data={allchildcards: childcards,parent_id:this._id};
 		Blaze.renderWithData(Template.childcardstmpl, data, $(".childcards-container")[0]);
-		var p_id=userCards.findOne({$and: [{is_root: true},{is_selected: true}] });
-		if(p_id){
-			userCards.update({_id: p_id._id}, {$set: {is_selected: false}});
-		}
 		userCards.update({_id: this._id}, {$set: {is_selected: true}});
 		autoExpandSelected(this._id);
 	},
 	'keydown .inputtitle': function (e,tmpl) {
+		console.log('key down');
 		if(e.shiftKey && e.keyCode === 9){
 			e.preventDefault();
 		}
@@ -158,21 +188,26 @@ Template.cards.events({
 		}
 	}
 });
+Template.childcardstmpl.helpers({
+});	
 
 Template.childcardstmpl.events({
 	'mousedown .child-card-div,touchstart .child-card-div':function(e,tmpl){
 		$('.'+this.parent_id).parent().css('background', '#fff');
 		$(e.currentTarget).css('background', 'lightyellow');
 		$(e.currentTarget).parent().nextAll(".child-cards-list").remove();
+		var p_id=userCards.findOne({$and: [{parent_id: this.parent_id},{is_selected: true}] });
+		if(p_id){
+			/*if(p_id._id === this._id){
+				return;
+			}*/
+			userCards.update({_id: p_id._id}, {$set: {is_selected: false}});
+		}
+		userCards.update({_id: this._id}, {$set: {is_selected: true}});
 		var childcards= userCards.find({parent_id: this._id},{sort: {createdAt: 1}});
 		var data={allchildcards: childcards,parent_id:this._id};
 		Blaze.renderWithData(Template.childcardstmpl, data, $(".childcards-container")[0]);
 		autoExpandSelected(this._id);
-		var p_id=userCards.findOne({$and: [{parent_id: this.parent_id},{is_selected: true}] });
-		if(p_id){
-			userCards.update({_id: p_id._id}, {$set: {is_selected: false}});
-		}
-		userCards.update({_id: this._id}, {$set: {is_selected: true}});
 	},
 	'keydown .childtitle': function (e,tmpl) {
 		if(e.shiftKey && e.keyCode === 9){
