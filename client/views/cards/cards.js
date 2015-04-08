@@ -67,9 +67,10 @@ var expandChildCards=function(elem){
 	var childcards= userCards.find({parent_id: elem._id},{sort: {createdAt: 1}});
 	var data={allchildcards: childcards,parent_id:elem._id};
 	Blaze.renderWithData(Template.childcardstmpl, data, $(".childcards-container")[0]);
-	userCards.find({parent_id: elem.parent_id,is_selected: true}).forEach(function (doc) {
-		userCards.update({_id: doc._id}, {$set: {is_selected: false}});
-	});
+	var p_id=userCards.findOne({$and: [{parent_id: elem.parent_id},{is_selected: true}] });
+	if(p_id){
+		userCards.update({_id: p_id._id}, {$set: {is_selected: false}});
+	}
 	userCards.update({_id: elem._id}, {$set: {is_selected: true}});
 }
 Template.cards.events({
@@ -159,9 +160,6 @@ Template.cards.events({
 });
 
 Template.childcardstmpl.events({
-	/*'mousedown .card':function(){
-		$("#"+this._id).trigger('mousedown');
-	},*/
 	'mousedown .child-card-div,touchstart .child-card-div':function(e,tmpl){
 		$('.'+this.parent_id).parent().css('background', '#fff');
 		$(e.currentTarget).css('background', 'lightyellow');
@@ -170,9 +168,10 @@ Template.childcardstmpl.events({
 		var data={allchildcards: childcards,parent_id:this._id};
 		Blaze.renderWithData(Template.childcardstmpl, data, $(".childcards-container")[0]);
 		autoExpandSelected(this._id);
-		userCards.find({parent_id: this.parent_id,is_selected: true}).forEach(function (doc) {
-			userCards.update({_id: doc._id}, {$set: {is_selected: false}});
-		});
+		var p_id=userCards.findOne({$and: [{parent_id: this.parent_id},{is_selected: true}] });
+		if(p_id){
+			userCards.update({_id: p_id._id}, {$set: {is_selected: false}});
+		}
 		userCards.update({_id: this._id}, {$set: {is_selected: true}});
 	},
 	'keydown .childtitle': function (e,tmpl) {
