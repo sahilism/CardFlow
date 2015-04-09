@@ -33,7 +33,7 @@ Template.cards.rendered = function () {
 };
 var triggerMouseClickParent = function(log){
 	$('.parent-card-div').css('background', '#fff');
-	$("#"+log._id).css('background', 'lightyellow');
+	$("#"+log._id).parent().css('background', 'lightyellow');
 	$(".child-cards-list").remove();
 	var childcards= userCards.find({parent_id: log._id},{sort: {createdAt: 1}});
 	var data={allchildcards: childcards,parent_id:log._id};
@@ -133,18 +133,18 @@ Template.cards.events({
 		/*if(this.is_selected){
 			return;
 		}*/
-		$('.parent-card-div').css('background', '#fff');
-		$(e.currentTarget).css('background', 'lightyellow');
-		$(".child-cards-list").remove();
-		Session.set('activeParent',this._id);
-		var childcards= userCards.find({parent_id: this._id},{sort: {createdAt: 1}});
-		var data={allchildcards: childcards,parent_id:this._id};
-		Blaze.renderWithData(Template.childcardstmpl, data, $(".childcards-container")[0]);
+		// $('.parent-card-div').css('background', '#fff');
+		// $(e.currentTarget).css('background', 'lightyellow');
+		// $(".child-cards-list").remove();
+		// Session.set('activeParent',this._id);
+		// var childcards= userCards.find({parent_id: this._id},{sort: {createdAt: 1}});
+		// var data={allchildcards: childcards,parent_id:this._id};
+		// Blaze.renderWithData(Template.childcardstmpl, data, $(".childcards-container")[0]);
 		userCards.find({is_root: true,is_selected: true}).forEach(function (doc) {
 			userCards.update({_id: doc._id}, {$set: {is_selected: false}});
 		});
 		userCards.update({_id: this._id}, {$set: {is_selected: true}});
-		autoExpandSelected(this._id);
+		// autoExpandSelected(this._id);
 	},
 	'keydown .inputtitle': function (e,tmpl) {
 		if(e.shiftKey && e.keyCode === 9){
@@ -171,8 +171,8 @@ Template.cards.events({
 				else{
 					var res=userCards.insert({user_id:Meteor.userId(),is_root: false,has_children: false,parent_id:this._id,createdAt:Date.now()});
 					$("#"+res).focus();
-						$("#"+res).parent().trigger('mousedown');
-						Meteor.call('updatedcardTime', res);
+					$("#"+res).parent().trigger('mousedown');
+					Meteor.call('updatedcardTime', res);
 				}
 			}
 			e.preventDefault(); 
@@ -221,18 +221,18 @@ Template.childcardstmpl.events({
 		if(this.is_selected){
 			return;
 		}
-		$('.'+this.parent_id).parent().css('background', '#fff');
+		/*$('.'+this.parent_id).parent().css('background', '#fff');
 		$(e.currentTarget).css('background', 'lightyellow');
-		$(e.currentTarget).parent().nextAll(".child-cards-list").remove();
+		$(e.currentTarget).parent().nextAll(".child-cards-list").remove();*/
 		var p_id=userCards.findOne({$and: [{parent_id: this.parent_id},{is_selected: true}] });
 		if(p_id){
 			userCards.update({_id: p_id._id}, {$set: {is_selected: false}});
 		}
 		userCards.update({_id: this._id}, {$set: {is_selected: true}});
-		var childcards= userCards.find({parent_id: this._id},{sort: {createdAt: 1}});
+		/*var childcards= userCards.find({parent_id: this._id},{sort: {createdAt: 1}});
 		var data={allchildcards: childcards,parent_id:this._id};
 		Blaze.renderWithData(Template.childcardstmpl, data, $(".childcards-container")[0]);
-		autoExpandSelected(this._id);
+		autoExpandSelected(this._id);*/
 	},
 	'keydown .childtitle': function (e,tmpl) {
 		if(e.shiftKey && e.keyCode === 9){
