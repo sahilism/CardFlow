@@ -15,6 +15,7 @@ Template.cards.rendered = function () {
 			var existingParent=Session.get('activeParent');
 			if(newDocument._id !== existingParent){
 				Session.set('activeParent',card._id);
+				$(".child-cards-list").remove();
 				console.log('triggering mouse click');
 				triggerMouseClickParent(card);
 				autoExpandSelectedTracker(newDocument._id);
