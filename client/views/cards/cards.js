@@ -16,8 +16,7 @@ Template.cards.rendered = function () {
 			if(newDocument._id !== existingParent){
 				Session.set('activeParent',card._id);
 				console.log('triggering mouse click');
-				$(".childcards-container").html("");
-				triggerMouseClick(card);
+				triggerMouseClickParent(card);
 				autoExpandSelectedTracker(newDocument._id);
 			}
 		}
@@ -31,6 +30,15 @@ Template.cards.rendered = function () {
 		}
 	});
 };
+var triggerMouseClickParent = function(log){
+	$('.parent-card-div').css('background', '#fff');
+	$("#"+log._id).css('background', 'lightyellow');
+	$(".child-cards-list").remove();
+	var childcards= userCards.find({parent_id: log._id},{sort: {createdAt: 1}});
+	var data={allchildcards: childcards,parent_id:log._id};
+	Blaze.renderWithData(Template.childcardstmpl, data, $(".childcards-container")[0]);
+	// autoExpandSelected(log._id);
+}
 var triggerMouseClick = function(log){
 	$('.'+log.parent_id).parent().css('background', '#fff');
 	$("#"+log._id).parent().css('background', 'lightyellow');
@@ -121,9 +129,9 @@ Template.cards.events({
 		$("#"+this._id).trigger('mousedown');
 	},*/
 	'mousedown .parent-card-div,touchstart .parent-card-div':function(e,tmpl){
-		if(this.is_selected){
+		/*if(this.is_selected){
 			return;
-		}
+		}*/
 		$('.parent-card-div').css('background', '#fff');
 		$(e.currentTarget).css('background', 'lightyellow');
 		$(".child-cards-list").remove();
