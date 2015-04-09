@@ -12,10 +12,10 @@ Template.cards.rendered = function () {
 		added: function (newDocument) {
 			var card=userCards.findOne({is_selected: true,is_root: true});
 			var existingParent=Session.get('activeParent');
-			if(newDocument._id !== existingParent){
-				Session.set('activeParent',card._id);
-				$(".child-cards-list").remove();
-				triggerMouseClickParent(card);
+			if(newDocument.is_selected && (newDocument._id !== existingParent)) {
+				Session.set('activeParent',newDocument._id);
+				triggerMouseClickParent(newDocument);
+				// $(".child-cards-list").remove();
 				autoExpandSelectedTracker(newDocument._id);
 			}
 		}
@@ -32,6 +32,7 @@ Template.cards.rendered = function () {
 var triggerMouseClickParent = function(log){
 	$('.parent-card-div').css('background', '#fff');
 	$("#"+log._id).parent().css('background', 'lightyellow');
+	console.log('removed all child cards');
 	$(".child-cards-list").remove();
 	var childcards= userCards.find({parent_id: log._id},{sort: {createdAt: 1}});
 	var data={allchildcards: childcards,parent_id:log._id};
@@ -98,6 +99,7 @@ var autoExpandSelectedTracker=function(id){
 var expandChildCardsTracker=function(elem){
 	$('.'+elem.parent_id).parent().css('background', '#fff');
 	$("#"+elem._id).parent().css('background', 'lightyellow');
+	console.log('removed next all child cards list');
 	$("#"+elem._id).parent().parent().nextAll(".child-cards-list").remove();
 	var childcards= userCards.find({parent_id: elem._id},{sort: {createdAt: 1}});
 	var data={allchildcards: childcards,parent_id:elem._id};
