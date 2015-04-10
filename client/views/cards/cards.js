@@ -8,7 +8,7 @@ Template.cards.destroyed = function () {
 };
 Template.cards.rendered = function () {
 
-	userCards.find({$and: [{user_id:Meteor.userId()},{is_selected: true},{is_root: true}]}).observe({
+	/*userCards.find({$and: [{user_id:Meteor.userId()},{is_selected: true},{is_root: true}]}).observe({
 		added: function (newDocument) {
 			var card=userCards.findOne({is_selected: true,is_root: true});
 			var existingParent=Session.get('activeParent');
@@ -27,7 +27,7 @@ Template.cards.rendered = function () {
 				autoExpandSelectedTracker(newDocument._id);
 			}
 		}
-	});
+	});*/
 };
 var triggerMouseClickParent = function(log){
 	$('.parent-card-div').css('background', '#fff');
@@ -85,8 +85,32 @@ getParentCard = function(id){
 	}
 }
 Template.cards.helpers({
-	usercards: function () {
+	userRootCards: function () {
 		return userCards.find({user_id:Meteor.userId(),is_root: true},{sort: {createdAt: 1}});
+	},
+	hasChildren:function(){
+		var res=userCards.findOne({_id: this._id})	
+	},
+	isSelected_have_children:function(){
+		var selectedcard=userCards.findOne({$and : [{user_id:Meteor.userId()},{is_root: true},{is_selected: true}]});
+		if(selectedcard){
+			var res=userCards.find({parent_id: selectedcard._id}).count();
+			if(res > 0){
+				return true;
+			}
+			else{
+				return false;
+			}
+		}
+		else{
+			return false;
+		}
+	},
+	selected_parent:function(){
+		var selectedcard=userCards.findOne({$and : [{user_id:Meteor.userId()},{is_root: true},{is_selected: true}]});
+		if(selectedcard){
+			return selectedcard._id;
+		}
 	}
 });
 var autoExpandSelectedTracker=function(id){
@@ -206,6 +230,23 @@ Template.cards.events({
 	}
 });
 
+Template.childcardstmpl.helpers({
+	selected_children: function (id) {
+		return userCards.find({parent_id: id});
+	},
+	isSelected_have_children:function(id){
+		var res=userCards.find({$and: [{parent_id:id},{is_selected:true}]}).count();
+		if(res > 0){
+			return true;
+		}
+		else{
+			return false;
+		}
+	},
+	selected_child:function(id){
+		return userCards.findOne({$and: [{parent_id:id},{is_selected:true}]});
+	}
+});
 Template.childcardstmpl.events({
 	'mousedown .child-card-div,touchstart .child-card-div':function(e,tmpl){
 		if(this.is_selected){
