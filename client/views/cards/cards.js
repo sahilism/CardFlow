@@ -1,89 +1,15 @@
 Template.cards.created = function () {
-	Session.set('activeChild',undefined);
-	Session.set('activeParent',undefined);
+
 };
 Template.cards.destroyed = function () {
-	Session.set('activeChild',undefined);
-	Session.set('activeParent',undefined);
+	
 };
 Template.cards.rendered = function () {
 
-	/*userCards.find({$and: [{user_id:Meteor.userId()},{is_selected: true},{is_root: true}]}).observe({
-		added: function (newDocument) {
-			var card=userCards.findOne({is_selected: true,is_root: true});
-			var existingParent=Session.get('activeParent');
-			if(newDocument.is_selected && (newDocument._id !== existingParent)) {
-				Session.set('activeParent',newDocument._id);
-				triggerMouseClickParent(newDocument);
-				// $(".child-cards-list").remove();
-				autoExpandSelectedTracker(newDocument._id);
-			}
-		}
-	});
-	userCards.find({$and: [{user_id: Meteor.userId()}, {is_root: false} ]}).observe({
-		changed: function (newDocument, oldDocument) {
-			if(newDocument.is_selected && !oldDocument.is_selected){
-				triggerMouseClick(newDocument);
-				autoExpandSelectedTracker(newDocument._id);
-			}
-		}
-	});*/
 };
-var triggerMouseClickParent = function(log){
-	$('.parent-card-div').css('background', '#fff');
-	$("#"+log._id).parent().css('background', 'lightyellow');
-	console.log('removed all child cards');
-	$(".child-cards-list").remove();
-	var childcards= userCards.find({parent_id: log._id},{sort: {createdAt: 1}});
-	var data={allchildcards: childcards,parent_id:log._id};
-	Blaze.renderWithData(Template.childcardstmpl, data, $(".childcards-container")[0]);
-	// autoExpandSelected(log._id);
-}
-var triggerMouseClick = function(log){
-	$('.'+log.parent_id).parent().css('background', '#fff');
-	$("#"+log._id).parent().css('background', 'lightyellow');
-	$("#"+log._id).parent().parent().nextAll(".child-cards-list").remove();
-	var childcards= userCards.find({parent_id: log._id},{sort: {createdAt: 1}});
-	var data={allchildcards: childcards,parent_id:log._id};
-	Blaze.renderWithData(Template.childcardstmpl, data, $(".childcards-container")[0]);
-	// autoExpandSelected(log._id);
-}
 Template.childcardstmpl.rendered = function () {
 
 };
-getParentCardSelect = function(id){
-	var newcard= userCards.findOne({_id:id});
-	if(newcard && _.has(newcard,"parent_id")){
-		var r=userCards.findOne({_id:newcard.parent_id});
-		if(r.is_selected){
-			return getParentCardSelect(r.parent_id)
-		}
-		else{
-			userCards.find({parent_id:newcard.parent_id}).forEach(function (doc) {
-				userCards.update({_id:doc._id},{$set:{is_selected: false}})
-			});
-			userCards.update({_id:newcard._id}, {$set: {is_selected: true}});
-		}
-	}
-	else{
-		return newcard._id;
-	}
-}
-getParentCard = function(id){
-	var newcard= userCards.findOne({_id:id});
-	if(newcard && _.has(newcard,"parent_id")){
-		var r=userCards.findOne({_id:newcard.parent_id});
-		if(r && r.is_selected){
-			return getParentCard(newcard.parent_id);
-		}
-		else{
-			return false;
-		}
-	}
-	else{
-		return newcard._id;
-	}
-}
 Template.cards.helpers({
 	userRootCards: function () {
 		return userCards.find({user_id:Meteor.userId(),is_root: true},{sort: {createdAt: 1}});
@@ -111,44 +37,14 @@ Template.cards.helpers({
 		if(selectedcard){
 			return selectedcard._id;
 		}
+		else{
+			var r= userCards.findOne({is_root: true},{sort: {createdAt: 1}});
+			if(r && _.has(r,"_id")){
+				return r._id;
+			}
+		}
 	}
 });
-var autoExpandSelectedTracker=function(id){
-	var expandElem=userCards.findOne({$and: [{parent_id: id},{is_selected: true}]});
-	if(expandElem){
-		expandChildCardsTracker(expandElem);
-		autoExpandSelectedTracker(expandElem._id);
-	}
-}
-var expandChildCardsTracker=function(elem){
-	$('.'+elem.parent_id).parent().css('background', '#fff');
-	$("#"+elem._id).parent().css('background', 'lightyellow');
-	console.log('removed next all child cards list');
-	$("#"+elem._id).parent().parent().nextAll(".child-cards-list").remove();
-	var childcards= userCards.find({parent_id: elem._id},{sort: {createdAt: 1}});
-	var data={allchildcards: childcards,parent_id:elem._id};
-	Blaze.renderWithData(Template.childcardstmpl, data, $(".childcards-container")[0]);
-}
-
-var autoExpandSelected=function(id){
-	var expandElem=userCards.findOne({$and: [{parent_id: id},{is_selected: true}]});
-	if(expandElem){
-		expandChildCards(expandElem);
-		autoExpandSelected(expandElem._id);
-	}
-}
-var expandChildCards=function(elem){
-	$('.'+elem.parent_id).parent().css('background', '#fff');
-	$("#"+elem._id).parent().css('background', 'lightyellow');
-	$("#"+elem._id).parent().parent().nextAll(".child-cards-list").remove();
-	var childcards= userCards.find({parent_id: elem._id},{sort: {createdAt: 1}});
-	var data={allchildcards: childcards,parent_id:elem._id};
-	Blaze.renderWithData(Template.childcardstmpl, data, $(".childcards-container")[0]);
-	userCards.find({parent_id: elem.parent_id,is_selected: true}).forEach(function (doc) {
-		userCards.update({_id: doc._id}, {$set: {is_selected: false}});
-	});
-	userCards.update({_id: elem._id}, {$set: {is_selected: true}});
-}
 Template.cards.events({
 	'mousedown .parent-card-div,touchstart .parent-card-div':function(e,tmpl){
 		if(this.is_selected){
@@ -183,10 +79,17 @@ Template.cards.events({
 					toastr.error("You have reached maximum number of cards: 1000");
 				}
 				else{
-					var res=userCards.insert({user_id:Meteor.userId(),is_root: false,has_children: false,parent_id:this._id,createdAt:Date.now()});
-					$("#"+res).focus();
-					$("#"+res).parent().trigger('mousedown');
-					Meteor.call('updatedcardTime', res);
+					var ps_card=userCards.findOne({$and: [{parent_id:this._id},{is_selected: true}]});
+					if(ps_card){
+						userCards.update({_id: ps_card._id}, {$set: {is_selected: false}});
+					}
+					userCards.insert({user_id:Meteor.userId(),is_root: false,has_children: false,is_selected:true,parent_id:this._id,createdAt:Date.now()},function(e,r){
+						if(!e){
+							Meteor.call('updatedcardTime', r);
+							$("#"+r).focus();
+						}
+					});
+					
 				}
 			}
 			e.preventDefault(); 
@@ -222,9 +125,13 @@ Template.cards.events({
 			toastr.error("You have reached maximum number of cards: 1000");
 		}
 		else{
-			var res=userCards.insert({user_id:Meteor.userId(),is_root: true,has_children: false,createdAt:Date.now()});
+			var s_card=userCards.findOne({$and: [{is_root: true},{is_selected:true}]});
+
+			if(s_card){
+				userCards.update({_id:s_card._id}, {$set: {is_selected: false}});
+			}
+			var res=userCards.insert({user_id:Meteor.userId(),is_root: true,has_children: false,is_selected:true,createdAt:Date.now()});
 			$("#"+res).focus();
-			$("#"+res).parent().trigger('mousedown');
 			Meteor.call('updatedcardTime', res);
 		}
 	}
@@ -285,14 +192,20 @@ Template.childcardstmpl.events({
 					toastr.error("You have reached maximum number of cards: 1000");
 				}
 				else{
-					var res=userCards.insert({user_id:Meteor.userId(),is_root: false,has_children: false,parent_id:this._id,createdAt:Date.now()});
-					$("#"+res).focus();
-					$("#"+res).parent().trigger('mousedown');
-					Meteor.call('updatedcardTime', res);
+					var ps_card=userCards.findOne({$and: [{parent_id:this._id},{is_selected: true}]});
+					if(ps_card){
+						userCards.update({_id: ps_card._id}, {$set: {is_selected: false}});
+					}
+					userCards.insert({user_id:Meteor.userId(),is_root: false,has_children: false,is_selected:true,parent_id:this._id,createdAt:Date.now()},function(e,r){
+						if(!e){
+							Meteor.call('updatedcardTime', r);
+							$("#"+r).focus();
+						}
+					});
 				}	
 			}
 			
-			e.preventDefault(); 
+			e.preventDefault();
 		}
 		if(e.keyCode === 13){
 			var count=userCards.find({user_id:Meteor.userId()}).count();
@@ -300,11 +213,17 @@ Template.childcardstmpl.events({
 				toastr.error("You have reached maximum number of cards: 1000");
 			}
 			else{
-				var res=userCards.insert({user_id:Meteor.userId(),is_root: false,has_children: false,parent_id:this.parent_id,createdAt:Date.now()});
-				$("#"+res).focus();
-					$("#"+res).parent().trigger('mousedown');
-					Meteor.call('updatedcardTime', res);
+				if(this.parent_id === tmpl.data.id){
+					var ps_card=userCards.findOne({$and: [{parent_id:this.parent_id},{is_selected: true}]});
+					if(ps_card){
+						userCards.update({_id: ps_card._id}, {$set: {is_selected: false}});
+					}
+					var res=userCards.insert({user_id:Meteor.userId(),is_root: false,has_children: false,is_selected:true,parent_id:this.parent_id,createdAt:Date.now()});
+						$("#"+res).focus();
+						Meteor.call('updatedcardTime', res);
+				}
 			}
+			e.preventDefault();
 		}
 		if(e.keyCode === 38){
 			$(e.currentTarget).parent().prev('.child-card-div').find("input[type=text]").eq(0).focus();
@@ -320,16 +239,22 @@ Template.childcardstmpl.events({
 		userCards.update({_id:this._id}, {$set: {cardTitle: card_text}});	
 	},
 	'click .createSiblingCard':function(e,tmpl){
-		var id=this.parent_id;
-		var count=userCards.find({user_id:Meteor.userId()}).count();
-		if(count > 1000){
-			toastr.error("You have reached maximum number of cards: 1000");
-		}
-		else{
-		 	var res=userCards.insert({user_id:Meteor.userId(),is_root: false,has_children: false,parent_id:id,createdAt:Date.now()});
-			$("#"+res).focus();
-			$("#"+res).parent().trigger('mousedown');
-			Meteor.call('updatedcardTime', res);		
+		var id=this.id;
+		if(id === tmpl.data.id){
+			var count=userCards.find({user_id:Meteor.userId()}).count();
+			if(count > 1000){
+				toastr.error("You have reached maximum number of cards: 1000");
+			}
+			else{
+			 	
+				var ps_card=userCards.findOne({$and: [{parent_id:id},{is_selected: true}]});
+				if(ps_card){
+					userCards.update({_id: ps_card._id}, {$set: {is_selected: false}});
+				}
+				var res=userCards.insert({user_id:Meteor.userId(),is_root: false,has_children: false,is_selected:true,parent_id:id,createdAt:Date.now()});
+				$("#"+res).focus();
+				Meteor.call('updatedcardTime', res);		
+			}
 		}		
 	}
 });

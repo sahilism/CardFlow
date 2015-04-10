@@ -13,9 +13,11 @@
 	</div>
 	<div class="childcards-container">
 	<!-- Adding the child card to this container -->
-		{{#if isSelected_have_children}}
+		<!-- {{#if isSelected_have_children}} -->
 			{{> childcardstmpl id=selected_parent}}
-		{{/if}}
+		<!-- {{else}}
+			<input type="button" id="" class="addCardButton createSiblingCard {{id}}" value="Add"> -->
+		<!-- {{/if}} -->
 	</div>
 </div>
 </template>
@@ -23,13 +25,13 @@
 	<div class="cards-list child-cards-list">
 		{{#each selected_children id}}
 		<div class="card child-card-div" style="{{#if is_selected}}background:lightyellow;{{/if}}">
-			<input type="text" id="{{_id}}" class="card-input childtitle {{parent_id}}"  autocapitalize="none" autocorrect="off" value="{{cardTitle}}" style="{{#if is_selected}}background:lightyellow;{{/if}}">
+			<input type="text" id="{{_id}}" class="card-input childtitle "  autocapitalize="none" autocorrect="off" value="{{cardTitle}}" style="{{#if is_selected}}background:lightyellow;{{/if}}">
 		 	{{#if has_children}}
 	       	 <i style="font-size: 6px;float:right;margin-top:12px;margin-right:10px;color:#EEE" class="fa fa-circle fa-sm yellow"></i>
 	        {{/if}}
 	      </div>
 		{{/each}}
-		<input type="button" class="addCardButton createSiblingCard" value="Add">
+		<input type="button" id="" class="addCardButton createSiblingCard {{id}}" value="Add">
 	</div>
 	{{#if isSelected_have_children id}}
   		{{#with selected_child id}}
