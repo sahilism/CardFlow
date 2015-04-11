@@ -7,17 +7,12 @@
 	        {{#if has_children}}
 	        <i style="font-size: 6px;float:right;margin-top:12px;margin-right:10px;color:#EEE" class="fa fa-circle fa-sm yellow"></i>
 	        {{/if}}
-	      </div>
+	      </div>	
 		{{/each}}
 		<input type="button" class="addCardButton" id="createRootCard" value="Add">
 	</div>
 	<div class="childcards-container">
-	<!-- Adding the child card to this container -->
-		<!-- {{#if isSelected_have_children}} -->
-			{{> childcardstmpl id=selected_parent}}
-		<!-- {{else}}
-			<input type="button" id="" class="addCardButton createSiblingCard {{id}}" value="Add"> -->
-		<!-- {{/if}} -->
+		{{> childcardstmpl id=selected_parent}}
 	</div>
 </div>
 </template>

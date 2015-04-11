@@ -1,3 +1,13 @@
+var connectionStatus = function(){
+	 if(Meteor.status().connected){
+	    return true;
+	  }
+	  else{
+	  	toastr.clear();
+	  	toastr.error("you cannot change when you're offline.")
+	  	return false;
+	  }
+}
 Template.cards.created = function () {
 
 };
@@ -5,7 +15,6 @@ Template.cards.destroyed = function () {
 	
 };
 Template.cards.rendered = function () {
-
 };
 Template.childcardstmpl.rendered = function () {
 
@@ -50,11 +59,16 @@ Template.cards.events({
 		if(this.is_selected){
 			return;
 		}
-		var p_id=userCards.findOne({$and: [{is_root: true},{is_selected: true}] });
-		if(p_id){
-			userCards.update({_id: p_id._id}, {$set: {is_selected: false}});
+		if(connectionStatus()){
+			var p_id=userCards.findOne({$and: [{is_root: true},{is_selected: true}] });
+			if(p_id){
+				userCards.update({_id: p_id._id}, {$set: {is_selected: false}});
+			}
+			userCards.update({_id: this._id}, {$set: {is_selected: true}});
 		}
-		userCards.update({_id: this._id}, {$set: {is_selected: true}});
+		else{
+			return false;
+		}
 	},
 	'keydown .inputtitle': function (e,tmpl) {
 		if(e.shiftKey && e.keyCode === 9){
@@ -79,17 +93,21 @@ Template.cards.events({
 					toastr.error("You have reached maximum number of cards: 1000");
 				}
 				else{
-					var ps_card=userCards.findOne({$and: [{parent_id:this._id},{is_selected: true}]});
-					if(ps_card){
-						userCards.update({_id: ps_card._id}, {$set: {is_selected: false}});
-					}
-					userCards.insert({user_id:Meteor.userId(),is_root: false,has_children: false,is_selected:true,parent_id:this._id,createdAt:Date.now()},function(e,r){
-						if(!e){
-							Meteor.call('updatedcardTime', r);
-							$("#"+r).focus();
+					if(connectionStatus()){
+						var ps_card=userCards.findOne({$and: [{parent_id:this._id},{is_selected: true}]});
+						if(ps_card){
+							userCards.update({_id: ps_card._id}, {$set: {is_selected: false}});
 						}
-					});
-					
+						userCards.insert({user_id:Meteor.userId(),is_root: false,has_children: false,is_selected:true,parent_id:this._id,createdAt:Date.now()},function(e,r){
+							if(!e){
+								Meteor.call('updatedcardTime', r);
+								$("#"+r).focus();
+							}
+						});
+					}
+					else{
+						return false;
+					}
 				}
 			}
 			e.preventDefault(); 
@@ -100,10 +118,15 @@ Template.cards.events({
 				toastr.error("You have reached maximum number of cards: 1000");
 			}
 			else{
-				var res=userCards.insert({user_id:Meteor.userId(),is_root: true,has_children: false,createdAt:Date.now()});
-				$("#"+res).focus();
-				$("#"+res).parent().trigger('mousedown');
-				Meteor.call('updatedcardTime', res);
+				if(connectionStatus()){
+					var res=userCards.insert({user_id:Meteor.userId(),is_root: true,has_children: false,createdAt:Date.now()});
+					$("#"+res).focus();
+					$("#"+res).parent().trigger('mousedown');
+					Meteor.call('updatedcardTime', res);
+				}
+				else{
+					return false;
+				}
 			}
 		}
 		if(e.keyCode === 38){
@@ -117,7 +140,12 @@ Template.cards.events({
 	},
 	'input .inputtitle,paste .inputtitle': function (e,tmpl) {
 		var card_text=e.currentTarget.value;
-		userCards.update({_id:this._id}, {$set: {cardTitle: card_text}});	
+		if(connectionStatus()){
+			userCards.update({_id:this._id}, {$set: {cardTitle: card_text}});	
+		}
+		else{
+			return false;
+		}
 	},
 	'click #createRootCard':function(){
 		var count=userCards.find({user_id:Meteor.userId()}).count();
@@ -125,14 +153,19 @@ Template.cards.events({
 			toastr.error("You have reached maximum number of cards: 1000");
 		}
 		else{
-			var s_card=userCards.findOne({$and: [{is_root: true},{is_selected:true}]});
+			if(connectionStatus()){
+				var s_card=userCards.findOne({$and: [{is_root: true},{is_selected:true}]});
 
-			if(s_card){
-				userCards.update({_id:s_card._id}, {$set: {is_selected: false}});
+				if(s_card){
+					userCards.update({_id:s_card._id}, {$set: {is_selected: false}});
+				}
+				var res=userCards.insert({user_id:Meteor.userId(),is_root: true,has_children: false,is_selected:true,createdAt:Date.now()});
+				$("#"+res).focus();
+				Meteor.call('updatedcardTime', res);
 			}
-			var res=userCards.insert({user_id:Meteor.userId(),is_root: true,has_children: false,is_selected:true,createdAt:Date.now()});
-			$("#"+res).focus();
-			Meteor.call('updatedcardTime', res);
+			else{
+				return false;
+			}
 		}
 	}
 });
@@ -159,12 +192,16 @@ Template.childcardstmpl.events({
 		if(this.is_selected){
 			return;
 		}
-		var p_id=userCards.findOne({$and: [{parent_id: this.parent_id},{is_selected: true}] });
-		if(p_id){
-			userCards.update({_id: p_id._id}, {$set: {is_selected: false}});
+		if(connectionStatus()){
+			var p_id=userCards.findOne({$and: [{parent_id: this.parent_id},{is_selected: true}] });
+			if(p_id){
+				userCards.update({_id: p_id._id}, {$set: {is_selected: false}});
+			}
+			userCards.update({_id: this._id}, {$set: {is_selected: true}});
 		}
-		userCards.update({_id: this._id}, {$set: {is_selected: true}});
-		
+		else{
+			return false;
+		}
 	},
 	'keydown .childtitle': function (e,tmpl) {
 		if(e.shiftKey && e.keyCode === 9){
@@ -192,16 +229,21 @@ Template.childcardstmpl.events({
 					toastr.error("You have reached maximum number of cards: 1000");
 				}
 				else{
-					var ps_card=userCards.findOne({$and: [{parent_id:this._id},{is_selected: true}]});
-					if(ps_card){
-						userCards.update({_id: ps_card._id}, {$set: {is_selected: false}});
-					}
-					userCards.insert({user_id:Meteor.userId(),is_root: false,has_children: false,is_selected:true,parent_id:this._id,createdAt:Date.now()},function(e,r){
-						if(!e){
-							Meteor.call('updatedcardTime', r);
-							$("#"+r).focus();
+					if(connectionStatus()){
+						var ps_card=userCards.findOne({$and: [{parent_id:this._id},{is_selected: true}]});
+						if(ps_card){
+							userCards.update({_id: ps_card._id}, {$set: {is_selected: false}});
 						}
-					});
+						userCards.insert({user_id:Meteor.userId(),is_root: false,has_children: false,is_selected:true,parent_id:this._id,createdAt:Date.now()},function(e,r){
+							if(!e){
+								Meteor.call('updatedcardTime', r);
+								$("#"+r).focus();
+							}
+						});
+					}
+					else{
+						return false;
+					}
 				}	
 			}
 			
@@ -213,14 +255,19 @@ Template.childcardstmpl.events({
 				toastr.error("You have reached maximum number of cards: 1000");
 			}
 			else{
-				if(this.parent_id === tmpl.data.id){
-					var ps_card=userCards.findOne({$and: [{parent_id:this.parent_id},{is_selected: true}]});
-					if(ps_card){
-						userCards.update({_id: ps_card._id}, {$set: {is_selected: false}});
+				if(connectionStatus()){
+					if(this.parent_id === tmpl.data.id){
+						var ps_card=userCards.findOne({$and: [{parent_id:this.parent_id},{is_selected: true}]});
+						if(ps_card){
+							userCards.update({_id: ps_card._id}, {$set: {is_selected: false}});
+						}
+						var res=userCards.insert({user_id:Meteor.userId(),is_root: false,has_children: false,is_selected:true,parent_id:this.parent_id,createdAt:Date.now()});
+							$("#"+res).focus();
+							Meteor.call('updatedcardTime', res);
 					}
-					var res=userCards.insert({user_id:Meteor.userId(),is_root: false,has_children: false,is_selected:true,parent_id:this.parent_id,createdAt:Date.now()});
-						$("#"+res).focus();
-						Meteor.call('updatedcardTime', res);
+				}
+				else{
+					return false;
 				}
 			}
 			e.preventDefault();
@@ -235,8 +282,13 @@ Template.childcardstmpl.events({
 		}
 	},
 	'input .childtitle,paste .childtitle': function (e,tmpl) {
-		var card_text=e.currentTarget.value;
-		userCards.update({_id:this._id}, {$set: {cardTitle: card_text}});	
+		if(connectionStatus()){
+			var card_text=e.currentTarget.value;
+			userCards.update({_id:this._id}, {$set: {cardTitle: card_text}});
+		}
+		else{
+			return false;
+		}
 	},
 	'click .createSiblingCard':function(e,tmpl){
 		var id=this.id;
@@ -246,14 +298,18 @@ Template.childcardstmpl.events({
 				toastr.error("You have reached maximum number of cards: 1000");
 			}
 			else{
-			 	
-				var ps_card=userCards.findOne({$and: [{parent_id:id},{is_selected: true}]});
-				if(ps_card){
-					userCards.update({_id: ps_card._id}, {$set: {is_selected: false}});
+			 	if(connectionStatus()){
+					var ps_card=userCards.findOne({$and: [{parent_id:id},{is_selected: true}]});
+					if(ps_card){
+						userCards.update({_id: ps_card._id}, {$set: {is_selected: false}});
+					}
+					var res=userCards.insert({user_id:Meteor.userId(),is_root: false,has_children: false,is_selected:true,parent_id:id,createdAt:Date.now()});
+					$("#"+res).focus();
+					Meteor.call('updatedcardTime', res);
 				}
-				var res=userCards.insert({user_id:Meteor.userId(),is_root: false,has_children: false,is_selected:true,parent_id:id,createdAt:Date.now()});
-				$("#"+res).focus();
-				Meteor.call('updatedcardTime', res);		
+				else{
+					return false;
+				}
 			}
 		}		
 	}
