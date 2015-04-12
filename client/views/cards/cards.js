@@ -245,11 +245,13 @@ Template.childcardstmpl.events({
 	'keydown .childtitle': function (e,tmpl) {
 		if(e.altKey && e.keyCode === 77){
 			e.preventDefault();
-			if(this.is_completed){
-				markAsUnComplete(this._id);	
-			}
-			else{
-				markAsComplete(this._id);
+			if(this.parent_id === tmpl.data.id){
+				if(this.is_completed){
+					markAsUnComplete(this._id);	
+				}
+				else{
+					markAsComplete(this._id);
+				}
 			}
 		}
 		else if(e.altKey && e.keyCode === 68){
@@ -328,8 +330,6 @@ Template.childcardstmpl.events({
 					}
 				}	
 			}
-			
-			e.preventDefault();
 		}
 		if(e.keyCode === 13){
 			var count=userCards.find({user_id:Meteor.userId()}).count();

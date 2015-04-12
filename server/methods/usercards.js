@@ -10,8 +10,5 @@ Meteor.methods({
 	},
 	updatedcardTime:function(id){
 		return userCards.update({_id:id}, {$set:{createdAt: Date.now()}});
-	},
-	deleteCard:function(id){
-		return true;
 	}
 });

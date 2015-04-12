@@ -7,7 +7,8 @@ Meteor.methods({
       var password = {digest: digest, algorithm: 'sha-256'};
       var result = Accounts._checkPassword(user, password);
       if(result.error == null){
-        return userCards.remove({user_id: this.userId});
+        userCards.remove({user_id: this.userId});
+        return userCards.insert({user_id:this.userId,cardTitle:"My First Card",createdAt: Date.now(),is_root : true,is_selected:true,has_children : false});
       }
       else{
         throw new Meteor.Error(401,"Incorrect password.")
