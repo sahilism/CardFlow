@@ -107,7 +107,7 @@ Template.cards.events({
 			      })
 			}
 			else{
-				deleteChildCards(thid._id)
+				deleteChildCards(this._id)
 			}
 		}
 		else if(e.shiftKey && e.keyCode === 9){
