@@ -10,5 +10,19 @@ Meteor.methods({
 	},
 	updatedcardTime:function(id){
 		return userCards.update({_id:id}, {$set:{createdAt: Date.now()}});
+	},
+	deleteCard:function(id){
+		deleteChildCards(id);
+		return true;
 	}
 });
+
+var deleteChildCards = function(id){
+	var count=userCards.find({parent_id: id}).count();
+	if(count > 0){
+		userCards.find({parent_id: id}).fetch().forEach(function (card) {
+			deleteChildCards(card._id);
+		});
+	}
+	userCards.remove({_id: id});
+}

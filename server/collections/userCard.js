@@ -22,6 +22,15 @@ userCards.allow({
 		}
 	},
 	remove: function (userId, doc) {
+		if(doc.user_id === userId){
+			if(_.has(doc,"parent_id")){
+				var count=userCards.find({parent_id:doc.parent_id}).count();
+				if(count <= 0){
+					console.log('setting has children false');
+					userCards.update({_id: doc.parent_id}, {$set: {has_children: false}});
+				}
+			}
+		}
 		return false;
 	}
 });
