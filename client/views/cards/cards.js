@@ -73,13 +73,12 @@ Template.cards.events({
 	'keydown .inputtitle': function (e,tmpl) {
 		if(e.altKey && e.keyCode === 77){
 			e.preventDefault();
-			var self=this;
-			markAsComplete(this._id);
-		}
-		else if(e.altKey && e.keyCode === 85){
-			e.preventDefault();
-			var self=this;
-			markAsUnComplete(this._id);
+			if(this.is_completed){
+				markAsUnComplete(this._id);	
+			}
+			else{
+				markAsComplete(this._id);
+			}
 		}
 		else if(e.altKey && e.keyCode === 68){
 			e.preventDefault();
@@ -87,7 +86,7 @@ Template.cards.events({
 			var count=userCards.find({parent_id: this._id}).count();
 			if(count > 0){
 				bootbox.confirm({
-			        message:"This will permenantly delete your card and it's childrens, Are you sure want to delete card?",
+			        message:"This will permenantly delete the card and it's childrens,Okay?",
 			        buttons: {
 			            'cancel': {
 			                label: 'Cancel',
@@ -101,30 +100,14 @@ Template.cards.events({
 			        callback:function(res){
 			          if(res){
 			            if(Meteor.user()){
-			              Meteor.call('deleteCard', self._id,function(e,r){
-			              	if(!e){
-			              		var c_id=userCards.findOne({user_id:Meteor.userId(),is_root: true},{sort: {createdAt: 1}})
-			              		if(c_id){
-			              			$("#"+c_id._id).focus();
-			              			$("#"+c_id._id).trigger('mousedown');
-			              		}
-			              	}
-			              });
+			            	deleteChildCards(self._id);
 			            }
 			          }
 			        }
 			      })
 			}
 			else{
-				Meteor.call('deleteCard', this._id,function(e,r){
-					if(!e){
-	              		var c_id=userCards.findOne({user_id:Meteor.userId(),is_root: true},{sort: {createdAt: 1}})
-	              		if(c_id){
-	              			$("#"+c_id._id).focus();
-	              			$("#"+c_id._id).trigger('mousedown')
-	              		}
-	              	}
-				});
+				deleteChildCards(thid._id)
 			}
 		}
 		else if(e.shiftKey && e.keyCode === 9){
@@ -262,13 +245,12 @@ Template.childcardstmpl.events({
 	'keydown .childtitle': function (e,tmpl) {
 		if(e.altKey && e.keyCode === 77){
 			e.preventDefault();
-			var self=this;
-			markAsComplete(this._id);
-		}
-		else if(e.altKey && e.keyCode === 85){
-			e.preventDefault();
-			var self=this;
-			markAsUnComplete(this._id);
+			if(this.is_completed){
+				markAsUnComplete(this._id);	
+			}
+			else{
+				markAsComplete(this._id);
+			}
 		}
 		else if(e.altKey && e.keyCode === 68){
 			e.preventDefault();
@@ -276,7 +258,7 @@ Template.childcardstmpl.events({
 			var count=userCards.find({parent_id: this._id}).count();
 			if(count > 0){
 				bootbox.confirm({
-			        message:"This will permenantly delete your card and it's childrens, Are you sure want to delete card?",
+			        message:"This will permenantly delete the card and it's childrens,Okay?",
 			        buttons: {
 			            'cancel': {
 			                label: 'Cancel',
@@ -290,38 +272,16 @@ Template.childcardstmpl.events({
 			        callback:function(res){
 			          if(res){
 			            if(Meteor.user()){
-			              Meteor.call('deleteCard', self._id,function(e,r){
-			              	if(!e){
-			              		var c_id=userCards.findOne({parent_id:self.parent_id},{sort: {createdAt: 1}})
-			              		if(c_id){
-			              			$("#"+c_id._id).focus();
-			              			$("#"+c_id._id).trigger('mousedown');
-			              		}
-			              		else{
-			              			$("#"+self.parent_id).focus();
-			              			$("#"+self.parent_id).trigger('mousedown');
-			              		}
-			              	}
-			              });
+			            	deleteChildCards(self._id);
+			              // Meteor.call('deleteCard', self._id);
 			            }
 			          }
 			        }
 			      })
 			}
 			else{
-				Meteor.call('deleteCard', this._id,function(e,r){
-					if(!e){
-	              		var c_id=userCards.findOne({parent_id:self.parent_id},{sort: {createdAt: 1}})
-	              		if(c_id){
-	              			$("#"+c_id._id).focus();
-	              			$("#"+c_id._id).trigger('mousedown')
-	              		}
-	              		else{
-	              			$("#"+self.parent_id).focus();
-	              			$("#"+self.parent_id).trigger('mousedown');
-	              		}
-	              	}
-				});
+				deleteChildCards(this._id);
+				// Meteor.call('deleteCard', this._id);
 			}
 		}
 		else if(e.shiftKey && e.keyCode === 9){
@@ -454,4 +414,14 @@ var markAsUnComplete = function(id){
 		});
 	}
 	userCards.update({_id: id},{$set: {is_completed: false}});
+}
+
+var deleteChildCards = function(id){
+	var count=userCards.find({parent_id: id}).count();
+	if(count > 0){
+		userCards.find({parent_id: id}).fetch().forEach(function (card) {
+			deleteChildCards(card._id);
+		});
+	}
+	userCards.remove({_id: id});
 }
