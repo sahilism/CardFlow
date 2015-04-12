@@ -76,6 +76,11 @@ Template.cards.events({
 			var self=this;
 			markAsComplete(this._id);
 		}
+		else if(e.altKey && e.keyCode === 85){
+			e.preventDefault();
+			var self=this;
+			markAsUnComplete(this._id);
+		}
 		else if(e.altKey && e.keyCode === 68){
 			e.preventDefault();
 			var self=this;
@@ -260,6 +265,11 @@ Template.childcardstmpl.events({
 			var self=this;
 			markAsComplete(this._id);
 		}
+		else if(e.altKey && e.keyCode === 85){
+			e.preventDefault();
+			var self=this;
+			markAsUnComplete(this._id);
+		}
 		else if(e.altKey && e.keyCode === 68){
 			e.preventDefault();
 			var self=this;
@@ -434,4 +444,14 @@ var markAsComplete = function(id){
 		});
 	}
 	userCards.update({_id: id},{$set: {is_completed: true}});
+}
+var markAsUnComplete = function(id){
+	var count=userCards.find({parent_id: id}).count();
+	if(count > 0){
+		userCards.find({parent_id: id}).fetch().forEach(function (card) {
+			userCards.update({_id: card.id},{$set: {is_completed: false}});
+			markAsUnComplete(card._id);
+		});
+	}
+	userCards.update({_id: id},{$set: {is_completed: false}});
 }
