@@ -71,7 +71,12 @@ Template.cards.events({
 		}
 	},
 	'keydown .inputtitle': function (e,tmpl) {
-		if(e.altKey && e.keyCode === 68){
+		if(e.altKey && e.keyCode === 77){
+			e.preventDefault();
+			var self=this;
+			markAsComplete(this._id);
+		}
+		else if(e.altKey && e.keyCode === 68){
 			e.preventDefault();
 			var self=this;
 			var count=userCards.find({parent_id: this._id}).count();
@@ -250,7 +255,12 @@ Template.childcardstmpl.events({
 		}
 	},
 	'keydown .childtitle': function (e,tmpl) {
-		if(e.altKey && e.keyCode === 68){
+		if(e.altKey && e.keyCode === 77){
+			e.preventDefault();
+			var self=this;
+			markAsComplete(this._id);
+		}
+		else if(e.altKey && e.keyCode === 68){
 			e.preventDefault();
 			var self=this;
 			var count=userCards.find({parent_id: this._id}).count();
@@ -414,3 +424,14 @@ Template.childcardstmpl.events({
 		}		
 	}
 });
+
+var markAsComplete = function(id){
+	var count=userCards.find({parent_id: id}).count();
+	if(count > 0){
+		userCards.find({parent_id: id}).fetch().forEach(function (card) {
+			userCards.update({_id: card.id},{$set: {is_completed: true}});
+			markAsComplete(card._id);
+		});
+	}
+	userCards.update({_id: id},{$set: {is_completed: true}});
+}

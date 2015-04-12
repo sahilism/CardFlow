@@ -3,7 +3,8 @@
 	<div class="cards-list">
 		{{#each userRootCards}}
 		 <div class="card parent-card-div" style="{{#if is_selected}}background:lightyellow;{{/if}}">
-	       <input type="text" id="{{_id}}" class="card-input inputtitle"  autocapitalize="none" autocorrect="off" value="{{cardTitle}}" style="{{#if is_selected}}background:lightyellow;{{/if}}" onfocus="this.value = this.value;">
+	       <input type="text" id="{{_id}}" class="card-input inputtitle"  autocapitalize="none" autocorrect="off" value="{{cardTitle}}" style="{{#if is_selected}}background:lightyellow;{{/if}}
+	       {{#if is_completed}}  text-decoration: line-through;color: #DDD;{{/if}}" onfocus="this.value = this.value;">
 	        {{#if has_children}}
 	        <i style="font-size: 6px;float:right;margin-top:12px;margin-right:10px;color:#EEE" class="fa fa-circle fa-sm yellow"></i>
 	        {{/if}}
@@ -20,7 +21,7 @@
 	<div class="cards-list child-cards-list">
 		{{#each selected_children id}}
 		<div class="card child-card-div" style="{{#if is_selected}}background:lightyellow;{{/if}}">
-			<input type="text" id="{{_id}}" class="card-input childtitle "  autocapitalize="none" autocorrect="off" value="{{cardTitle}}" style="{{#if is_selected}}background:lightyellow;{{/if}}">
+			<input type="text" id="{{_id}}" class="card-input childtitle "  autocapitalize="none" autocorrect="off" value="{{cardTitle}}" style="{{#if is_selected}}background:lightyellow;{{/if}}{{#if is_completed}}  text-decoration: line-through;color: #DDD;{{/if}}">
 		 	{{#if has_children}}
 	       	 <i style="font-size: 6px;float:right;margin-top:12px;margin-right:10px;color:#EEE" class="fa fa-circle fa-sm yellow"></i>
 	        {{/if}}

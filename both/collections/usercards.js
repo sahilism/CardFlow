@@ -36,5 +36,10 @@ Schemas.userCards = new SimpleSchema({
         label: "Is root card",
         optional: true
     },
+    is_completed:{
+        type: Boolean,
+        label: "Is Completed",
+        optional: true
+    }
 });
 userCards.attachSchema(Schemas.userCards)
