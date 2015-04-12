@@ -26,7 +26,6 @@ userCards.allow({
 			if(_.has(doc,"parent_id")){
 				var count=userCards.find({parent_id:doc.parent_id}).count();
 				if(count <= 1){
-					console.log('count less or equlas o');
 					userCards.update({_id: doc.parent_id}, {$set: {has_children: false}});
 				}
 			}

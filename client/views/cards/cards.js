@@ -47,10 +47,10 @@ Template.cards.helpers({
 			return selectedcard._id;
 		}
 		else{
-			var r= userCards.findOne({is_root: true},{sort: {createdAt: 1}});
+			/*var r= userCards.findOne({is_root: true},{sort: {createdAt: 1}});
 			if(r && _.has(r,"_id")){
 				return r._id;
-			}
+			}*/
 		}
 	}
 });
@@ -86,7 +86,7 @@ Template.cards.events({
 			var count=userCards.find({parent_id: this._id}).count();
 			if(count > 0){
 				bootbox.confirm({
-			        message:"This will permenantly delete the card and it's childrens,Okay?",
+			        message:"This will permanently delete the card and its children. Okay?",
 			        buttons: {
 			            'cancel': {
 			                label: 'Cancel',
@@ -107,7 +107,7 @@ Template.cards.events({
 			      })
 			}
 			else{
-				deleteChildCards(this._id)
+				deleteChildCards(self._id)
 			}
 		}
 		else if(e.shiftKey && e.keyCode === 9){
@@ -257,27 +257,29 @@ Template.childcardstmpl.events({
 			var self=this;
 			var count=userCards.find({parent_id: this._id}).count();
 			if(count > 0){
-				bootbox.confirm({
-			        message:"This will permenantly delete the card and it's childrens,Okay?",
-			        buttons: {
-			            'cancel': {
-			                label: 'Cancel',
-			                className: 'btn-default'
-			            },
-			            'confirm': {
-			                label: 'Delete',
-			                className: 'btn-primary'
-			            }
-			        },
-			        callback:function(res){
-			          if(res){
-			            if(Meteor.user()){
-			            	deleteChildCards(self._id);
-			              // Meteor.call('deleteCard', self._id);
-			            }
-			          }
-			        }
-			      })
+				if(this.parent_id === tmpl.data.id){
+					bootbox.confirm({
+				        message:"This will permanently delete the card and its children. Okay?",
+				        buttons: {
+				            'cancel': {
+				                label: 'Cancel',
+				                className: 'btn-default'
+				            },
+				            'confirm': {
+				                label: 'Delete',
+				                className: 'btn-primary'
+				            }
+				        },
+				        callback:function(res){
+				          if(res){
+				            if(Meteor.user()){
+				            	deleteChildCards(self._id);
+				              // Meteor.call('deleteCard', self._id);
+				            }
+				          }
+				        }
+				    })
+				   }
 			}
 			else{
 				deleteChildCards(this._id);

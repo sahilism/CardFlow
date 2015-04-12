@@ -13,7 +13,9 @@
 		<input type="button" class="addCardButton" id="createRootCard" value="Add">
 	</div>
 	<div class="childcards-container">
-		{{> childcardstmpl id=selected_parent}}
+		{{#if selected_parent}}
+			{{> childcardstmpl id=selected_parent}}
+		{{/if}}
 	</div>
 </div>
 </template>
