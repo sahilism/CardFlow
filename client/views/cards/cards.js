@@ -250,7 +250,61 @@ Template.childcardstmpl.events({
 		}
 	},
 	'keydown .childtitle': function (e,tmpl) {
-		if(e.shiftKey && e.keyCode === 9){
+		if(e.altKey && e.keyCode === 68){
+			e.preventDefault();
+			var self=this;
+			var count=userCards.find({parent_id: this._id}).count();
+			if(count > 0){
+				bootbox.confirm({
+			        message:"This will permenantly delete your card and it's childrens, Are you sure want to delete card?",
+			        buttons: {
+			            'cancel': {
+			                label: 'Cancel',
+			                className: 'btn-default'
+			            },
+			            'confirm': {
+			                label: 'Delete',
+			                className: 'btn-primary'
+			            }
+			        },
+			        callback:function(res){
+			          if(res){
+			            if(Meteor.user()){
+			              Meteor.call('deleteCard', self._id,function(e,r){
+			              	if(!e){
+			              		var c_id=userCards.findOne({parent_id:self.parent_id},{sort: {createdAt: 1}})
+			              		if(c_id){
+			              			$("#"+c_id._id).focus();
+			              			$("#"+c_id._id).trigger('mousedown');
+			              		}
+			              		else{
+			              			$("#"+self.parent_id).focus();
+			              			$("#"+self.parent_id).trigger('mousedown');
+			              		}
+			              	}
+			              });
+			            }
+			          }
+			        }
+			      })
+			}
+			else{
+				Meteor.call('deleteCard', this._id,function(e,r){
+					if(!e){
+	              		var c_id=userCards.findOne({parent_id:self.parent_id},{sort: {createdAt: 1}})
+	              		if(c_id){
+	              			$("#"+c_id._id).focus();
+	              			$("#"+c_id._id).trigger('mousedown')
+	              		}
+	              		else{
+	              			$("#"+self.parent_id).focus();
+	              			$("#"+self.parent_id).trigger('mousedown');
+	              		}
+	              	}
+				});
+			}
+		}
+		else if(e.shiftKey && e.keyCode === 9){
 			if(_.has(this,"parent_id")){
 				$("#"+this.parent_id).parent().find("input[type=text]").focus()[0];
 			}
