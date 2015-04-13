@@ -60,10 +60,9 @@ Template.cards.events({
 			return;
 		}
 		if(connectionStatus()){
-			var p_id=userCards.findOne({$and: [{is_root: true},{is_selected: true}] });
-			if(p_id){
+			userCards.find({$and: [{is_root: true},{is_selected: true}] }).forEach(function (p_id) {
 				userCards.update({_id: p_id._id}, {$set: {is_selected: false}});
-			}
+			});;
 			userCards.update({_id: this._id}, {$set: {is_selected: true}});
 		}
 		else{
@@ -232,10 +231,9 @@ Template.childcardstmpl.events({
 			return;
 		}
 		if(connectionStatus()){
-			var p_id=userCards.findOne({$and: [{parent_id: this.parent_id},{is_selected: true}] });
-			if(p_id){
+			userCards.find({$and: [{parent_id: this.parent_id},{is_selected: true}] }).forEach(function (p_id) {
 				userCards.update({_id: p_id._id}, {$set: {is_selected: false}});
-			}
+			});
 			userCards.update({_id: this._id}, {$set: {is_selected: true}});
 		}
 		else{
