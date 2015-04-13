@@ -10,5 +10,15 @@ Meteor.methods({
 	},
 	updatedcardTime:function(id){
 		return userCards.update({_id:id}, {$set:{createdAt: Date.now()}});
+	},
+	getAccountsCount:function(){
+		if(this.userId){
+			return Meteor.users.find({}).count();
+		}
+	},
+	getCardsdCount:function(){
+		if(this.userId){
+			return userCards.find({}).count();
+		}
 	}
 });

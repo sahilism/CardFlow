@@ -1,3 +1,11 @@
+Router.onBeforeAction(function(){
+	if(Meteor.user()){
+		this.next();
+	}
+	else{
+		this.render('signin')
+	}
+})
 Router.route("/",{
 	template:"signin",
 	onBeforeAction:function(){
@@ -41,5 +49,17 @@ Router.route("/logout",{
 	onBeforeAction:function(){
 		Meteor.logout();
 		Router.go("/");
+	}
+})
+
+Router.route("/admin",{
+	template:"admin",
+	action:function(){
+		if(Meteor.user() && (Meteor.user().emails[0].address === "sahil@vmoq.com") ){
+			this.render();
+		}
+		else{
+			Router.go("/")
+		}
 	}
 })
