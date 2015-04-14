@@ -55,6 +55,12 @@ Template.cards.helpers({
 	}
 });
 Template.cards.events({
+	'mouseover .card':function(e,tmpl){
+		$(e.currentTarget).children(".sort").css("opacity",1)
+	},
+	'mouseleave .card':function(e,tmpl){
+		$(e.currentTarget).children(".sort").css("opacity",0)
+	},
 	'mousedown .parent-card-div,touchstart .parent-card-div':function(e,tmpl){
 		if(this.is_selected){
 			return;
@@ -204,6 +210,42 @@ Template.cards.events({
 			else{
 				return false;
 			}
+		}
+	},
+	'click #dpMarkAsUnCompl':function(){
+		markAsUnComplete(this._id);	
+	},
+	'click #dpMarkAsCompl':function(){
+		markAsComplete(this._id);	
+	},
+	'click #dpDelete':function(e,tmpl){
+		e.preventDefault();
+		var self=this;
+		var count=userCards.find({parent_id: this._id}).count();
+		if(count > 0){
+			bootbox.confirm({
+		        message:"This will permanently delete the card and its children. Okay?",
+		        buttons: {
+		            'cancel': {
+		                label: 'Cancel',
+		                className: 'btn-default'
+		            },
+		            'confirm': {
+		                label: 'Delete',
+		                className: 'btn-primary'
+		            }
+		        },
+		        callback:function(res){
+		          if(res){
+		            if(Meteor.user()){
+		            	deleteChildCards(self._id);
+		            }
+		          }
+		        }
+		      })
+		}
+		else{
+			deleteChildCards(self._id)
 		}
 	}
 });

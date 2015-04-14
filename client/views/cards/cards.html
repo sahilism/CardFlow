@@ -2,12 +2,23 @@
 <div class="cards-container">
 	<div class="cards-list">
 		{{#each userRootCards}}
-		 <div class="card parent-card-div" style="{{#if is_selected}}background:lightyellow;{{/if}}">
+		 <div class="card" style="{{#if is_selected}}background:lightyellow;{{/if}}">
+		 	<i class="fa fa-sort-desc fa-sm dropdown-toggle sort" data-toggle="dropdown" aria-expanded="true" style="opacity:0;"></i>
+			<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1" style="top:inherit">
+				{{#if is_completed}}
+					<li role="presentation" id="dpMarkAsUnCompl"><a role="menuitem" tabindex="-1" href="#">Marks as uncompleted</a></li>
+				{{else}}
+			    	<li role="presentation" id="dpMarkAsCompl"><a role="menuitem" tabindex="-1" href="#">Marks as completed</a></li>
+			    {{/if}}
+			    <li role="presentation" id="dpDelete"><a role="menuitem" tabindex="-1" href="#">Delete</a></li>
+			</ul>
+			<div class="parent-card-div">
 	       <input type="text" id="{{_id}}" class="card-input inputtitle"  autocapitalize="none" autocorrect="off" value="{{cardTitle}}" style="{{#if is_selected}}background:lightyellow;{{/if}}
 	       {{#if is_completed}}  text-decoration: line-through;color: #DDD;{{/if}}" onfocus="this.value = this.value;">
 	        {{#if has_children}}
 	        <i style="font-size: 6px;float:right;margin-top:14px;margin-right:10px;color:#EEE" class="fa fa-circle fa-sm yellow"></i>
 	        {{/if}}
+	        </div>
 	      </div>	
 		{{/each}}
 		<input type="button" class="addCardButton" id="createRootCard" value="Add">
@@ -20,13 +31,23 @@
 </div>
 </template>
 <template name="childcardstmpl">
-	<div class="cards-list child-cards-list">
+	<div class="cards-list">
 		{{#each selected_children id}}
 		<div class="card child-card-div" style="{{#if is_selected}}background:lightyellow;{{/if}}">
+			<i class="fa fa-sort-desc fa-sm dropdown-toggle sort" data-toggle="dropdown" aria-expanded="true"></i>
+			<!-- <span class="caret dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true"></span> -->
+			<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+			    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Action</a></li>
+			    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Another action</a></li>
+			    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Something else here</a></li>
+			    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Separated link</a></li>
+			</ul>
+			<div class="child-cards-list">
 			<input type="text" id="{{_id}}" class="card-input childtitle "  autocapitalize="none" autocorrect="off" value="{{cardTitle}}" style="{{#if is_selected}}background:lightyellow;{{/if}}{{#if is_completed}}  text-decoration: line-through;color: #DDD;{{/if}}">
 		 	{{#if has_children}}
 	       	 <i style="font-size: 6px;float:right;margin-top:14px;margin-right:10px;color:#EEE" class="fa fa-circle fa-sm yellow"></i>
 	        {{/if}}
+	        </div>
 	      </div>
 		{{/each}}
 		<input type="button" id="" class="addCardButton createSiblingCard {{id}}" value="Add">

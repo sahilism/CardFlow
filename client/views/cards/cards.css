@@ -26,6 +26,7 @@
   width: 100000px; 
 }
 .cards-list{
+  position: relative;
   width: 302px;
     float: left;
     margin: 0px;
@@ -46,4 +47,10 @@
   text-decoration: none;
   margin-right: 2px;
   height: 34px;
+}
+.sort {
+  color: #DDD;
+  float: left;
+    padding-top: 7px;
+  padding-left: 2px;
 }
