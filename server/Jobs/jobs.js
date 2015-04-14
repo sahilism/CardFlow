@@ -1,31 +1,4 @@
 SyncedCron.add({
-    name: 'No orphan cards',
-    schedule: function(parser) {
-      return parser.text('every 1 hour');
-    }, 
-    job: function() {
-      userCards.find().forEach(function (card) {
-      	if(_.has(card,"parent_id")){
-      		var isParentExists= userCards.findOne({_id: card.parent_id});
-      		if(!isParentExists){
-      			Logs.insert({title: "Sanity check violation",desc:"Card parent doesn't exist",user:card.user_id,timestamp: Date.now(),card_id: card._id,parent_id: card.parent_id});
-      			Archive.insert(user);
-      		 	userCards.remove({_id: card._id});
-      		}
-      	}
-      	else if(card.is_root){
-
-      	}
-      	else {
-      		 Logs.insert({title: "Sanity check violation",desc:"Card neither has parent nor is root card",user:card.user_id,timestamp: Date.now(),card_id: card._id});
-      		 Archive.insert(user);
-      		 userCards.remove({_id: card._id});
-      	}
-      });		
-    }
-});
-
-SyncedCron.add({
     name: 'No delusional parents',
     schedule: function(parser) {
       return parser.text('every 1 hour');
@@ -57,6 +30,35 @@ SyncedCron.add({
       	});
     }
 });
+SyncedCron.add({
+    name: 'No orphan cards',
+    schedule: function(parser) {
+      return parser.text('every 1 hour');
+    }, 
+    job: function() {
+      userCards.find().forEach(function (card) {
+      	if(_.has(card,"parent_id")){
+      		var isParentExists= userCards.findOne({_id: card.parent_id});
+      		if(!isParentExists){
+      			if(!card.is_root){
+      				Logs.insert({title: "Sanity check violation",desc:"Card parent doesn't exist",user:card.user_id,timestamp: Date.now(),card_id: card._id,parent_id: card.parent_id});
+	      			Archive.insert(user);
+	      		 	userCards.remove({_id: card._id});
+      			}
+      		}
+      	}
+      	else if(card.is_root){
+
+      	}
+      	else {
+      		 Logs.insert({title: "Sanity check violation",desc:"Card neither has parent nor is root card",user:card.user_id,timestamp: Date.now(),card_id: card._id});
+      		 Archive.insert(user);
+      		 userCards.remove({_id: card._id});
+      	}
+      });		
+    }
+});
+
 var checkRootFight=function(id){
 	var rootSelectedCount=userCards.find({$and: [{user_id: id},{is_root: true},{is_selected: true}] }).count();
 	if(rootSelectedCount > 1){
