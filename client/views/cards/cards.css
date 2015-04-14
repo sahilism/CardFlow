@@ -11,7 +11,7 @@
 }
 .card-input{
   width:90%;
-  padding: 8px 12px 5px 12px;
+  padding: 8px 12px 5px 0px;
   border-radius:0px;
   outline: none;
   border: 0px !important;
@@ -53,4 +53,5 @@
   float: left;
     padding-top: 7px;
   padding-left: 2px;
+  width: 12px;
 }
