@@ -1,8 +1,8 @@
-/*Router.onBeforeAction(function(){
+Router.onBeforeAction(function(){
 	if(Meteor.user()){
 		this.next();
 	}
-})*/
+},{only: 'admin'})
 Router.route("/",{
 	template:"signin",
 	onBeforeAction:function(){
