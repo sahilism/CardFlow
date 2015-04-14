@@ -15,3 +15,7 @@ Meteor.publish('allusercards', function () {
 		this.ready();
 	}
 });
+
+Meteor.publish('sanityLogs', function () {
+	return Logs.find({},{sort: {timestamp: -1},limit: 20});
+});

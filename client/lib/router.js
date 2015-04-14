@@ -51,12 +51,19 @@ Router.route("/logout",{
 
 Router.route("/admin",{
 	template:"admin",
-	action:function(){
+	waitOn:function(){
 		if(Meteor.user() && (Meteor.user().emails[0].address === "sahil@vmoq.com") ){
-			this.render();
+			Meteor.subscribe('sanityLogs');
 		}
-		else{
-			Router.go("/")
+	},
+	action:function(){
+		if(this.ready()){
+			if(Meteor.user() && (Meteor.user().emails[0].address === "sahil@vmoq.com") ){
+				this.render();
+			}
+			else{
+				Router.go("/")
+			}
 		}
 	}
 })

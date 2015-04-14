@@ -14,5 +14,8 @@ Template.admin.helpers({
 			Session.set("cardsCount", result);
 		});
 		return Session.get("cardsCount");
+	},
+	Logs:function(){
+		return Logs.find({},{sort: {timestamp: -1}}).fetch();
 	}
 });
