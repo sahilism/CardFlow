@@ -17,5 +17,11 @@ Template.admin.helpers({
 	},
 	Logs:function(){
 		return Logs.find({},{sort: {timestamp: -1}}).fetch();
+	},
+	user:function(){
+		return cardscount.find({},{sort: {createdAt: -1}});
 	}
 });
+Template.admin.rendered = function () {
+	Meteor.subscribe("getUsersCardsCount");
+};
