@@ -4,6 +4,7 @@ SyncedCron.add({
       return parser.text('every 1 hour');
     }, 
     job: function() {
+      Logs.insert({title: "Sanity check violation",desc:"No delusional parents job started.",timestamp: Date.now()});
       userCards.find().forEach(function (card) {
       	if(_.has(card,"has_children") && card.has_children){
       		var childCardsCount=userCards.find({parent_id: card._id}).count();
@@ -12,7 +13,8 @@ SyncedCron.add({
       			userCards.update({_id: card._id}, {$set: { has_children: false }});
       		}
       	}
-      });		
+      });
+      Logs.insert({title: "Sanity check violation",desc:"No delusional parents job ended.",timestamp: Date.now()});
     }
 });
   
@@ -22,12 +24,14 @@ SyncedCron.add({
       return parser.text('every 1 hour');
     }, 
     job: function() {
+        Logs.insert({title: "Sanity check violation",desc:"No brotherly fight job started.",timestamp: Date.now()});
       	Meteor.users.find().forEach(function (user) {
       		checkRootFight(user._id);
       		userCards.find({$and: [{user_id: user._id},{is_root: true}] }).forEach(function (card) {
       			checkBrotherlyFight(card._id,card.user_id);
       		});
       	});
+        Logs.insert({title: "Sanity check violation",desc:"No brotherly fight job ended.",timestamp: Date.now()});
     }
 });
 SyncedCron.add({
@@ -36,17 +40,20 @@ SyncedCron.add({
       return parser.text('every 1 hour');
     }, 
     job: function() {
+      Logs.insert({title: "Sanity check violation",desc:"No orphan cards job started.",timestamp: Date.now()});
       userCards.find().forEach(function (card) {
         var isParentExists= userCards.findOne({_id: card.parent_id});
       	if(!isParentExists && !card.is_root){
             Logs.insert({title: "Sanity check violation",desc:"Card doesn't have parent id and the card is not root either",user:card.user_id,timestamp: Date.now(),card_id: card._id});
-           var ssid={card_id:card._id}
+           var ssid={card_id:card._id};
+           var cardid=card._id;
            card = _.omit(card, "_id");
            _.extend(card, ssid);
            Archive.insert(card);
-           userCards.remove({_id: card._id});
+           userCards.remove({_id: cardid});
       	}
-      });		
+      });
+      Logs.insert({title: "Sanity check violation",desc:"No orphan job ended.",timestamp: Date.now()});
     }
 });
 
