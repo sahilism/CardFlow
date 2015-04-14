@@ -1,0 +1,1 @@
+Archive = new Mongo.Collection('archive');
