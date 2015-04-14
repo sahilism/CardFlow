@@ -42,7 +42,10 @@ SyncedCron.add({
       		if(!isParentExists){
       			if(!card.is_root){
       				Logs.insert({title: "Sanity check violation",desc:"Card parent doesn't exist",user:card.user_id,timestamp: Date.now(),card_id: card._id,parent_id: card.parent_id});
-	      			Archive.insert(user);
+      				var ssid={card_id:card._id}
+      				card =_.omit(card, "_id");
+      				_.extend(card, ssid);
+	      			Archive.insert(card);
 	      		 	userCards.remove({_id: card._id});
       			}
       		}
@@ -52,7 +55,10 @@ SyncedCron.add({
       	}
       	else {
       		 Logs.insert({title: "Sanity check violation",desc:"Card neither has parent nor is root card",user:card.user_id,timestamp: Date.now(),card_id: card._id});
-      		 Archive.insert(user);
+      		 var ssid={card_id:card._id}
+			card = _.omit(card, "_id");
+			_.extend(card, ssid);
+      		 Archive.insert(card);
       		 userCards.remove({_id: card._id});
       	}
       });		

@@ -1,11 +1,30 @@
-//Test records for No orphan cards
-userLogs.insert({parent_id: "test parent",_id:"test record",title:"test card"});
-userLogs.insert({_id: "test record2",title:"test card"});
+Meteor.startup(function () {
+	//Test records for No orphan cards fnAyAeyiJRr6wvRo7
+	var card= userCards.findOne({_id: "test record"});
+	if(!card){
+		userCards.insert({user_id:"fnAyAeyiJRr6wvRo7",parent_id: "test parent",_id:"test record",title:"test card"});
+	}
+	var card2= userCards.findOne({_id: "test record2"});
+	if(!card2){
+		userCards.insert({user_id:"fnAyAeyiJRr6wvRo7",_id: "test record2",title:"test card"});
+	}
 
-//Test records for No delusional parents
-userLogs.insert({_id: "test has_children",title:"test card",has_children: true});
-
-//Test records for brotherly fight
-userLogs.insert({_id: "test record3",title:"test card"});
-userLogs.insert({_id: "test brotherly fight",parent_id:"test record3", title:"test card",is_selected: true});
-userLogs.insert({_id: "test brotherly fight2",parent_id:"test record3", title:"test card",is_selected: true});
+	//Test records for No delusional parents
+	var card3= userCards.findOne({_id: "test has_children"});
+	if(!card3){
+		userCards.insert({user_id:"fnAyAeyiJRr6wvRo7",_id: "test has_children",title:"test card",has_children: true});
+	}
+	//Test records for brotherly fight
+	var card4= userCards.findOne({_id: "test record3"});
+	if(!card4){
+		userCards.insert({user_id:"fnAyAeyiJRr6wvRo7",_id: "test record3",title:"test card"});
+	}
+	var card5= userCards.findOne({_id: "test brotherly fight"});
+	if(!card5){
+		userCards.insert({user_id:"fnAyAeyiJRr6wvRo7",_id: "test brotherly fight",parent_id:"test record3", title:"test card",is_selected: true});
+	}
+	var card6= userCards.findOne({_id: "test brotherly fight2"});
+	if(!card6){
+		userCards.insert({user_id:"fnAyAeyiJRr6wvRo7",_id: "test brotherly fight2",parent_id:"test record3", title:"test card",is_selected: true});		
+	}
+});
