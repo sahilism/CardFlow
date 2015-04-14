@@ -37,29 +37,14 @@ SyncedCron.add({
     }, 
     job: function() {
       userCards.find().forEach(function (card) {
-      	if(_.has(card,"parent_id")){
-      		var isParentExists= userCards.findOne({_id: card.parent_id});
-      		if(!isParentExists){
-      			if(!card.is_root){
-      				Logs.insert({title: "Sanity check violation",desc:"Card parent doesn't exist",user:card.user_id,timestamp: Date.now(),card_id: card._id,parent_id: card.parent_id});
-      				var ssid={card_id:card._id}
-      				card =_.omit(card, "_id");
-      				_.extend(card, ssid);
-	      			Archive.insert(card);
-	      		 	userCards.remove({_id: card._id});
-      			}
-      		}
-      	}
-      	else if(card.is_root){
-
-      	}
-      	else {
-      		 Logs.insert({title: "Sanity check violation",desc:"Card neither has parent nor is root card",user:card.user_id,timestamp: Date.now(),card_id: card._id});
-      		 var ssid={card_id:card._id}
-			card = _.omit(card, "_id");
-			_.extend(card, ssid);
-      		 Archive.insert(card);
-      		 userCards.remove({_id: card._id});
+        var isParentExists= userCards.findOne({_id: card.parent_id});
+      	if(!isParentExists && !card.is_root){
+            Logs.insert({title: "Sanity check violation",desc:"Card doesn't have parent id and the card is not root either",user:card.user_id,timestamp: Date.now(),card_id: card._id});
+           var ssid={card_id:card._id}
+           card = _.omit(card, "_id");
+           _.extend(card, ssid);
+           Archive.insert(card);
+           userCards.remove({_id: card._id});
       	}
       });		
     }
