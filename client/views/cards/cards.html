@@ -34,13 +34,14 @@
 	<div class="cards-list">
 		{{#each selected_children id}}
 		<div class="card child-card-div" style="{{#if is_selected}}background:lightyellow;{{/if}}">
-			<i class="fa fa-sort-desc fa-sm dropdown-toggle sort" data-toggle="dropdown" aria-expanded="true"></i>
-			<!-- <span class="caret dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true"></span> -->
-			<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-			    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Action</a></li>
-			    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Another action</a></li>
-			    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Something else here</a></li>
-			    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Separated link</a></li>
+			<i class="fa fa-sort-desc fa-sm dropdown-toggle sort" data-toggle="dropdown" aria-expanded="true" style="opacity:0;"></i>
+			<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1" style="top:inherit">
+				{{#if is_completed}}
+					<li role="presentation" id="dpMarkAsUnCompl"><a role="menuitem" tabindex="-1" href="#">Marks as uncompleted</a></li>
+				{{else}}
+			    	<li role="presentation" id="dpMarkAsCompl"><a role="menuitem" tabindex="-1" href="#">Marks as completed</a></li>
+			    {{/if}}
+			    <li role="presentation" id="dpDelete"><a role="menuitem" tabindex="-1" href="#">Delete</a></li>
 			</ul>
 			<div class="child-cards-list">
 			<input type="text" id="{{_id}}" class="card-input childtitle "  autocapitalize="none" autocorrect="off" value="{{cardTitle}}" style="{{#if is_selected}}background:lightyellow;{{/if}}{{#if is_completed}}  text-decoration: line-through;color: #DDD;{{/if}}">

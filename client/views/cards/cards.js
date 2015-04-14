@@ -268,6 +268,12 @@ Template.childcardstmpl.helpers({
 	}
 });
 Template.childcardstmpl.events({
+	'mouseover .card':function(e,tmpl){
+		$(e.currentTarget).children(".sort").css("opacity",1)
+	},
+	'mouseleave .card':function(e,tmpl){
+		$(e.currentTarget).children(".sort").css("opacity",0)
+	},
 	'mousedown .child-card-div,touchstart .child-card-div':function(e,tmpl){
 		if(this.is_selected){
 			return;
@@ -434,6 +440,46 @@ Template.childcardstmpl.events({
 				}
 			}
 		}		
+	},
+	'click #dpMarkAsUnCompl':function(){
+		markAsUnComplete(this._id);	
+	},
+	'click #dpMarkAsCompl':function(){
+		markAsComplete(this._id);	
+	},
+	'click #dpDelete':function(e,tmpl){
+		e.preventDefault();
+		var self=this;
+		var count=userCards.find({parent_id: this._id}).count();
+		if(count > 0){
+			if(this.parent_id === tmpl.data.id){
+				bootbox.confirm({
+			        message:"This will permanently delete the card and its children. Okay?",
+			        buttons: {
+			            'cancel': {
+			                label: 'Cancel',
+			                className: 'btn-default'
+			            },
+			            'confirm': {
+			                label: 'Delete',
+			                className: 'btn-primary'
+			            }
+			        },
+			        callback:function(res){
+			          if(res){
+			            if(Meteor.user()){
+			            	deleteChildCards(self._id);
+			              // Meteor.call('deleteCard', self._id);
+			            }
+			          }
+			        }
+			    })
+			   }
+		}
+		else{
+			deleteChildCards(this._id);
+			// Meteor.call('deleteCard', this._id);
+		}
 	}
 });
 
