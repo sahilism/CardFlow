@@ -1,5 +1,5 @@
 .card{
-  width: 300px;
+  width: 312px;
   font-size: 12px;
   line-height: 1.42857143;
   color: #777;
@@ -10,8 +10,8 @@
   border: 1px solid #f6f6f6 !important;
 }
 .card-input{
-  width:90%;
-  padding: 8px 12px 5px 0px;
+  width:86%;
+  padding: 8px 0px 5px 0px;
   border-radius:0px;
   outline: none;
   border: 0px !important;
@@ -27,7 +27,7 @@
 }
 .cards-list{
   position: relative;
-  width: 302px;
+  width: 314px;
     float: left;
     margin: 0px;
     padding: 0px;
@@ -53,5 +53,6 @@
   float: left;
     padding-top: 7px;
   padding-left: 2px;
-  width: 12px;
+  width: 14px;
+  font-size: 1.33em;
 }
