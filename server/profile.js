@@ -8,7 +8,7 @@ Meteor.methods({
       var result = Accounts._checkPassword(user, password);
       if(result.error == null){
         userCards.remove({user_id: this.userId});
-        return userCards.insert({user_id:this.userId,cardTitle:"My First Card",createdAt: Date.now(),is_root : true,is_selected:true,has_children : false});
+        return userCards.insert({user_id:this.userId,cardTitle:"My First Card",createdAt: Date.now(),parent_id : "root",is_selected:true,has_children : false});
       }
       else{
         throw new Meteor.Error(401,"Incorrect password.")

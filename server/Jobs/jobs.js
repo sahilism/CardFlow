@@ -1,4 +1,4 @@
-SyncedCron.add({
+/*SyncedCron.add({
     name: 'No brotherly fight',
     schedule: function(parser) {
       return parser.text('every 1 hour');
@@ -82,4 +82,4 @@ var checkBrotherlyFight = function(id,userid){
 
 Meteor.startup(function () {
 	SyncedCron.start();
-});
+});*/

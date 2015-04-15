@@ -1,4 +1,4 @@
-Meteor.startup(function () {
+/*Meteor.startup(function () {
 	//Test records for No orphan cards fnAyAeyiJRr6wvRo7
 	var card= userCards.findOne({_id: "test record"});
 	if(!card){
@@ -25,4 +25,4 @@ Meteor.startup(function () {
 	if(!card6){
 		userCards.insert({user_id:"fnAyAeyiJRr6wvRo7",_id: "test brotherly fight2",parent_id:"is_selected twice", title:"test card",is_selected: true});		
 	}
-});
+});*/

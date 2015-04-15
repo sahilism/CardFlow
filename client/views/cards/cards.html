@@ -1,7 +1,7 @@
 <template name="cards">
 <div class="cards-container">
 	<div class="cards-list">
-		{{#each userRootCards}}
+		{{#each userRootCards id}}
 		 <div class="card" style="{{#if is_selected}}background:lightyellow;{{/if}}">
 		 	<i class="fa fa-sort-desc fa-sm dropdown-toggle sort" data-toggle="dropdown" aria-expanded="true" style="opacity:0;"></i>
 			<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1" style="top:inherit">
@@ -25,7 +25,7 @@
 	</div>
 	<div class="childcards-container">
 		{{#if selected_parent}}
-			{{> childcardstmpl id=selected_parent}}
+			{{> cards id=selected_parent}}
 		{{/if}}
 	</div>
 </div>
