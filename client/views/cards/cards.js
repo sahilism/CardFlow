@@ -174,12 +174,12 @@ Template.cards.events({
 			}
 		}
 		if(e.keyCode === 38){
-			$(e.currentTarget).parent().prev('.parent-card-div').find("input[type=text]").eq(0).focus();
-			$(e.currentTarget).parent().prev('.parent-card-div').trigger('mousedown');
+			$(e.currentTarget).parent().parent().prev('.card').find("input[type=text]").eq(0).focus();
+			$(e.currentTarget).parent().parent().prev('.card').find('.parent-card-div').trigger('mousedown');
 		}
 		if(e.keyCode === 40){
-			$(e.currentTarget).parent().next('.parent-card-div').find("input[type=text]").eq(0).focus();
-			$(e.currentTarget).parent().next('.parent-card-div').trigger('mousedown');
+			$(e.currentTarget).parent().parent().next('.card').find("input[type=text]").eq(0).focus();
+			$(e.currentTarget).parent().parent().next('.card').find('.parent-card-div').trigger('mousedown');
 		}
 	},
 	'input .inputtitle,paste .inputtitle': function (e,tmpl) {
@@ -274,7 +274,7 @@ Template.childcardstmpl.events({
 	'mouseleave .card':function(e,tmpl){
 		$(e.currentTarget).children(".sort").css("opacity",0)
 	},
-	'mousedown .child-card-div,touchstart .child-card-div':function(e,tmpl){
+	'mousedown .child-cards-list,touchstart .child-cards-list':function(e,tmpl){
 		if(this.is_selected){
 			return;
 		}
@@ -401,12 +401,12 @@ Template.childcardstmpl.events({
 			e.preventDefault();
 		}
 		if(e.keyCode === 38){
-			$(e.currentTarget).parent().prev('.child-card-div').find("input[type=text]").eq(0).focus();
-			$(e.currentTarget).parent().prev('.child-card-div').trigger('mousedown');
+			$(e.currentTarget).parent().parent().prev('.card').find("input[type=text]").eq(0).focus();
+			$(e.currentTarget).parent().parent().prev('.card').find('.child-cards-list').trigger('mousedown');
 		}
 		if(e.keyCode === 40){
-			$(e.currentTarget).parent().next('.child-card-div').find("input[type=text]").eq(0).focus();
-			$(e.currentTarget).parent().next('.child-card-div').trigger('mousedown');
+			$(e.currentTarget).parent().parent().next('.card').find("input[type=text]").eq(0).focus();
+			$(e.currentTarget).parent().parent().next('.card').find('.child-cards-list').trigger('mousedown');
 		}
 	},
 	'input .childtitle,paste .childtitle': function (e,tmpl) {
