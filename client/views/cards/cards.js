@@ -16,9 +16,6 @@ Template.cards.destroyed = function () {
 };
 Template.cards.rendered = function () {
 };
-Template.childcardstmpl.rendered = function () {
-
-};
 Template.cards.helpers({
 	userRootCards: function (id) {
 		return userCards.find({user_id:Meteor.userId(),parent_id: id},{sort: {createdAt: 1}});
