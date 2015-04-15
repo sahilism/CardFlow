@@ -130,7 +130,7 @@ Template.cards.events({
 						if(ps_card){
 							userCards.update({_id: ps_card._id}, {$set: {is_selected: false}});
 						}
-						userCards.insert({user_id:Meteor.userId(),has_children: false,is_selected:true,parent_id:this._id,createdAt:Date.now()},function(e,r){
+						userCards.insert({user_id:Meteor.userId(),is_root: false,has_children: false,is_selected:true,parent_id:this._id,createdAt:Date.now()},function(e,r){
 							if(!e){
 								Meteor.call('updatedcardTime', r);
 								$("#"+r).focus();
@@ -140,8 +140,9 @@ Template.cards.events({
 					else{
 						return false;
 					}
-				}	
+				}
 			}
+			e.preventDefault();
 		}
 		if(e.keyCode === 13){
 			var count=userCards.find({user_id:Meteor.userId()}).count();
@@ -168,11 +169,11 @@ Template.cards.events({
 		}
 		if(e.keyCode === 38){
 			$(e.currentTarget).parent().parent().prev('.card').find("input[type=text]").eq(0).focus();
-			$(e.currentTarget).parent().parent().prev('.card').find('.child-cards-list').trigger('mousedown');
+			$(e.currentTarget).parent().parent().prev('.card').find('.parent-card-div').trigger('mousedown');
 		}
 		if(e.keyCode === 40){
 			$(e.currentTarget).parent().parent().next('.card').find("input[type=text]").eq(0).focus();
-			$(e.currentTarget).parent().parent().next('.card').find('.child-cards-list').trigger('mousedown');
+			$(e.currentTarget).parent().parent().next('.card').find('.parent-card-div').trigger('mousedown');
 		}
 	},
 	'input .inputtitle,paste .inputtitle': function (e,tmpl) {
