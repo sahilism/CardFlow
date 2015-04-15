@@ -31,11 +31,6 @@ Schemas.userCards = new SimpleSchema({
         label: "has childred",
         optional: true
     },
-    is_root:{
-        type: Boolean,
-        label: "Is root card",
-        optional: true
-    },
     is_completed:{
         type: Boolean,
         label: "Is Completed",

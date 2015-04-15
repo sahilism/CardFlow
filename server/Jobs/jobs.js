@@ -1,4 +1,4 @@
-/*SyncedCron.add({
+SyncedCron.add({
     name: 'No brotherly fight',
     schedule: function(parser) {
       return parser.text('every 1 hour');
@@ -6,8 +6,7 @@
     job: function() {
         Logs.insert({title: "Sanity check violation",desc:"No brotherly fight job started.",timestamp: Date.now()});
         Meteor.users.find().forEach(function (user) {
-          checkRootFight(user._id);
-          userCards.find({$and: [{user_id: user._id},{is_root: true}] }).forEach(function (card) {
+          userCards.find({$and: [{user_id: user._id},{parent_id: "root"}] }).forEach(function (card) {
             checkBrotherlyFight(card._id,card.user_id);
           });
         });
@@ -42,7 +41,7 @@ SyncedCron.add({
       Logs.insert({title: "Sanity check violation",desc:"No orphan cards job started.",timestamp: Date.now()});
       userCards.find().forEach(function (card) {
         var isParentExists= userCards.findOne({_id: card.parent_id});
-      	if(!isParentExists && !card.is_root){
+      	if(!isParentExists && (card.parent_id !== "root") ){
             Logs.insert({title: "Sanity check violation",desc:"Card parent id doesn't exists and the card is not a root",user:card.user_id,timestamp: Date.now(),card_id: card._id});
            var ssid={card_id:card._id};
            var cardid=card._id;
@@ -56,16 +55,6 @@ SyncedCron.add({
     }
 });
 
-var checkRootFight=function(id){
-	var rootSelectedCount=userCards.find({$and: [{user_id: id},{is_root: true},{is_selected: true}] }).count();
-	if(rootSelectedCount > 1){
-		Logs.insert({title: "Sanity check violation",desc:"User root cards has more than one 'is_selected' property as true",user:id,timestamp: Date.now()});
-		userCards.find({$and: [{user_id: id},{is_root: true}] }).forEach(function (card) {
-      		userCards.update({_id: card._id}, {$set: {is_selected: false}});
-    });
-	}
-
-}
 var checkBrotherlyFight = function(id,userid){
 	var count=userCards.find({$and: [{user_id: userid},{parent_id: id},{is_selected: true} ] }).count();
 	if(count > 1){
@@ -82,4 +71,4 @@ var checkBrotherlyFight = function(id,userid){
 
 Meteor.startup(function () {
 	SyncedCron.start();
-});*/
+});

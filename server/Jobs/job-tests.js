@@ -1,4 +1,4 @@
-/*Meteor.startup(function () {
+Meteor.startup(function () {
 	//Test records for No orphan cards fnAyAeyiJRr6wvRo7
 	var card= userCards.findOne({_id: "test record"});
 	if(!card){
@@ -16,7 +16,7 @@
 	}
 	//Test records for brotherly fight
 	userCards.remove({_id: "is_selected twice"});
-	userCards.insert({user_id:"fnAyAeyiJRr6wvRo7",_id: "is_selected twice",title:"test card",is_root:true});
+	userCards.insert({user_id:"fnAyAeyiJRr6wvRo7",_id: "is_selected twice",title:"test card",parent_id:"root"});
 	var card5= userCards.findOne({_id: "test brotherly fight"});
 	if(!card5){
 		userCards.insert({user_id:"fnAyAeyiJRr6wvRo7",_id: "test brotherly fight",parent_id:"is_selected twice", title:"test card",is_selected: true});
@@ -25,4 +25,4 @@
 	if(!card6){
 		userCards.insert({user_id:"fnAyAeyiJRr6wvRo7",_id: "test brotherly fight2",parent_id:"is_selected twice", title:"test card",is_selected: true});		
 	}
-});*/
+});

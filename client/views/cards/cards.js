@@ -130,7 +130,7 @@ Template.cards.events({
 						if(ps_card){
 							userCards.update({_id: ps_card._id}, {$set: {is_selected: false}});
 						}
-						userCards.insert({user_id:Meteor.userId(),is_root: false,has_children: false,is_selected:true,parent_id:this._id,createdAt:Date.now()},function(e,r){
+						userCards.insert({user_id:Meteor.userId(),has_children: false,is_selected:true,parent_id:this._id,createdAt:Date.now()},function(e,r){
 							if(!e){
 								Meteor.call('updatedcardTime', r);
 								$("#"+r).focus();
