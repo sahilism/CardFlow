@@ -13,7 +13,7 @@ Accounts.emailTemplates.verifyEmail.text = function(user, url) {
 };
 
 Accounts.onCreateUser(function (options, user) {
-	var body="Hey,<br>Just wanted to say thank you. If you have any question, please ask away.<br><br><br>Thanks.<br>Team CardFlow"
+	var body="Hey,<br><br> Just wanted to say thank you. If you have any question, please ask away.<br><br>Thanks.<br>Team CardFlow"
 	Email.send({
 		to: user.emails[0].address,
 		from: "CardFlow <hello@cardflow.com>",
