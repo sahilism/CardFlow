@@ -13,11 +13,16 @@ Accounts.emailTemplates.verifyEmail.text = function(user, url) {
 };
 
 Accounts.onCreateUser(function (options, user) {
+	var body="Hey,<br>Just wanted to say thank you. If you have any question, please ask away.<br><br><br>Thanks.<br>Team CardFlow"
 	Email.send({
 		to: user.emails[0].address,
-		from: "CardFlow <no-reply@cardflow.com>",
-		subject: "Welcome to CardFlow",
-		text: "sss"
+		from: "CardFlow <hello@cardflow.com>",
+		subject: "Welcome to CardFlow.com",
+		html: body
 	});
 	return user;
+});
+
+Meteor.startup(function () {
+	process.env.MAIL_URL="smtp://sahil%40impactomatic.com:bvBiaWVodKfoMFXCyyMwQg@smtp.mandrillapp.com:587"
 });
