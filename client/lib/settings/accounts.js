@@ -43,3 +43,6 @@ AccountsTemplates.configureRoute('signIn', {
 AccountsTemplates.configureRoute('signUp', {
     name: 'signup',
     path: '/signup'});
+AccountsTemplates.configureRoute('resetPwd', {
+    name: 'reset',
+    path: '/reset-password'});
