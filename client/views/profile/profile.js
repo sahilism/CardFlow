@@ -12,6 +12,9 @@ Template.profile.events({
 	      	toastr.error(err.message)
 	      }
 	    });
+	},
+	'click #goHome':function(){
+		Router.go('home');
 	}
 });
 Template.profile.created = function () {
