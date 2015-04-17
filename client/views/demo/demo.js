@@ -8,7 +8,8 @@ var connectionStatus = function(){
 	  	return false;
 	  }
 }
-Template.demo.created = function () {
+Template.demoMain.created = function () {
+	Session.set("creatingAccount",false);
 	if(!Session.get("sessionid")){
 		var rid= Random.id();
 		demoCards.insert({session_id:rid,cardTitle:"My First Card",createdAt: Date.now(),parent_id : "root",is_selected:true,has_children : false});
@@ -17,15 +18,24 @@ Template.demo.created = function () {
 	}
 	
 };
+
+Template.demoMain.rendered = function () {
+	window.onbeforeunload = function(){
+	  if(!Session.get("creatingAccount")){
+			Meteor.call('removeSessionCards', Session.get("sessionid"));
+			Session.set("sessionid",undefined)
+		}
+	};
+};
 Template.demoMain.events({
 	'click #createAccount': function () {
 		Session.set("creatingAccount", true);
 		Router.go('/signup');
 	}
 });
-Template.demo.destroyed = function () {
+Template.demoMain.onDestroyed(function () {
 	
-};
+});
 Template.demo.rendered = function () {
 };
 Template.demo.helpers({

@@ -57,6 +57,7 @@ var mySubmitFunc = function(error, state){
             toastr.success("All cards inserted");
             Router.go('/home')
           }
+          Session.set("creatingAccount",false);
         });
       }
     }

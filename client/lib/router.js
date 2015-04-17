@@ -68,10 +68,14 @@ Router.route("/admin",{
 	}
 });
 Router.route("/demo",{
-	template:"demoMain"
-})
-
-Router.route('createaccount',{
-	path:'/create-account',
-	template:'signupDemo'
+	template:"demoMain",
+	onBeforeAction:function(){
+		if(Meteor.user()){
+			toastr.error("You need to logout to view demo page.");
+			Router.go('/home');
+		}
+		else{
+			this.next();
+		}
+	}
 })

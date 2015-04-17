@@ -27,6 +27,10 @@ Meteor.methods({
 			_.extend(card, {user_id: uid});
 			userCards.insert(card);
 		});
+		demoCards.remove({session_id:sid});
 		return true;
+	},
+	removeSessionCards:function(sid){
+		return demoCards.remove({session_id:sid});
 	}
 });
