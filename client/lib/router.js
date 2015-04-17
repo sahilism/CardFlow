@@ -66,4 +66,12 @@ Router.route("/admin",{
 			}
 		}
 	}
+});
+Router.route("/demo",{
+	template:"demoMain"
+})
+
+Router.route('createaccount',{
+	path:'/create-account',
+	template:'signupDemo'
 })

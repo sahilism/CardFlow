@@ -20,5 +20,13 @@ Meteor.methods({
 		if(this.userId){
 			return userCards.find({}).count();
 		}
+	},
+	insertSessionRecords:function(sid,uid){
+		demoCards.find({session_id:sid}).forEach(function (card) {
+			card = _.omit(card, "session_id");
+			_.extend(card, {user_id: uid});
+			userCards.insert(card);
+		});
+		return true;
 	}
 });

@@ -46,3 +46,22 @@ AccountsTemplates.configureRoute('signUp', {
 AccountsTemplates.configureRoute('resetPwd', {
     name: 'reset',
     path: '/reset-password'});
+
+var mySubmitFunc = function(error, state){
+  if (!error) {
+    if (state === "signUp") {
+      var res=Session.get("creatingAccount");
+      if(res){
+        Meteor.call('insertSessionRecords', Session.get("sessionid"),Meteor.userId(), function (error, result) {
+          if(!error){
+            toastr.success("All cards inserted");
+            Router.go('/home')
+          }
+        });
+      }
+    }
+  }
+};
+AccountsTemplates.configure({
+    onSubmitHook: mySubmitFunc
+});

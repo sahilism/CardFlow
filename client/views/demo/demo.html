@@ -1,0 +1,44 @@
+<template name="demoMain">
+	<div class="container" style="margin-top:30px;">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="alert alert-danger" role="alert">
+					<p><a id="createAccount">Register</a> to save all your cards</p>
+				</div>
+			</div>
+		</div>
+	</div>
+	{{> demo id="root"}}
+</template>
+<template name="demo">
+<div class="cards-container">
+	<div class="cards-list">
+		{{#each userRootCards id}}
+		 <div class="card" style="{{#if is_selected}}background:lightyellow;{{/if}}">
+		 	<i class="fa fa-sort-desc fa-sm dropdown-toggle sort" data-toggle="dropdown" aria-expanded="true" style="opacity:0;"></i>
+			<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1" style="top:inherit">
+				{{#if is_completed}}
+					<li role="presentation" id="dpMarkAsUnCompl"><a role="menuitem" tabindex="-1" href="#">Mark as uncompleted</a></li>
+				{{else}}
+			    	<li role="presentation" id="dpMarkAsCompl"><a role="menuitem" tabindex="-1" href="#">Mark as completed</a></li>
+			    {{/if}}
+			    <li role="presentation" id="dpDelete"><a role="menuitem" tabindex="-1" href="#">Delete card</a></li>
+			</ul>
+			<div class="parent-card-div">
+	       <input type="text" id="{{_id}}" class="card-input inputtitle"  autocapitalize="none" autocorrect="off" value="{{cardTitle}}" style="{{#if is_selected}}background:lightyellow;{{/if}}
+	       {{#if is_completed}}  text-decoration: line-through;color: #DDD;{{/if}}" onfocus="this.value = this.value;">
+	        {{#if has_children}}
+	        <i style="font-size: 6px;float:right;margin-top:14px;margin-right:10px;color:#EEE" class="fa fa-circle fa-sm yellow"></i>
+	        {{/if}}
+	        </div>
+	      </div>	
+		{{/each}}
+		<input type="button" class="addCardButton" id="createRootCard" value="Add">
+	</div>
+	<div class="childcards-container">
+		{{#if selected_parent}}
+			{{> demo id=selected_parent}}
+		{{/if}}
+	</div>
+</div>
+</template>
