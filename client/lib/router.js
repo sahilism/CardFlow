@@ -71,7 +71,7 @@ Router.route("/demo",{
 	template:"demoMain",
 	onBeforeAction:function(){
 		if(Meteor.user()){
-			toastr.error("You need to logout to view demo page.");
+			// toastr.error("You need to logout to view demo page.");
 			Router.go('/home');
 		}
 		else{
