@@ -1,0 +1,21 @@
+.demo-input {
+  width: 180px;
+  padding: 5px 0px 5px 3px;
+  border-radius: 0px;
+  outline: none;
+  border: 0px !important;
+  -webkit-box-shadow: none !important;
+  -moz-box-shadow: none !important;
+  box-shadow: none !important;
+  margin:2px;
+}
+.active{
+  background:lightyellow;
+}
+.demo-list{
+	position: relative;
+  	width: 200px;
+  	float: left;
+  	margin: 0px;
+  	padding: 0px;
+}
