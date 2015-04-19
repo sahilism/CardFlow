@@ -4,7 +4,7 @@
   line-height: 1.42857143;
   color: #777;
   background: #fff;
-  margin:2px 0px;
+  margin:0px 0px 2px 0px;
   display: block;
   height: 34px;
   border: 1px solid #f6f6f6 !important;
@@ -37,7 +37,7 @@
   outline: none;
   border: 1px solid #f6f6f6;
   margin-top: 0px;
-  float: right;
+  width: 312px;
   background-color: #fff;
   display: inline-block;
   cursor: pointer;

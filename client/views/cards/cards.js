@@ -28,6 +28,17 @@ Template.cards.helpers({
 		if(selectedcard){
 			return selectedcard._id;
 		}
+	},
+	buttonText:function(){
+		if(this.id == "root" && userCards.find({parent_id: "root"}).count() > 0){
+			return "+ Add another card";
+		}
+		else if(this.id !== "root" && userCards.find({parent_id: this.id}).count() <= 0){
+			return "+ Add a child card";
+		}
+		else if(this.id !== "root" && userCards.find({parent_id: this.id}).count() > 0){
+			return "+ Add another card";
+		}
 	}
 });
 
