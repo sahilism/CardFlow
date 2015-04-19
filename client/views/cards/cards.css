@@ -56,3 +56,14 @@
   width: 14px;
   font-size: 1.33em;
 }
+.dp-card{
+  font-size: 12px;
+  color: #666;
+}
+.card-menu-list{
+  top:inherit;
+  position:absolute;
+  margin-top:25px;
+  box-shadow: 0px 0px 5px 0px rgba(50, 50, 50, 0.1);
+  border-radius: 0px
+}

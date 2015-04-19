@@ -2,16 +2,16 @@
 <div class="cards-container">
 	<div class="cards-list">
 		{{#each userRootCards id}}
-		 <div class="card" style="{{#if is_selected}}background:lightyellow;{{/if}}">
-		 	<i class="fa fa-sort-desc fa-sm dropdown-toggle sort" data-toggle="dropdown" aria-expanded="true" style="opacity:0;"></i>
-			<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1" style="top:inherit">
-				{{#if is_completed}}
-					<li role="presentation" id="dpMarkAsUnCompl"><a role="menuitem" tabindex="-1" href="#">Mark as uncompleted</a></li>
-				{{else}}
-			    	<li role="presentation" id="dpMarkAsCompl"><a role="menuitem" tabindex="-1" href="#">Mark as completed</a></li>
-			    {{/if}}
-			    <li role="presentation" id="dpDelete"><a role="menuitem" tabindex="-1" href="#">Delete card</a></li>
-			</ul>
+		 <div class="card" style="{{#if is_selected}}background:lightyellow;{{/if}};position:relative;">
+			 	<i class="fa fa-sort-desc fa-sm dropdown-toggle sort" data-toggle="dropdown" aria-expanded="true" style="opacity:0;"></i>
+				<ul class="dropdown-menu card-menu-list" role="menu" aria-labelledby="dropdownMenu1">
+					{{#if is_completed}}
+						<li role="presentation" class="dp-card" id="dpMarkAsUnCompl"><a role="menuitem" tabindex="-1" href="#">Mark as uncompleted</a></li>
+					{{else}}
+				    	<li role="presentation" class="dp-card" id="dpMarkAsCompl"><a role="menuitem" tabindex="-1" href="#">Mark as completed</a></li>
+				    {{/if}}
+				    <li role="presentation" class="dp-card" id="dpDelete"><a role="menuitem" tabindex="-1" href="#">Delete card</a></li>
+				</ul>
 			<div class="parent-card-div">
 	       <input type="text" id="{{_id}}" class="card-input inputtitle"  autocapitalize="none" autocorrect="off" value="{{cardTitle}}" style="{{#if is_selected}}background:lightyellow;{{/if}}
 	       {{#if is_completed}}  text-decoration: line-through;color: #DDD;{{/if}}" onfocus="this.value = this.value;">

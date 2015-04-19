@@ -39,6 +39,9 @@ Template.cards.helpers({
 		else if(this.id !== "root" && userCards.find({parent_id: this.id}).count() > 0){
 			return "+ Add another card";
 		}
+		else{
+			return "Add"
+		}
 	}
 });
 
