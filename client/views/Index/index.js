@@ -36,5 +36,5 @@ Template.signin.rendered = function () {
 			}
 		});		
 	}
-	typeCards();
+	// typeCards();
 };
