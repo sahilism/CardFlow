@@ -8,10 +8,10 @@
   </body>
 </template>
 <template name="navbar">
-  <nav class="navbar navbar-default navbar-fixed-top">
+  <nav class="navbar navbar-default navbar-fixed-top" style="box-shadow: 0px 1px 5px #bbb;border: none;min-height: 42px;height:42px">
     <div class="col-xs-12">
       <a href="/home" class="pull-left" style="text-decoration:none;"><h1 id="logo">CardFlow.com</h1></a>
-      <div class="nav navbar-nav navbar-right pull-right" style="margin-right:10px;margin-top:13px;">
+      <div class="nav navbar-nav navbar-right pull-right" style="margin-right:2px;margin-top:10px;">
           <i style="color:#bbb;cursor:pointer;vertical-align:-44%;font-size:1.6em" aria-haspopup="true" aria-expanded="false" class="dropdown-toggle fa fa-cog fa-lg" data-toggle="dropdown"></i>
           <ul class="dropdown-menu" role="menu">
             {{#if isAdmin}}

@@ -5,7 +5,7 @@ body {
 	font-family: 'Open Sans',
 	sans-serif; 
 	font-size:12px; 
-	background-color: #fafafa; 
+	background-color: #f6f6f6; 
 	margin:0px;
 }
 .dropdown-menu > li > a{
@@ -15,13 +15,18 @@ body {
 	  cursor: pointer;
 	  width: 180px;
 	  color: #999;
-	  font-weight: 600;
+	  /*font-weight: 600;*/
 	  font-size: 2em;
 	  /*margin-left:5px;*/
-	  margin-top: 12px;
+	  margin-top: 9px;
 	  margin-bottom: 0px;
 	  /*float: left;*/
 }
+
+.navbar-nav {
+	min-height: 40px;
+}
+
 .navbar-nav > li {
 	max-height: 40px;
 }
