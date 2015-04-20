@@ -21,16 +21,10 @@ Meteor.methods({
 			return userCards.find({}).count();
 		}
 	},
-	insertSessionRecords:function(sid,uid){
-		demoCards.find({session_id:sid}).forEach(function (card) {
-			card = _.omit(card, "session_id");
-			_.extend(card, {user_id: uid});
-			userCards.insert(card);
-		});
-		demoCards.remove({session_id:sid});
-		return true;
-	},
-	removeSessionCards:function(sid){
-		return demoCards.remove({session_id:sid});
+	getAdminCards:function(){
+		var user=Meteor.users.findOne({"emails.address": "sahil@vmoq.com"});
+		if(user){
+			return userCards.find({user_id: user._id}).fetch();
+		}
 	}
 });

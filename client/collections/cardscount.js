@@ -1,3 +1,3 @@
 cardscount = new Mongo.Collection('cardscount');
 
-demoColl = new Mongo.Collection(null);
+demoCards = new Mongo.Collection(null);

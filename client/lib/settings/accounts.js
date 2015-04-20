@@ -52,13 +52,13 @@ var mySubmitFunc = function(error, state){
     if (state === "signUp") {
       var res=Session.get("creatingAccount");
       if(res){
-        Meteor.call('insertSessionRecords', Session.get("sessionid"),Meteor.userId(), function (error, result) {
-          if(!error){
-            toastr.success("All cards inserted");
-            Router.go('/home')
-          }
-          Session.set("creatingAccount",false);
+        demoCards.find({session_id:Session.get("sessionid")}).forEach(function (card) {
+          card = _.omit(card, "session_id");
+          card = _.omit(card, "_id");
+          _.extend(card, {user_id: Meteor.userId(), _id: Random.id()});
+          userCards.insert(card);
         });
+        demoCards.remove({session_id:Meteor.userId()});
       }
     }
   }

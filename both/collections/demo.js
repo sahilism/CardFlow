@@ -1,1 +1,0 @@
-demoCards = new Mongo.Collection('demoCards');

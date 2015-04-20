@@ -12,7 +12,19 @@ Template.demoMain.created = function () {
 	Session.set("creatingAccount",false);
 	if(!Session.get("sessionid")){
 		var rid= Random.id();
-		demoCards.insert({session_id:rid,cardTitle:"My First Card",createdAt: Date.now(),parent_id : "root",is_selected:true,has_children : false});
+		Meteor.call('getAdminCards', function (error, result) {
+			if(!error){
+				result.forEach(function (record) {
+					record=_.omit(record, "user_id");
+					_.extend(record, {session_id: rid});
+					var isExists=demoCards.findOne({_id: record._id});
+					if(!isExists){
+						console.log('inserting');
+						demoCards.insert(record);
+					}
+				});
+			}
+		});	
 		Session.set("sessionid", rid);
 		Meteor.subscribe('allSessionCards',rid);
 	}
@@ -22,7 +34,7 @@ Template.demoMain.created = function () {
 Template.demoMain.rendered = function () {
 	window.onbeforeunload = function(){
 	  if(!Session.get("creatingAccount")){
-			Meteor.call('removeSessionCards', Session.get("sessionid"));
+			demoCards.remove();
 			Session.set("sessionid",undefined)
 		}
 	};
@@ -49,6 +61,20 @@ Template.demo.helpers({
 		var selectedcard=demoCards.findOne({$and : [{session_id: Session.get("sessionid")},{parent_id: this.id},{is_selected: true}]});
 		if(selectedcard){
 			return selectedcard._id;
+		}
+	},
+	buttonText:function(){
+		if(this.id == "root" && demoCards.find({parent_id: "root"}).count() > 0){
+			return "+ Add another card";
+		}
+		else if(this.id !== "root" && demoCards.find({parent_id: this.id}).count() <= 0){
+			return "+ Add a child card";
+		}
+		else if(this.id !== "root" && demoCards.find({parent_id: this.id}).count() > 0){
+			return "+ Add another card";
+		}
+		else{
+			return "Add"
 		}
 	}
 });
@@ -151,7 +177,7 @@ Template.demo.events({
 						}
 						demoCards.insert({session_id: Session.get("sessionid"),has_children: false,is_selected:true,parent_id:this._id,createdAt:Date.now()},function(e,r){
 							if(!e){
-								Meteor.call('updatedcardTime', r);
+								// Meteor.call('updatedcardTime', r);
 								$("#"+r).focus();
 							}
 						});
@@ -177,7 +203,7 @@ Template.demo.events({
 						}
 						var res=demoCards.insert({session_id: Session.get("sessionid"),has_children: false,is_selected:true,parent_id:this.parent_id,createdAt:Date.now()});
 							$("#"+res).focus();
-							Meteor.call('updatedcardTime', res);
+							// Meteor.call('updatedcardTime', res);
 					}
 				}
 				else{
@@ -219,7 +245,7 @@ Template.demo.events({
 					}
 					var res=demoCards.insert({session_id: Session.get("sessionid"),has_children: false,is_selected:true,parent_id:id,createdAt:Date.now()});
 					$("#"+res).focus();
-					Meteor.call('updatedcardTime', res);
+					// Meteor.call('updatedcardTime', res);
 				}
 				else{
 					return false;
