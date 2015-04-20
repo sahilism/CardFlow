@@ -52,13 +52,9 @@ var mySubmitFunc = function(error, state){
     if (state === "signUp") {
       var res=Session.get("creatingAccount");
       if(res){
-        demoCards.find({session_id:Session.get("sessionid")}).forEach(function (card) {
-          card = _.omit(card, "session_id");
-          card = _.omit(card, "_id");
-          _.extend(card, {user_id: Meteor.userId(), _id: Random.id()});
-          userCards.insert(card);
+        demoCards.find({$and: [{session_id:Session.get("sessionid")}, {parent_id: "root"}]}).forEach(function (card) {
+          saveCardsToserver(card,"root");
         });
-        demoCards.remove({session_id:Meteor.userId()});
       }
     }
   }
@@ -66,3 +62,17 @@ var mySubmitFunc = function(error, state){
 AccountsTemplates.configure({
     onSubmitHook: mySubmitFunc
 });
+saveCardsToserver = function(card,pid){
+  var cardData= card;
+  card = _.omit(card, "session_id");
+  card = _.omit(card, "_id");
+  _.extend(card, {user_id: Meteor.userId(), _id: Random.id(), parent_id: pid});
+  var newId = userCards.insert(card);
+  var res=demoCards.find({parent_id: cardData._id}).count();
+  if(res > 0){
+    demoCards.find({parent_id: cardData._id}).forEach(function (childcard) {
+      saveCardsToserver(childcard,newId);
+    });
+  }
+  
+}

@@ -19,7 +19,6 @@ Template.demoMain.created = function () {
 					_.extend(record, {session_id: rid});
 					var isExists=demoCards.findOne({_id: record._id});
 					if(!isExists){
-						console.log('inserting');
 						demoCards.insert(record);
 					}
 				});
