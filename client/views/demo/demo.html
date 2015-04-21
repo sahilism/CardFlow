@@ -4,8 +4,7 @@
       <a href="/home" class="pull-left" style="text-decoration:none;"><h1 id="logo">CardFlow.com</h1></a>
       <div class="nav navbar-nav navbar-right pull-right" style="margin-right:10px;margin-top:13px;">
           <i style="color:#bbb;cursor:pointer;vertical-align:-44%;font-size:1.6em" aria-haspopup="true" aria-expanded="false" class="dropdown-toggle fa fa-cog fa-lg" data-toggle="dropdown"></i>
-          <ul class="dropdown-menu" role="menu">
-            <li><a id="createAccount" style="cursor:pointer">Signup to save cards</a></li>
+ 			<ul class="dropdown-menu" style="top: 41px;border-radius: 0px;padding: 10px 0px;" role="menu">            <li><a id="createAccount" style="cursor:pointer">Signup to save cards</a></li>
           </ul>
       </div>
     </div>
@@ -14,7 +13,7 @@
 		<div class="row">
 			<div class="col-md-12">
 				<div class="alert alert-danger" role="alert">
-					<p>This is a demo. Your cards will be lost unless you <a id="createAccount" style="cursor:pointer">signup</a>. Signing up only takes 20 seconds</p>
+					<p>This is a demo. Your cards will be lost unless you <a id="createAccount" style="cursor:pointer">signup</a>. Signing up only takes 20 seconds.</p>
 				</div>
 			</div>
 		</div>
@@ -27,12 +26,13 @@
 		{{#each userRootCards id}}
 		 <div class="card" style="{{#if is_selected}}background:lightyellow;{{/if}}">
 		 	<i class="fa fa-sort-desc fa-sm dropdown-toggle sort" data-toggle="dropdown" aria-expanded="true" style="opacity:0;"></i>
-			<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1" style="top:inherit">
+			<ul class="dropdown-menu card-menu-list" role="menu" aria-labelledby="dropdownMenu1" style="top:inherit">
 				{{#if is_completed}}
 					<li role="presentation" id="dpMarkAsUnCompl"><a role="menuitem" tabindex="-1" href="#">Mark as uncompleted</a></li>
 				{{else}}
 			    	<li role="presentation" id="dpMarkAsCompl"><a role="menuitem" tabindex="-1" href="#">Mark as completed</a></li>
 			    {{/if}}
+			    <li class="divider"></li>
 			    <li role="presentation" id="dpDelete"><a role="menuitem" tabindex="-1" href="#">Delete card</a></li>
 			</ul>
 			<div class="parent-card-div">
