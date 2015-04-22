@@ -1,0 +1,66 @@
+<template name="help">
+	{{> navbar}}
+	<div class="container" style="margin-top:50px;width:100%;text-align:center;">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="alert alert-danger" role="alert">
+					<p>For any support/issue/request please contact hello@cardflow.com.</p>
+				</div>
+			</div>
+		</div>
+		<div class="row" style="position:relative;">
+			<div class="col-md-8 col-md-offset-2 col-xs-12 cards-area" style="">
+				<video controls style="width:100%; box-shadow: 0px 0px 16px #bbb;" poster="/img.png" preload="false">
+				  	<source src="/cardflow.mp4" type="video/mp4">
+				  	Your browser does not support the video tag.
+				</video>
+			</div>
+		</div>
+		<div class="row" style="position:relative;margin-top:10px;">
+			<div class="col-md-8 col-md-offset-2 col-xs-12 cards-area" style="">
+				<h3 class="pull-left">Shortcuts:</h3>
+				<table class="table table-bordered table-hover">
+					<thead>
+						<tr>
+							<th><center>Shortcut</center></th>
+							<th><center>Action</center></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>alt+m</td>
+							<td>mark/unmark as completed</td>
+						</tr>
+						<tr>
+							<td>&lt;enter&gt;</td>
+							<td>add a sibling card</td>
+						</tr>
+						<tr>
+							<td>&lt;tab&gt;</td>
+							<td>to add a child card</td>
+						</tr>
+						<tr>
+							<td>&lt;shift&gt;+&lt;tab&gt;</td>
+							<td>goto parent card</td>
+						</tr>
+						<tr>
+							<td>alt+d</td>
+							<td>to delete card</td>
+						</tr>
+						<tr>
+							<td>up arrow</td>
+							<td>to go the above card</td>
+						</tr>
+						<tr>
+							<td>down arrow</td>
+							<td>to go the below card</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+	<!-- At the top it highlight that 'For any support/issue/request please contact hello@cardflow.com'
+	Table of keyboard shortcuts
+	Same screencast video -->
+</template>

@@ -78,4 +78,16 @@ Router.route("/demo",{
 			this.next();
 		}
 	}
-})
+});
+
+Router.route("/help",{
+	template:"help",
+	onBeforeAction:function(){
+		if(!Meteor.user()){
+			Router.go('/');
+		}
+		else{
+			this.next();
+		}
+	}
+});
