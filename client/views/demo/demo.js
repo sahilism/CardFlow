@@ -42,7 +42,11 @@ Template.demoMain.events({
 	'click #createAccount': function () {
 		Session.set("creatingAccount", true);
 		Router.go('/signup');
-	}
+	},
+	'click #createEmptyAccount': function () {
+		Session.set("creatingAccount", false);
+		Router.go('/signup');
+	},
 });
 Template.demoMain.onDestroyed(function () {
 	
