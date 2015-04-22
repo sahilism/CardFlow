@@ -52,9 +52,27 @@ var mySubmitFunc = function(error, state){
     if (state === "signUp") {
       var res=Session.get("creatingAccount");
       if(res){
-        demoCards.find({$and: [{session_id:Session.get("sessionid")}, {parent_id: "root"}]}).forEach(function (card) {
-          saveCardsToserver(card,"root");
-        });
+        bootbox.confirm({
+            message:"Do you want to restore your demo cards or start afresh?",
+            buttons: {
+                'cancel': {
+                    label: 'Start from scratch',
+                    className: 'btn-default'
+                },
+                'confirm': {
+                    label: 'Restore demo cards',
+                    className: 'btn-primary'
+                }
+            },
+            callback:function(res){
+              if(res){
+                demoCards.find({$and: [{session_id:Session.get("sessionid")}, {parent_id: "root"}]}).forEach(function (card) {
+                  saveCardsToserver(card,"root");
+                });
+              }
+              Meteor.subscribe('allusercards');
+            }
+        })
       }
     }
   }
