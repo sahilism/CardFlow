@@ -66,6 +66,10 @@ var mySubmitFunc = function(error, state){
             },
             callback:function(res){
               if(res){
+                userCards.find({user_id: Meteor.userId()}).forEach(function (existcard) {
+                  userCards.remove({_id: existcard._id});
+                });
+                
                 demoCards.find({$and: [{session_id:Session.get("sessionid")}, {parent_id: "root"}]}).forEach(function (card) {
                   saveCardsToserver(card,"root");
                 });

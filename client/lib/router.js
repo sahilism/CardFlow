@@ -25,10 +25,7 @@ Router.route("/home",{
 		}
 	},
 	waitOn:function(){
-		var res=Session.get("creatingAccount");
-		if(!res){
-			return Meteor.subscribe('allusercards');
-		}
+
 	},
 	action:function(){
 		if(this.ready()){

@@ -82,10 +82,10 @@ Template.demo.helpers({
 
 Template.demo.events({
 	'mouseover .card':function(e,tmpl){
-		$(e.currentTarget).children(".sort").css("opacity",1)
+		$(e.currentTarget).find(".sort").css("opacity",1)
 	},
 	'mouseleave .card':function(e,tmpl){
-		$(e.currentTarget).children(".sort").css("opacity",0)
+		$(e.currentTarget).find(".sort").css("opacity",0)
 	},
 	'mousedown .parent-card-div,touchstart .parent-card-div':function(e,tmpl){
 		if(this.is_selected){
