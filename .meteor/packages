@@ -23,3 +23,6 @@ percolate:synced-cron
 momentjs:moment
 random
 email
+accounts-google
+accounts-facebook
+accounts-ui

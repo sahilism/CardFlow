@@ -15,6 +15,8 @@ Template.cards.destroyed = function () {
 	
 };
 Template.cards.rendered = function () {
+	// $(".card").draggable();
+	$(".cards-list").sortable();
 };
 Template.cards.helpers({
 	userRootCards: function (id) {
