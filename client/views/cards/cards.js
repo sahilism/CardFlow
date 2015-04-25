@@ -16,7 +16,26 @@ Template.cards.destroyed = function () {
 };
 Template.cards.rendered = function () {
 	// $(".card").draggable();
-	$(".cards-list").sortable();
+	$(".canDrag").sortable();
+	$( ".canDrag" ).disableSelection();
+	/*$(".card").draggable({
+	    start: function( event, ui ) {
+	       $(this).data('preventBehaviour', true);
+	    }
+	});*/
+
+	$(".card :input").on('mousedown', function (e) {
+	    var mdown = document.createEvent("MouseEvents");
+	    mdown.initMouseEvent("mousedown", true, true, window, 0, e.screenX, e.screenY, e.clientX, e.clientY, true, false, false, true, 0, null);
+	    $(this).closest('.card')[0].dispatchEvent(mdown);
+	}).on('click', function(e){
+	    var $draggable = $(this).closest('.card');
+	    if($draggable.data("preventBehaviour")){
+	        e.preventDefault();
+	        $draggable.data("preventBehaviour", false)
+	    }
+	});
+	
 };
 Template.cards.helpers({
 	userRootCards: function (id) {
