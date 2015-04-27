@@ -52,13 +52,13 @@ Router.route("/logout",{
 Router.route("/admin",{
 	template:"admin",
 	waitOn:function(){
-		if(Meteor.user() && (Meteor.user().emails[0].address === "sahil@vmoq.com") ){
+		if(Meteor.user() && _.has(Meteor.user(), "emails") && (Meteor.user().emails[0].address === "sahil@vmoq.com") ){
 			Meteor.subscribe('sanityLogs');
 		}
 	},
 	action:function(){
 		if(this.ready()){
-			if(Meteor.user() && (Meteor.user().emails[0].address === "sahil@vmoq.com") ){
+			if(Meteor.user() && _.has(Meteor.user(), "emails") &&  (Meteor.user().emails[0].address === "sahil@vmoq.com") ){
 				this.render();
 			}
 			else{

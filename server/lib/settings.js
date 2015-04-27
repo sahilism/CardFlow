@@ -29,7 +29,7 @@ Accounts.onCreateUser(function (options, user) {
 Meteor.startup(function () {
 	process.env.MAIL_URL="smtp://sahil%40impactomatic.com:bvBiaWVodKfoMFXCyyMwQg@smtp.mandrillapp.com:587"
 });
-
+// google login info
 ServiceConfiguration.configurations.upsert(
   { service: "google" },
   {
