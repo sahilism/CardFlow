@@ -15,26 +15,6 @@ Template.cards.destroyed = function () {
 	
 };
 Template.cards.rendered = function () {
-	// $(".card").draggable();
-	$(".canDrag").sortable();
-	$( ".canDrag" ).disableSelection();
-	/*$(".card").draggable({
-	    start: function( event, ui ) {
-	       $(this).data('preventBehaviour', true);
-	    }
-	});*/
-
-	$(".card :input").on('mousedown', function (e) {
-	    var mdown = document.createEvent("MouseEvents");
-	    mdown.initMouseEvent("mousedown", true, true, window, 0, e.screenX, e.screenY, e.clientX, e.clientY, true, false, false, true, 0, null);
-	    $(this).closest('.card')[0].dispatchEvent(mdown);
-	}).on('click', function(e){
-	    var $draggable = $(this).closest('.card');
-	    if($draggable.data("preventBehaviour")){
-	        e.preventDefault();
-	        $draggable.data("preventBehaviour", false)
-	    }
-	});
 	
 };
 Template.cards.helpers({
@@ -75,7 +55,7 @@ Template.cards.events({
 	'mouseleave .card':function(e,tmpl){
 		$(e.currentTarget).find(".sort").css("opacity",0)
 	},
-	'mousedown .parent-card-div,touchstart .parent-card-div':function(e,tmpl){
+	'mousedown .parent-card-div':function(e,tmpl){
 		if(this.is_selected){
 			return;
 		}

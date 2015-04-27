@@ -29,3 +29,24 @@ Accounts.onCreateUser(function (options, user) {
 Meteor.startup(function () {
 	process.env.MAIL_URL="smtp://sahil%40impactomatic.com:bvBiaWVodKfoMFXCyyMwQg@smtp.mandrillapp.com:587"
 });
+
+ServiceConfiguration.configurations.upsert(
+  { service: "google" },
+  {
+    $set: {
+      clientId: "514576121691-9poqcfdss8ab3tubmc6ctffb8cap0i1q.apps.googleusercontent.com",
+      loginStyle: "popup",
+      secret: "jHqMYpiszLFAO2WRT3kmh1Ve"
+    }
+  }
+);
+ServiceConfiguration.configurations.upsert(
+  { service: "facebook" },
+  {
+    $set: {
+      appId: " 754153301358678",
+      loginStyle: "popup",
+      secret: "jHqMYpiszLFAO2WRT3kmh1Ve"
+    }
+  }
+);
