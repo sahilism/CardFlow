@@ -46,7 +46,7 @@ ServiceConfiguration.configurations.upsert(
     $set: {
       appId: " 754153301358678",
       loginStyle: "popup",
-      secret: "jHqMYpiszLFAO2WRT3kmh1Ve"
+      secret: "bcb381c1ded86af208f37d02ebadb739"
     }
   }
 );

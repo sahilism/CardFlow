@@ -28,7 +28,7 @@ Meteor.publish('getUsersCardsCount',function(){
    	Meteor.users.find({},{limit: 50,sort: {createdAt: -1}}).forEach(function (user) {
    		var newrecord={};
    		newrecord.count=userCards.find({user_id: user._id}).count();
-   		newrecord.email=user.emails[0].address;
+   		newrecord.email= getEmailAddressOfUser(user);
    		newrecord.createdAt=user.createdAt;
    		subscription.added( 'cardscount', Random.id(), newrecord);
    	});
@@ -37,3 +37,15 @@ Meteor.publish('getUsersCardsCount',function(){
       delete subs[subscription._session.id];
    	});
 })
+
+var getEmailAddressOfUser = function(user){
+	if(user.hasOwnProperty("emails") && user.emails.length > 0){
+		return user.emails[0].address;
+	}
+	else if(user.hasOwnProperty("services") && (user.services).hasOwnProperty("facebook") ){
+		return user.services.facebook.email;
+	}
+	else if(user.hasOwnProperty("services") && (user.services).hasOwnProperty("google") ){
+		return user.services.google.email;
+	}
+}
