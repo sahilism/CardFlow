@@ -73,6 +73,7 @@ Template.cards.events({
 		}
 	},
 	'keydown .inputtitle': function (e,tmpl) {
+
 		if(e.altKey && e.keyCode === 77){
 			e.preventDefault();
 			if(this.parent_id === tmpl.data.id){
@@ -81,6 +82,17 @@ Template.cards.events({
 				}
 				else{
 					markAsComplete(this._id);
+				}
+			}
+		}
+		else if(e.altKey && e.keyCode === 80){
+			e.preventDefault();
+			if(this.parent_id === tmpl.data.id){
+				if(this.is_pinned){
+					userCards.update({_id: this._id}, {$set: {is_pinned: false}});	
+				}
+				else{
+					userCards.update({_id: this._id}, {$set: {is_pinned: true}});
 				}
 			}
 		}
