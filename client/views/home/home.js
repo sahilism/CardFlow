@@ -16,6 +16,8 @@ Template.navbar.onCreated(function(){
 	this.reminders = new ReactiveDict();
 	this.reminders.set("ids", []);
 	var tmpl = this;
+	var runFn = reminderFn();
+	tmpl.reminders.set("ids", runFn);
 	Meteor.setInterval(function () { 
 		var res = userCards.find({user_id: Meteor.userId()});
 		res.forEach(function (card) {
@@ -47,17 +49,11 @@ var reminderFn = function(){
 Template.navbar.helpers({
 	remindCount: function(){
 		var tmpl = Template.instance();
-		var runFn = reminderFn();
-		tmpl.reminders.set("ids", runFn);
 		var len = tmpl.reminders.get("ids") || [];
 		return len.length;
 	},
 	reminders: function () {
 		var tmpl = Template.instance();
-		var runFn = reminderFn();
-		tmpl.reminders.set("ids", runFn);
-		
-		
 		var getIds = tmpl.reminders.get("ids") || [];
 		var res= userCards.find({_id: {$in: getIds}}).fetch();
 		if( res.length > 0){
