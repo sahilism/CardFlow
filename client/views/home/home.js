@@ -14,7 +14,23 @@ Template.home.onRendered(function(){
 
 Template.navbar.onCreated(function(){
 	this.reminders = new ReactiveDict();
-	this.reminders.set("ids", [])
+	this.reminders.set("ids", []);
+	var tmpl = this;
+	Meteor.setInterval(function () { 
+		var res = userCards.find({user_id: Meteor.userId()});
+		res.forEach(function (card) {
+			if(_.has(card, "remind_at") && card.remind_at){
+				if(card.remind_at < Date.now()){
+					var ids = tmpl.reminders.get("ids") || [];
+					if(ids.indexOf(card._id) <= -1){
+						ids.push(card._id);
+						tmpl.reminders.set("ids", ids);	
+					}
+					
+				}
+			}
+		});
+	}, 6000);
 })
 var reminderFn = function(){
 	var ids = [];
@@ -33,20 +49,6 @@ Template.navbar.helpers({
 		var tmpl = Template.instance();
 		var runFn = reminderFn();
 		tmpl.reminders.set("ids", runFn);
-		Meteor.setInterval(function () {
-			var res = userCards.find({user_id: Meteor.userId()});
-			res.forEach(function (card) {
-				if(_.has(card, "remind_at") && card.remind_at){
-					if(card.remind_at < Date.now()){
-						var ids = tmpl.reminders.get("ids") || [];
-						if(ids.indexOf(card._id) <= -1){
-							ids.push(card._id);
-							tmpl.reminders.set("ids", ids);	
-						}
-					}
-				}
-			});
-		}, 6000);
 		var len = tmpl.reminders.get("ids") || [];
 		return len.length;
 	},
@@ -54,21 +56,7 @@ Template.navbar.helpers({
 		var tmpl = Template.instance();
 		var runFn = reminderFn();
 		tmpl.reminders.set("ids", runFn);
-		Meteor.setInterval(function () { 
-			var res = userCards.find({user_id: Meteor.userId()});
-			res.forEach(function (card) {
-				if(_.has(card, "remind_at") && card.remind_at){
-					if(card.remind_at < Date.now()){
-						var ids = tmpl.reminders.get("ids") || [];
-						if(ids.indexOf(card._id) <= -1){
-							ids.push(card._id);
-							tmpl.reminders.set("ids", ids);	
-						}
-						
-					}
-				}
-			});
-		}, 6000);
+		
 		
 		var getIds = tmpl.reminders.get("ids") || [];
 		var res= userCards.find({_id: {$in: getIds}}).fetch();
