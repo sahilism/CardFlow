@@ -307,23 +307,9 @@ Template.cards.events({
 });
 
 var markAsComplete = function(id){
-	/*var count=userCards.find({parent_id: id}).count();
-	if(count > 0){
-		userCards.find({parent_id: id}).fetch().forEach(function (card) {
-			userCards.update({_id: card.id},{$set: {is_completed: true}});
-			markAsComplete(card._id);
-		});
-	}*/
 	userCards.update({_id: id},{$set: {is_completed: true}});
 }
 var markAsUnComplete = function(id){
-	/*var count=userCards.find({parent_id: id}).count();
-	if(count > 0){
-		userCards.find({parent_id: id}).fetch().forEach(function (card) {
-			userCards.update({_id: card.id},{$set: {is_completed: false}});
-			markAsUnComplete(card._id);
-		});
-	}*/
 	userCards.update({_id: id},{$set: {is_completed: false}});
 }
 

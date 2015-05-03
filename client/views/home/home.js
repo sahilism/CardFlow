@@ -16,8 +16,6 @@ Template.navbar.onCreated(function(){
 	this.reminders = new ReactiveDict();
 	this.reminders.set("ids", []);
 	var tmpl = this;
-	var runFn = reminderFn();
-	tmpl.reminders.set("ids", runFn);
 	Meteor.setInterval(function () { 
 		var res = userCards.find({user_id: Meteor.userId()});
 		res.forEach(function (card) {
@@ -46,14 +44,33 @@ var reminderFn = function(){
 	});
 	return ids;
 }
+var selectRemainder = function(id){
+	var card = userCards.findOne({_id: id});
+	var res = userCards.findOne({$and: [{user_id: Meteor.userId()},{parent_id: card.parent_id},{is_selected: true}] });
+	if(res){
+		userCards.update({_id: res._id}, {$set: {is_selected: false}});
+	}
+	userCards.update({_id: id}, {$set: {is_selected: true}});
+	var parent_card = userCards.findOne({_id: card.parent_id});
+	if(parent_card){
+		selectRemainder(parent_card.parent_id);
+	}
+	else{
+		$("#"+id).focus();
+	}
+}
 Template.navbar.helpers({
 	remindCount: function(){
 		var tmpl = Template.instance();
+		var runFn = reminderFn();
+		tmpl.reminders.set("ids", runFn);
 		var len = tmpl.reminders.get("ids") || [];
 		return len.length;
 	},
 	reminders: function () {
 		var tmpl = Template.instance();
+		var runFn = reminderFn();
+		tmpl.reminders.set("ids", runFn);
 		var getIds = tmpl.reminders.get("ids") || [];
 		var res= userCards.find({_id: {$in: getIds}}).fetch();
 		if( res.length > 0){
@@ -68,6 +85,10 @@ Template.navbar.helpers({
 Template.navbar.events({
 	'click .remove_reminder': function (e, t) {
 		userCards.update({_id: this._id}, {$set: {remind_at: null}});
+		e.stopPropagation();
+	},
+	'click .sel_reminder':function(e, tmpl){
+		selectRemainder(this._id);
 		e.stopPropagation();
 	}
 });
