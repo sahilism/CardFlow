@@ -279,6 +279,18 @@ Template.cards.events({
 	'click #unpinCard': function(e, tmpl){
 		e.preventDefault();
 		userCards.update({_id: this._id}, {$set: {is_pinned: false}});
+	},
+	'click #dropdownMenu2':function(e, tmpl){
+		e.preventDefault();
+		$("#"+this._id+"_remaind").toggle();;
+		e.stopPropagation();
+	},
+	'click .remind-menu li':function(e,t){
+		Meteor.call("addRemainder", this._id, e.currentTarget.id, function(err,res){
+			if(!err){
+				toastr.success("Reminder added.")
+			}
+		})
 	}
 });
 

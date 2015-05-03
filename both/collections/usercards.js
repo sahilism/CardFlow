@@ -40,6 +40,11 @@ Schemas.userCards = new SimpleSchema({
         type: Boolean,
         label: "Is pinned",
         optional: true
+    },
+    remind_at: {
+        type: String,
+        label: "Remind in",
+        optional: true
     }
 });
 userCards.attachSchema(Schemas.userCards)

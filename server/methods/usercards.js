@@ -1,3 +1,8 @@
+Date.prototype.addHours = function(h) {    
+   this.setTime(this.getTime() + (h*60*60*1000)); 
+   return this;   
+}
+
 Meteor.methods({
 	createCard: function () {
 		var res=userCards.insert({user_id:this.userId,createdAt: Date.now()});
@@ -26,5 +31,10 @@ Meteor.methods({
 		if(user){
 			return userCards.find({user_id: user._id}).fetch();
 		}
+	},
+	addRemainder:function(id, hours){
+		var remind = new Date().addHours(hours);
+		remind = remind.getTime();
+		return userCards.update({_id: id}, {$set: {remind_at: remind}});
 	}
 });
