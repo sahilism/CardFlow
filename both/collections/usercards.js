@@ -35,6 +35,11 @@ Schemas.userCards = new SimpleSchema({
         type: Boolean,
         label: "Is Completed",
         optional: true
+    },
+    is_pinned:{
+        type: Boolean,
+        label: "Is pinned",
+        optional: true
     }
 });
 userCards.attachSchema(Schemas.userCards)

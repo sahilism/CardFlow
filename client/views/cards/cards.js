@@ -18,8 +18,11 @@ Template.cards.rendered = function () {
 	
 };
 Template.cards.helpers({
+	pinnedCards: function (id) {
+		return userCards.find({$and: [ {user_id:Meteor.userId()}, {parent_id: id}, {is_pinned: true} ]},{sort: {createdAt: 1}});
+	},
 	userRootCards: function (id) {
-		return userCards.find({user_id:Meteor.userId(),parent_id: id},{sort: {createdAt: 1}});
+		return userCards.find({$and: [ {user_id:Meteor.userId()}, {parent_id: id}, {is_pinned: {$ne: true} } ]},{sort: {createdAt: 1}});
 	},
 	hasChildren:function(){
 		var res=userCards.findOne({_id: this._id})	
@@ -268,6 +271,14 @@ Template.cards.events({
 				// Meteor.call('deleteCard', this._id);
 			}
 		}
+	},
+	'click #pinCard': function(e, tmpl){
+		e.preventDefault();
+		userCards.update({_id: this._id}, {$set: {is_pinned: true}});
+	},
+	'click #unpinCard': function(e, tmpl){
+		e.preventDefault();
+		userCards.update({_id: this._id}, {$set: {is_pinned: false}});
 	}
 });
 
