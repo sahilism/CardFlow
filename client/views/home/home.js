@@ -15,8 +15,8 @@ Template.navbar.helpers({
 	remindCount: function(){
 		var ids = [];
 		userCards.find({user_id: Meteor.userId()}).forEach(function (card) {
-			if(_.has(card, "remind_at")){
-				if(card.remind_at > Date.now()){
+			if(_.has(card, "remind_at") && card.remind_at){
+				if(card.remind_at < Date.now()){
 					ids.push(card._id);
 				}
 			}
@@ -26,8 +26,8 @@ Template.navbar.helpers({
 	reminders: function () {
 		var ids = [];
 		userCards.find({user_id: Meteor.userId()}).forEach(function (card) {
-			if(_.has(card, "remind_at")){
-				if(card.remind_at > Date.now()){
+			if(_.has(card, "remind_at") && card.remind_at){
+				if(card.remind_at < Date.now()){
 					ids.push(card._id);
 				}
 			}
