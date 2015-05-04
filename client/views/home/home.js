@@ -45,18 +45,17 @@ var reminderFn = function(){
 	return ids;
 }
 var selectRemainder = function(id){
-	var card = userCards.findOne({_id: id});
-	var res = userCards.findOne({$and: [{user_id: Meteor.userId()},{parent_id: card.parent_id},{is_selected: true}] });
-	if(res){
-		userCards.update({_id: res._id}, {$set: {is_selected: false}});
-	}
-	userCards.update({_id: id}, {$set: {is_selected: true}});
-	var parent_card = userCards.findOne({_id: card.parent_id});
-	if(parent_card){
-		selectRemainder(parent_card.parent_id);
-	}
-	else{
-		$("#"+id).focus();
+	if(id !== "root"){
+		var card = userCards.findOne({_id: id});
+		var res = userCards.findOne({$and: [{user_id: Meteor.userId()},{parent_id: card.parent_id},{is_selected: true}] });
+		if(res){
+			userCards.update({_id: res._id}, {$set: {is_selected: false}});
+		}
+		userCards.update({_id: id}, {$set: {is_selected: true}});
+		var parent_card = userCards.findOne({_id: card.parent_id});
+		if(parent_card){
+			selectRemainder(parent_card._id);
+		}
 	}
 }
 Template.navbar.helpers({
@@ -89,6 +88,7 @@ Template.navbar.events({
 	},
 	'click .sel_reminder':function(e, tmpl){
 		selectRemainder(this._id);
+		$("#"+this._id).focus();
 		e.stopPropagation();
 	}
 });
