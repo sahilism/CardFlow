@@ -94,6 +94,7 @@ Template.cards.events({
 				else{
 					userCards.update({_id: this._id}, {$set: {is_pinned: true}});
 				}
+				$("#"+this._id).focus();
 			}
 		}
 		else if(e.altKey && e.keyCode === 68){

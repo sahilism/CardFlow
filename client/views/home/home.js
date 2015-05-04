@@ -71,7 +71,7 @@ Template.navbar.helpers({
 		var runFn = reminderFn();
 		tmpl.reminders.set("ids", runFn);
 		var getIds = tmpl.reminders.get("ids") || [];
-		var res= userCards.find({_id: {$in: getIds}}).fetch();
+		var res= userCards.find({_id: {$in: getIds}},{sort: {remind_at: -1}}).fetch();
 		if( res.length > 0){
 			return res;
 		}
