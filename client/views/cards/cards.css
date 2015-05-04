@@ -69,9 +69,14 @@
   padding:10px 0px;
 }
 
+.card-menu-icons{
+margin-right:10px;
+
+}
+
 .remind-menu{
   list-style: none;
-  padding-left: 0px;
+  padding: 5px 0px 0px 20px;
 }
 .remind-menu > li > a {
   padding: 0px 10px;
