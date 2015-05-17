@@ -80,6 +80,14 @@ Router.route("/demo",{
 	}
 });
 
+Router.route("/mindmap/home",{
+	template:"mindmap",
+	waitOn:function(){
+		return Meteor.subscribe('allusercards');
+	}
+});
+
+
 Router.route("/help",{
 	template:"help",
 	onBeforeAction:function(){
