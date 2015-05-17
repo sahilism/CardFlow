@@ -29,11 +29,11 @@ var getCardChildObject = function(id){
 
 var createMindmap = function(mindmap){
 	var margin = {top: 20, right: 120, bottom: 20, left: 120},
-    width = 960 - margin.right - margin.left,
+    width = 2500 - margin.right - margin.left,
     height = 800 - margin.top - margin.bottom;
     
 	var i = 0,
-    duration = 750,
+    duration = 500,
     root;
 
 	var tree = d3.layout.tree()
@@ -56,12 +56,12 @@ var createMindmap = function(mindmap){
 	function collapse(d) {
 	    if (d.children) {
 	      d._children = d.children;
-	      d._children.forEach(collapse);
+	      //d._children.forEach(collapse);
 	      d.children = null;
 	    }
 	}
 
-	root.children.forEach(collapse);
+	//root.children.forEach(collapse);
 	update(root);
 
 	d3.select(self.frameElement).style("height", "800px");
@@ -73,7 +73,7 @@ var createMindmap = function(mindmap){
       	links = tree.links(nodes);
 
   		// Normalize for fixed-depth.
-  		nodes.forEach(function(d) { d.y = d.depth * 180; });
+  		nodes.forEach(function(d) { d.y = d.depth * 280; });
 
   		// Update the nodes…
   		var node = svg.selectAll("g.node")
