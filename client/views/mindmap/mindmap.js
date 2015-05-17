@@ -8,20 +8,24 @@ Template.mindmap.events({
 Template.mindmap.rendered = function () {
 	var mindmap = {};
 	mindmap.name = 'Home';
-	mindmap.children = [];
-
-	userCards.find({user_id: Meteor.userId(),parent_id: 'root'}).forEach(function (card) {
-		if( userCards.find({parent_id: card._id}).count() > 0 ){
-
-		}
-		var children = {};
-		children.name = card.cardTitle;
-		children.children = [];
-		mindmap.children.push(children)
-	});
+	mindmap.children = getCardChildObject("root")
 	createMindmap(mindmap)
-	console.log(mindmap);
 };
+
+var getCardChildObject = function(id){
+	var allchildcards = [];
+	var res = userCards.find({parent_id: id},{sort: {createdAt: 1}});
+	res.forEach(function (chilcard) {
+		var childcardObj = {};
+		childcardObj.name = chilcard.cardTitle;
+		var res = userCards.find({parent_id: chilcard._id});
+		if( res.count() > 0 ){
+			childcardObj.children =  getCardChildObject(chilcard._id);
+		}
+		allchildcards.push(childcardObj);
+	});
+	return allchildcards;
+}
 
 var createMindmap = function(mindmap){
 	var margin = {top: 20, right: 120, bottom: 20, left: 120},
