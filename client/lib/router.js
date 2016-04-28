@@ -17,11 +17,13 @@ Router.route("/",{
 Router.route("/home",{
 	template:"home",
 	onBeforeAction:function(){
-		if(Meteor.user()){
-			this.next();
-		}
-		else{
-			Router.go("/");
+		if(!Meteor.loggingIn()){
+			if(Meteor.user()){
+				this.next();
+			}
+			else{
+				Router.go("/");
+			}	
 		}
 	},
 	waitOn:function(){
