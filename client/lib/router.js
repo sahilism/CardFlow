@@ -6,12 +6,15 @@ Router.onBeforeAction(function(){
 Router.route("/",{
 	template:"signin",
 	onBeforeAction:function(){
-		if(Meteor.user()){
-			Router.go("/home");
+		if(!Meteor.loggingIn()){
+			if(Meteor.user()){
+				Router.go("/home");
+			}
+			else{
+				this.next();
+			}	
 		}
-		else{
-			this.next();
-		}
+		
 	}
 })
 Router.route("/home",{
