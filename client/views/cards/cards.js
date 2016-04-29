@@ -331,7 +331,6 @@ Template.cards.events({
 		var findQuery = {};
 		findQuery['$and'] = query;
 		var resCards = userCards.find(findQuery, { limit: 5 }).fetch();
-		console.log(resCards);
 		cardsDict.set('searchResults', resCards)
 	},
 });
@@ -372,5 +371,15 @@ getNestedChildIds = function(id){
 Template.displayCard.helpers({
 	moveSearchResults: function(){
 		return cardsDict.get('searchResults') || [];
+	}
+});
+Template.displayCard.events({
+	'click #moveCard': function(e, t){
+		e.preventDefault();
+		var self = this;
+		var sourceRec = Template.parentData(1)
+		userCards.update({ _id: sourceRec._id}, {$set: { parent_id: self._id } });
+		$("#"+self._id).click()
+		e.stopPropagation();
 	}
 });
