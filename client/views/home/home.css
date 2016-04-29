@@ -31,4 +31,14 @@ body {
 	max-height: 40px;
 }
 
+.card-pad{
+	padding: 0 10px;
+}
 
+.marg-t-10{
+	margin-top: 10px;
+}
+
+.cursor-p{
+	cursor: pointer;;
+}

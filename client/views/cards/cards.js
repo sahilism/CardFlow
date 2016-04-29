@@ -1,3 +1,4 @@
+var cardsDict =  new ReactiveDict();
 var connectionStatus = function(){
 	 if(Meteor.status().connected){
 	    return true;
@@ -8,9 +9,12 @@ var connectionStatus = function(){
 	  	return false;
 	  }
 }
-Template.cards.created = function () {
-
-};
+Template.cards.onCreated(function () {
+	var self = this;
+	cardsDict.set('searchText', null);
+	cardsDict.set('searchResults', []);
+	cardsDict.set('associateIds', []);
+});
 Template.cards.destroyed = function () {
 	
 };
@@ -304,7 +308,32 @@ Template.cards.events({
 				toastr.success("Reminder added.")
 			}
 		})
-	}
+	},
+	'input #searchCards': function(e, t){
+		var self  = this;
+		var text = e.currentTarget.value;
+		// console.log(self);
+		if(self.parent_id === "root"){
+			cardsDict.set('associateIds', [self._id])	
+		}else{
+			cardsDict.set('associateIds', [self._id, self.parent_id])
+		}
+		cardsDict.set('searchText', text);
+		var query = [];
+		if(text){
+			query.push({ cardTitle: {$regex: text, $options: 'i'} });
+		}
+		getNestedChildIds(self._id);
+		var aIds = cardsDict.get('associateIds');
+		// console.log(aIds, aIds.length);
+		query.push({ _id: { $nin: aIds } });
+
+		var findQuery = {};
+		findQuery['$and'] = query;
+		var resCards = userCards.find(findQuery, { limit: 5 }).fetch();
+		console.log(resCards);
+		cardsDict.set('searchResults', resCards)
+	},
 });
 
 var markAsComplete = function(id){
@@ -323,3 +352,25 @@ var deleteChildCards = function(id){
 	}
 	userCards.remove({_id: id});
 }
+
+getNestedChildIds = function(id){
+	var childCards = userCards.find({ parent_id: id}).fetch();
+	if(childCards.length > 0){
+		childCards.forEach(function (childCardInfo) {
+			return getNestedChildIds(childCardInfo._id);
+		});
+	}else{
+		var ids = cardsDict.get('associateIds') || [];
+		if(ids.indexOf(id) <= -1){
+			ids.push(id);
+			cardsDict.set('associateIds', ids)
+		}
+		return id;
+	}
+}
+
+Template.displayCard.helpers({
+	moveSearchResults: function(){
+		return cardsDict.get('searchResults') || [];
+	}
+});

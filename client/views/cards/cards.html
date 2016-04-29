@@ -26,8 +26,20 @@
 			{{#if is_completed}}
 				<li role="presentation" class="dp-card" id="dpMarkAsUnCompl"><a role="menuitem" tabindex="-1" href="#"><i class="fa fa-undo card-menu-icons"></i>Mark as uncompleted</a></li>
 			{{else}}
-		    	<li role="presentation" class="dp-card" id="dpMarkAsCompl"><a role="menuitem" tabindex="-1" href="#"><i class="fa fa-check card-menu-icons"></i>Mark as completed</a></li>
-		    {{/if}}
+	    	<li role="presentation" class="dp-card" id="dpMarkAsCompl"><a role="menuitem" tabindex="-1" href="#"><i class="fa fa-check card-menu-icons"></i>Mark as completed</a></li>
+	    {{/if}}
+	    <li class="divider"></li>
+	    <li role="presentation" class="dp-card" id="">
+	    	<a role="menuitem" tabindex="-1" href="#"><i class="fa fa-arrow-right card-menu-icons"></i>Move this card to..</a>
+	    	<div id="" class="card-pad marg-t-10" style="display:block;">
+	    		<input type="text" id="searchCards">
+	    		<div class="marg-t-10">
+	    			{{#each moveSearchResults}}
+							<span class="cursor-p pad-3">{{cardTitle}}</span><br>
+	    			{{/each}}
+	    		</div>
+	    	</div>
+	    </li>
 			<li class="divider"></li>
 		    <li role="presentation" class="dp-card" id="dropdownMenu2">
 		    	<a role="menuitem" tabindex="-1" href="#"><i class="fa fa-clock-o card-menu-icons"></i>Remind in..</a>
