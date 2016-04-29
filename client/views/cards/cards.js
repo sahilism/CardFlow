@@ -333,6 +333,12 @@ Template.cards.events({
 		var resCards = userCards.find(findQuery, { limit: 5 }).fetch();
 		cardsDict.set('searchResults', resCards)
 	},
+	'click #toggleSearch': function(e, t){
+		var id = this._id;
+		$("#"+id+"_move").css('display', 'block');
+		e.preventDefault();
+		e.stopPropagation();
+	}
 });
 
 var markAsComplete = function(id){
@@ -352,7 +358,7 @@ var deleteChildCards = function(id){
 	userCards.remove({_id: id});
 }
 
-getNestedChildIds = function(id){
+var getNestedChildIds = function(id){
 	var childCards = userCards.find({ parent_id: id}).fetch();
 	if(childCards.length > 0){
 		childCards.forEach(function (childCardInfo) {
@@ -368,6 +374,19 @@ getNestedChildIds = function(id){
 	}
 }
 
+var selectRootId = function(id){
+	var cardInfo = userCards.findOne({ _id: id});
+	userCards.find({$and: [{parent_id: cardInfo.parent_id},{is_selected: true}] }).forEach(function (p_id) {
+		userCards.update({_id: p_id._id}, {$set: {is_selected: false}});
+	});
+	userCards.update({ _id: id}, { $set: { is_selected: true } });
+	if(cardInfo.parent_id === "root"){
+		return true;
+	}else{
+		return selectRootId(cardInfo.parent_id);
+	}
+}
+
 Template.displayCard.helpers({
 	moveSearchResults: function(){
 		return cardsDict.get('searchResults') || [];
@@ -377,8 +396,14 @@ Template.displayCard.events({
 	'click #moveCard': function(e, t){
 		e.preventDefault();
 		var self = this;
-		var sourceRec = Template.parentData(1)
-		userCards.update({ _id: sourceRec._id}, {$set: { parent_id: self._id } });
+		var sourceRec = Template.parentData(1);
+
+		// setting is_selected false to all the other children of new parent
+		userCards.find({$and: [{parent_id: self._id},{is_selected: true}] }).forEach(function (p_id) {
+			userCards.update({_id: p_id._id}, {$set: {is_selected: false}});
+		});
+		selectRootId(self._id)
+		userCards.update({ _id: sourceRec._id}, {$set: { parent_id: self._id, is_selected: true } });
 		$("#"+self._id).click()
 		e.stopPropagation();
 	}
