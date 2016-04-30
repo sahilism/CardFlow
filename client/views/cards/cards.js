@@ -379,6 +379,13 @@ var moveCard = function(source, dest){
 	});
 	selectRootId(dest._id)
 	userCards.update({ _id: source._id}, {$set: { parent_id: dest._id, is_selected: true } });
+	userCards.update({ _id: dest._id}, {$set: { has_children: true} });
+	if(source.parent_id !== "root"){
+		var res = userCards.findOne({ parent_id: source.parent_id});
+		if(!res){
+			userCards.update({ _id: source.parent_id}, {$set: { has_children: false }})
+		}
+	}
 	$("#"+dest._id).click()
 }
 
