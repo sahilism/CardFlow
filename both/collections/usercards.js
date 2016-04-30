@@ -45,6 +45,11 @@ Schemas.userCards = new SimpleSchema({
         type: String,
         label: "Remind in",
         optional: true
-    }
+    },
+    notes: {
+        type: String,
+        label: "Notes",
+        optional: true
+    },
 });
 userCards.attachSchema(Schemas.userCards)

@@ -22,12 +22,25 @@
 <template name="displayCard">
 	<div class="card" style="{{#if is_selected}}background:lightyellow;{{/if}};position:relative;">
 	 	<div class="" data-toggle="dropdown" aria-expanded="true" id="card-dd-{{_id}}" style="height: 34px;width: 14px;float: left;padding: 0px;margin: 0px;cursor:pointer;"><i class="fa fa-sort-desc fa-sm dropdown-toggle sort" style="opacity:0;"></i></div>
-		<ul class="dropdown-menu card-menu-list"  role="menu" aria-labelledby="dropdownMenu1">
+		<ul class="dropdown-menu card-menu-list" id="card-menu-dd-{{_id}}" role="menu" aria-labelledby="dropdownMenu1">
 			{{#if is_completed}}
 				<li role="presentation" class="dp-card" id="dpMarkAsUnCompl"><a role="menuitem" tabindex="-1" href="#"><i class="fa fa-undo card-menu-icons"></i>Mark as uncompleted</a></li>
 			{{else}}
 	    	<li role="presentation" class="dp-card" id="dpMarkAsCompl"><a role="menuitem" tabindex="-1" href="#"><i class="fa fa-check card-menu-icons"></i>Mark as completed</a></li>
 	    {{/if}}
+	    <li class="divider"></li>
+    	<li role="presentation" class="dp-card" id="dpMarkAsCompl">
+    		<a role="menuitem" tabindex="-1" href="#" id="editNotes">
+    			<i class="fa fa-sticky-note-o card-menu-icons"></i>Add/Edit note
+    		</a>
+    		<div class="notes-div-{{_id}} width-100pc pad-l-10 marg-t-10" style="display: none;">
+    			<textarea rows="5" placeholder="Type here..." class="notes-{{_id}}">{{notes}}</textarea>
+    			<div class="notes-btns-div">
+    				<button class="btn btn-sm btn-default pull-left" id="cancelNote">Cancel</button>
+    				<button class="btn btn-sm btn-success pull-right" id="saveNote">Save</button>
+    			</div>
+    		</div>
+    	</li>
 	    <li class="divider"></li>
 	    <li role="presentation" class="dp-card" id="">
 	    	<a role="menuitem" tabindex="-1" href="#" class="mtt-{{_id}}" id="toggleSearch">

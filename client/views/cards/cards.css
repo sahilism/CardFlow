@@ -112,3 +112,16 @@ margin-right:10px;
   padding: 3px !important;
   display: block;
 }
+.width-100pc{
+  width: 100% !important;
+}
+
+.pad-l-10{
+  padding-left: 10px !important;
+}
+.notes-btns-div{
+  padding-top: 10px;
+  clear: both;
+  padding-bottom: 30px;
+  width: 95%;
+}

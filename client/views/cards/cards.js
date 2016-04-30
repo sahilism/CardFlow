@@ -67,9 +67,6 @@ Template.cards.helpers({
 
 
 Template.cards.events({
-	'keypress': function(e, t){
-		console.log('keypress');
-	},
 	'mouseover .card':function(e,tmpl){
 		$(e.currentTarget).find(".sort").css("opacity",1)
 	},
@@ -403,6 +400,33 @@ Template.displayCard.events({
 		Meteor.setTimeout(function () {
 			$("#"+self._id).click();
 		}, 500);
+	},
+	'click #editNotes': function(e, t){
+		e.preventDefault();
+		var self = this;
+		$("#card-menu-dd-"+self._id).css('width', "100%");
+		$(".notes-div-"+self._id).css('display', 'block');
+		$(".notes-"+self._id).css('width', "95%");
+		$(".notes-"+self._id).val(self.notes);
+		$(".notes-"+self._id).focus();
+		e.stopPropagation();
+	},
+	'click #saveNote': function(e, t){
+		var self = this;
+		var val = $(".notes-"+self._id).val();
+		userCards.update({ _id: self._id}, { $set: { notes: val } });
+		toastr.success('notes saved');
+		$(".notes-"+self._id).val("");
+		$("#card-menu-dd-"+self._id).css('width', "auto");
+		$(".notes-div-"+self._id).css('display', 'none');
+		$('.cards-list').click();
+	},
+	'click #cancelNote': function(e, t){
+		var self = this;
+		$(".notes-"+self._id).val("");
+		$("#card-menu-dd-"+self._id).css('width', "auto");
+		$(".notes-div-"+self._id).css('display', 'none');
+		$('.cards-list').click();
 	}
 });
 
