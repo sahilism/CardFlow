@@ -366,6 +366,7 @@ Template.cards.events({
 		var id = this._id;
 		Meteor.setTimeout(function () {
 			$("#"+id+"_move").css('display', 'block');	
+			$(".mtt-input-"+id).focus();
 		}, 200);
 		e.preventDefault();
 		e.stopPropagation();
@@ -434,10 +435,13 @@ Template.displayCard.events({
 });
 
 var moveCard = function(source, dest){
+	// focus should be on source parent even after moving
+
+
 	userCards.find({$and: [{parent_id: dest._id},{is_selected: true}] }).forEach(function (p_id) {
 		userCards.update({_id: p_id._id}, {$set: {is_selected: false}});
 	});
-	selectRootId(dest._id)
+	// selectRootId(dest._id)
 	userCards.update({ _id: source._id}, {$set: { parent_id: dest._id, is_selected: true } });
 	userCards.update({ _id: dest._id}, {$set: { has_children: true} });
 	if(source.parent_id !== "root"){
