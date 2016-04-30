@@ -50,7 +50,7 @@ Template.cards.helpers({
 		else{
 			return "Add"
 		}
-	}
+	},
 });
 
 
@@ -361,6 +361,9 @@ Template.cards.events({
 Template.displayCard.helpers({
 	moveSearchResults: function(){
 		return cardsDict.get('searchResults') || [];
+	},
+	notRoot: function(){
+		return this.parent_id !== "root";
 	}
 });
 Template.displayCard.events({
@@ -370,6 +373,22 @@ Template.displayCard.events({
 		var sourceRec = Template.parentData(1);
 		moveCard(sourceRec, self)
 		e.stopPropagation();
+	},
+	'click #moveCardToRoot': function(e, t){
+		e.preventDefault();
+		var self = this;
+		var selectedRoot = userCards.findOne({ $and: [ { parent_id: 'root' }, { is_selected: true } ]});
+		if(selectedRoot){
+			userCards.update({ _id: selectedRoot._id}, {$set: { is_selected: false }});
+		}
+		userCards.update({ _id: self._id}, {$set: { parent_id: 'root', is_selected: true }});
+		var hasSiblings = userCards.findOne({ parent_id: self.parent_id});
+		if(!hasSiblings){
+			userCards.update({ _id: self.parent_id}, { $set: { has_children: false } });
+		}
+		Meteor.setTimeout(function () {
+			$("#"+self._id).click();
+		}, 500);
 	}
 });
 
