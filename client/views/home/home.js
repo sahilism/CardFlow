@@ -2,6 +2,11 @@ Template.home.events({
 	'click #logout': function () {
 		Meteor.logout()
 		Router.go('/');
+	},
+	'click #toggleNavSearch': function(e, t){
+		e.preventDefault();
+		$(".nav-search-div").toggle();
+		e.stopPropagation();
 	}
 });
 Template.home.onRendered(function(){
@@ -13,6 +18,9 @@ Template.home.onRendered(function(){
 
 
 Template.navbar.onCreated(function(){
+	var self = this;
+	self.dataDict = new ReactiveDict();
+	self.dataDict.set('searchResults', [])
 	this.reminders = new ReactiveDict();
 	this.reminders.set("ids", []);
 	var tmpl = this;
@@ -78,6 +86,11 @@ Template.navbar.helpers({
 		else{
 			return false;
 		}
+	},
+	navSearchResults: function(){
+		var t = Template.instance();
+		var res = t.dataDict.get('searchResults');
+		return res;
 	}
 });
 
@@ -90,5 +103,21 @@ Template.navbar.events({
 		selectRemainder(this._id);
 		$("#"+this._id).focus();
 		e.stopPropagation();
+	},
+	'input #searchCards': function(e, t){
+		var text = e.currentTarget.value;
+		if(text){
+			var res =  userCards.find({ cardTitle: {$regex: text, $options: 'i'} }, {limit: 5}).fetch();
+			t.dataDict.set('searchResults', res)
+		}else{
+			t.dataDict.set('searchResults', [])
+		}
+	},
+	'click #goToCard': function(e, t){
+		var self = this;
+		selectRootId(self._id);
+		$(".nav-search-div").toggle();
+		t.dataDict.set('searchResults', [])
+		$("#searchCards").val("");
 	}
 });

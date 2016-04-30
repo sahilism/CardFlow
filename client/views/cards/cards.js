@@ -441,7 +441,7 @@ var getNestedChildIds = function(id){
 	}
 }
 
-var selectRootId = function(id){
+selectRootId = function(id){
 	var cardInfo = userCards.findOne({ _id: id});
 	userCards.find({$and: [{parent_id: cardInfo.parent_id},{is_selected: true}] }).forEach(function (p_id) {
 		userCards.update({_id: p_id._id}, {$set: {is_selected: false}});

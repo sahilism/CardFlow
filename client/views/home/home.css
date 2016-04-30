@@ -42,3 +42,15 @@ body {
 .cursor-p{
 	cursor: pointer;;
 }
+
+.marg-l-5px{
+	margin-left: 5px !important;
+}
+
+.marg-t-10px{
+	margin-top: 10px !important;
+}
+
+.width-90pc{
+	width: 90% !important;
+}

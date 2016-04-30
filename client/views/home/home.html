@@ -29,17 +29,29 @@
         {{/if}}
          <li class="dropdown" style="padding-left:5px;float:left">
           <i style="color:#bbb;cursor:pointer;vertical-align:-44%;font-size:1.6em;padding-left:10px;" aria-haspopup="true" aria-expanded="false" class="dropdown-toggle fa fa-cog fa-lg" data-toggle="dropdown"></i>
-          <ul class="dropdown-menu" style="top: 32px;left:auto;right:-17px;border-radius: 0px;padding: 10px 0px;position: absolute;float: right;background-color: white;-webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, .175);box-shadow: 0 6px 12px rgba(0, 0, 0, .175);border: 1px solid #ccc;min-width: 160px;" role="menu">
+          <ul class="dropdown-menu" style="top: 32px;left:auto;right:-15px;border-radius: 0px;padding: 10px 0px;position: absolute;float: right;background-color: white;-webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, .175);box-shadow: 0 6px 12px rgba(0, 0, 0, .175);border: 1px solid #ccc;min-width: 180px;" role="menu">
             {{#if currentUser}}
               {{#if isAdmin}}
-                <li><a href="/admin">Admin</a></li>
+                <li class="li-item"><a href="/admin">Admin</a></li>
                 <li class="divider"></li>
               {{/if}}
-              <li><a href="/account">Account</a></li>
+              <li class="li-item">
+                <a href="#" id="toggleNavSearch">Search</a>
+                <div class="nav-search-div" style="display: none;">
+                  <input type="text" id="searchCards" class="marg-l-5px marg-t-10px" placeholder="Start typing...">
+                  <div class="marg-t-10 marg-l-5px">
+                    {{#each navSearchResults}}
+                      <div class="cursor-p pad-3" id="goToCard">{{cardTitle}}</div>
+                    {{/each}}
+                  </div>
+                </div>
+              </li>
               <li class="divider"></li>
-              <li><a href="/help">Help</a></li>
+              <li class="li-item"><a href="/account">Account</a></li>
               <li class="divider"></li>
-              <li><a href="/logout">Logout</a></li>
+              <li class="li-item"><a href="/help">Help</a></li>
+              <li class="divider"></li>
+              <li class="li-item"><a href="/logout">Logout</a></li>
             {{/if}}
           </ul>
           </li>
