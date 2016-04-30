@@ -21,8 +21,8 @@
 
 <template name="displayCard">
 	<div class="card" style="{{#if is_selected}}background:lightyellow;{{/if}};position:relative;">
-	 	<div class="" data-toggle="dropdown" aria-expanded="true"  style="height: 34px;width: 14px;float: left;padding: 0px;margin: 0px;cursor:pointer;"><i class="fa fa-sort-desc fa-sm dropdown-toggle sort" style="opacity:0;"></i></div>
-		<ul class="dropdown-menu card-menu-list" role="menu" aria-labelledby="dropdownMenu1">
+	 	<div class="" data-toggle="dropdown" aria-expanded="true" id="card-dd-{{_id}}" style="height: 34px;width: 14px;float: left;padding: 0px;margin: 0px;cursor:pointer;"><i class="fa fa-sort-desc fa-sm dropdown-toggle sort" style="opacity:0;"></i></div>
+		<ul class="dropdown-menu card-menu-list"  role="menu" aria-labelledby="dropdownMenu1">
 			{{#if is_completed}}
 				<li role="presentation" class="dp-card" id="dpMarkAsUnCompl"><a role="menuitem" tabindex="-1" href="#"><i class="fa fa-undo card-menu-icons"></i>Mark as uncompleted</a></li>
 			{{else}}
@@ -30,14 +30,14 @@
 	    {{/if}}
 	    <li class="divider"></li>
 	    <li role="presentation" class="dp-card" id="">
-	    	<a role="menuitem" tabindex="-1" href="#" id="toggleSearch">
+	    	<a role="menuitem" tabindex="-1" href="#" class="mtt-{{_id}}" id="toggleSearch">
 	    		<i class="fa fa-arrow-right card-menu-icons"></i>Move this card to..
 	    	</a>
 	    	<div id="{{_id}}_move" class="card-pad marg-t-10" style="display:none;">
-	    		<input type="text" id="searchCards">
+	    		<input type="text" id="searchCards" class="mtt-input-{{_id}}" placeholder="Start typing...">
 	    		<div class="marg-t-10">
 	    			{{#each moveSearchResults}}
-							<span class="cursor-p pad-3" id="moveCard">{{cardTitle}}</span><br>
+							<div class="cursor-p pad-3" id="moveCard">{{cardTitle}}</div>
 	    			{{/each}}
 	    		</div>
 	    	</div>

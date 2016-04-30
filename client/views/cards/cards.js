@@ -77,8 +77,9 @@ Template.cards.events({
 		}
 	},
 	'keydown .inputtitle': function (e,tmpl) {
-
+		var self = this;
 		if(e.altKey && e.keyCode === 77){
+			console.log("alt+m");
 			e.preventDefault();
 			if(this.parent_id === tmpl.data.id){
 				if(this.is_completed){
@@ -88,6 +89,7 @@ Template.cards.events({
 					markAsComplete(this._id);
 				}
 			}
+			e.stopPropagation();
 		}
 		else if(e.altKey && e.keyCode === 80){
 			e.preventDefault();
@@ -103,7 +105,6 @@ Template.cards.events({
 		}
 		else if(e.altKey && e.keyCode === 68){
 			e.preventDefault();
-			var self=this;
 			var count=userCards.find({parent_id: this._id}).count();
 			if(count > 0){
 				if(this.parent_id === tmpl.data.id){
@@ -123,7 +124,6 @@ Template.cards.events({
 				          if(res){
 				            if(Meteor.user()){
 				            	deleteChildCards(self._id);
-				              // Meteor.call('deleteCard', self._id);
 				            }
 				          }
 				        }
@@ -132,7 +132,6 @@ Template.cards.events({
 			}
 			else{
 				deleteChildCards(this._id);
-				// Meteor.call('deleteCard', this._id);
 			}
 		}
 		else if(e.shiftKey && e.keyCode === 9){
@@ -178,6 +177,19 @@ Template.cards.events({
 				}
 			}
 			e.preventDefault();
+		}else if(e.altKey && e.keyCode === 83){
+			console.log("alt+s");
+		  var ddId = "#card-dd-"+self._id;
+		  Meteor.setTimeout(function () {
+		  	$(ddId).click();
+				$(".mtt-"+self._id).click();
+				Meteor.setTimeout(function () {
+					$(".mtt-input-"+self._id).focus();
+				}, 200);	
+		  }, 200);
+		  e.preventDefault();
+		  e.stopPropagation();
+		  return false;
 		}
 		if(e.keyCode === 13){
 			var count=userCards.find({user_id:Meteor.userId()}).count();
@@ -210,6 +222,8 @@ Template.cards.events({
 			$(e.currentTarget).parent().parent().next('.card').find("input[type=text]").eq(0).focus();
 			$(e.currentTarget).parent().parent().next('.card').find('.parent-card-div').trigger('mousedown');
 		}
+
+
 	},
 	'input .inputtitle,paste .inputtitle': function (e,tmpl) {
 		if(connectionStatus()){
@@ -334,12 +348,39 @@ Template.cards.events({
 		cardsDict.set('searchResults', resCards)
 	},
 	'click #toggleSearch': function(e, t){
+		cardsDict.set('searchResults', []);
 		var id = this._id;
-		$("#"+id+"_move").css('display', 'block');
+		Meteor.setTimeout(function () {
+			$("#"+id+"_move").css('display', 'block');	
+		}, 200);
 		e.preventDefault();
 		e.stopPropagation();
 	}
 });
+
+Template.displayCard.helpers({
+	moveSearchResults: function(){
+		return cardsDict.get('searchResults') || [];
+	}
+});
+Template.displayCard.events({
+	'click #moveCard': function(e, t){
+		e.preventDefault();
+		var self = this;
+		var sourceRec = Template.parentData(1);
+		moveCard(sourceRec, self)
+		e.stopPropagation();
+	}
+});
+
+var moveCard = function(source, dest){
+	userCards.find({$and: [{parent_id: dest._id},{is_selected: true}] }).forEach(function (p_id) {
+		userCards.update({_id: p_id._id}, {$set: {is_selected: false}});
+	});
+	selectRootId(dest._id)
+	userCards.update({ _id: source._id}, {$set: { parent_id: dest._id, is_selected: true } });
+	$("#"+dest._id).click()
+}
 
 var markAsComplete = function(id){
 	userCards.update({_id: id},{$set: {is_completed: true}});
@@ -387,24 +428,9 @@ var selectRootId = function(id){
 	}
 }
 
-Template.displayCard.helpers({
-	moveSearchResults: function(){
-		return cardsDict.get('searchResults') || [];
-	}
-});
-Template.displayCard.events({
-	'click #moveCard': function(e, t){
-		e.preventDefault();
-		var self = this;
-		var sourceRec = Template.parentData(1);
-
-		// setting is_selected false to all the other children of new parent
-		userCards.find({$and: [{parent_id: self._id},{is_selected: true}] }).forEach(function (p_id) {
-			userCards.update({_id: p_id._id}, {$set: {is_selected: false}});
-		});
-		selectRootId(self._id)
-		userCards.update({ _id: sourceRec._id}, {$set: { parent_id: self._id, is_selected: true } });
-		$("#"+self._id).click()
-		e.stopPropagation();
-	}
-});
+var showDropdown = function (element) {
+  var event;
+  event = document.createEvent('MouseEvents');
+  event.initMouseEvent('mousedown', true, true, window);
+  element.dispatchEvent(event);
+};
