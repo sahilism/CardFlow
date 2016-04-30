@@ -67,8 +67,12 @@ Template.cards.helpers({
 
 
 Template.cards.events({
-	'keypress': function(e, t){
-		console.log('keypress');
+	'click .dropdown-toggle': function(e, t){
+		console.log('click');
+		var self = this;
+		var $dropdown = $(".card-menu-list");
+		$(".ins-"+self._id).after($dropdown);
+		$("#card-dd-"+self._id).dropdown();
 	},
 	'mouseover .card':function(e,tmpl){
 		$(e.currentTarget).find(".sort").css("opacity",1)

@@ -17,69 +17,73 @@
 		{{/if}}
 	</div>
 </div>
+<ul class="dropdown-menu card-menu-list"  role="menu" aria-labelledby="dropdownMenu1">
+	{{#if is_completed}}
+		<li role="presentation" class="dp-card" id="dpMarkAsUnCompl"><a role="menuitem" tabindex="-1" href="#"><i class="fa fa-undo card-menu-icons"></i>Mark as uncompleted</a></li>
+	{{else}}
+  	<li role="presentation" class="dp-card" id="dpMarkAsCompl"><a role="menuitem" tabindex="-1" href="#"><i class="fa fa-check card-menu-icons"></i>Mark as completed</a></li>
+  {{/if}}
+  <li class="divider"></li>
+  <li role="presentation" class="dp-card" id="">
+  	<a role="menuitem" tabindex="-1" href="#" class="mtt-{{_id}}" id="toggleSearch">
+  		<i class="fa fa-arrow-right card-menu-icons"></i>Move this card to..
+  	</a>
+  	<div id="{{_id}}_move" class="card-pad marg-t-10" style="display:none;">
+  		<input type="text" id="searchCards" class="mtt-input-{{_id}}" placeholder="Start typing...">
+  		<div class="marg-t-10">
+  			{{#each moveSearchResults}}
+					<div class="cursor-p pad-5" id="moveCard">{{cardTitle}}</div>
+  			{{/each}}
+  		</div>
+  	</div>
+  </li>
+	<li class="divider"></li>
+	{{#if notRoot}}
+		<li role="presentation" class="dp-card" id="">
+    	<a role="menuitem" tabindex="-1" href="#" class="" id="moveCardToRoot">
+    		<i class="fa fa-home card-menu-icons"></i>Move card to root
+    	</a>
+    </li>
+    <li class="divider"></li>
+  {{/if}}
+  <li role="presentation" class="dp-card" id="dropdownMenu2">
+  	<a role="menuitem" tabindex="-1" href="#"><i class="fa fa-clock-o card-menu-icons"></i>Remind in..</a>
+  	<div id="{{_id}}_remaind" style="display:none;">
+    	<ul class="remind-menu">
+    		<li role="presentation" class="dp-card" id="1"><a role="menuitem" tabindex="-1" href="#">1 Hour</a></li>
+    		<li role="presentation" class="dp-card" id="6"><a role="menuitem" tabindex="-1" href="#">6 Hours</a></li>
+    		<li role="presentation" class="dp-card" id="24"><a role="menuitem" tabindex="-1" href="#">24 Hours</a></li>
+    		<li role="presentation" class="dp-card" id="72"><a role="menuitem" tabindex="-1" href="#">3 Days</a></li>
+    		<li role="presentation" class="dp-card" id="168"><a role="menuitem" tabindex="-1" href="#">7 Days</a></li>
+    		<li role="presentation" class="dp-card" id="360"><a role="menuitem" tabindex="-1" href="#">15 Days</a></li>
+    		<li role="presentation" class="dp-card" id="720"><a role="menuitem" tabindex="-1" href="#">30 Days</a></li>
+    	</ul>
+  	</div>
+  </li>
+  <li class="divider"></li>
+  {{#if is_pinned}}
+  <li role="presentation" class="dp-card" id="unpinCard"><a role="menuitem" tabindex="-1" href="#"><i class="fa fa-thumb-tack card-menu-icons"></i>Unpin this card</a></li>
+  {{else}}
+  <li role="presentation" class="dp-card" id="pinCard"><a role="menuitem" tabindex="-1" href="#"><i class="fa fa-thumb-tack card-menu-icons"></i>Pin this card to top</a></li>
+  {{/if}}
+  <li class="divider"></li>
+  <li role="presentation" class="dp-card" id="dpDelete"><a role="menuitem" tabindex="-1" href="#"><i class="fa fa-trash card-menu-icons"></i>Delete card</a></li>
+</ul>
 </template>
 
 <template name="displayCard">
 	<div class="card" style="{{#if is_selected}}background:lightyellow;{{/if}};position:relative;">
-	 	<div class="" data-toggle="dropdown" aria-expanded="true" id="card-dd-{{_id}}" style="height: 34px;width: 14px;float: left;padding: 0px;margin: 0px;cursor:pointer;"><i class="fa fa-sort-desc fa-sm dropdown-toggle sort" style="opacity:0;"></i></div>
-		<ul class="dropdown-menu card-menu-list"  role="menu" aria-labelledby="dropdownMenu1">
-			{{#if is_completed}}
-				<li role="presentation" class="dp-card" id="dpMarkAsUnCompl"><a role="menuitem" tabindex="-1" href="#"><i class="fa fa-undo card-menu-icons"></i>Mark as uncompleted</a></li>
-			{{else}}
-	    	<li role="presentation" class="dp-card" id="dpMarkAsCompl"><a role="menuitem" tabindex="-1" href="#"><i class="fa fa-check card-menu-icons"></i>Mark as completed</a></li>
+	 	<div class="" data-toggle="dropdown" aria-expanded="true" id="card-dd-{{_id}}" style="height: 34px;width: 14px;float: left;padding: 0px;margin: 0px;cursor:pointer;">
+	 		<i class="fa fa-sort-desc fa-sm dropdown-toggle sort" style="opacity:0;"></i>
+	 	</div>
+		<div class="ins-{{_id}}">
+		</div>
+		<div class="parent-card-div">
+   		<input type="text" id="{{_id}}" class="card-input inputtitle"  autocapitalize="none" autocorrect="off" value="{{cardTitle}}" 
+	   		style="{{#if is_selected}}background:lightyellow;{{/if}} {{#if is_completed}}  text-decoration: line-through;color: #DDD;{{/if}}" onfocus="this.value = this.value;">
+	    {{#if has_children}}
+	    <i style="font-size: 6px;float:right;margin-top:14px;margin-right:10px;color:#EEE" class="fa fa-circle fa-sm yellow"></i>
 	    {{/if}}
-	    <li class="divider"></li>
-	    <li role="presentation" class="dp-card" id="">
-	    	<a role="menuitem" tabindex="-1" href="#" class="mtt-{{_id}}" id="toggleSearch">
-	    		<i class="fa fa-arrow-right card-menu-icons"></i>Move this card to..
-	    	</a>
-	    	<div id="{{_id}}_move" class="card-pad marg-t-10" style="display:none;">
-	    		<input type="text" id="searchCards" class="mtt-input-{{_id}}" placeholder="Start typing...">
-	    		<div class="marg-t-10">
-	    			{{#each moveSearchResults}}
-							<div class="cursor-p pad-5" id="moveCard">{{cardTitle}}</div>
-	    			{{/each}}
-	    		</div>
-	    	</div>
-	    </li>
-			<li class="divider"></li>
-			{{#if notRoot}}
-				<li role="presentation" class="dp-card" id="">
-		    	<a role="menuitem" tabindex="-1" href="#" class="" id="moveCardToRoot">
-		    		<i class="fa fa-home card-menu-icons"></i>Move card to root
-		    	</a>
-		    </li>
-		    <li class="divider"></li>
-	    {{/if}}
-	    <li role="presentation" class="dp-card" id="dropdownMenu2">
-	    	<a role="menuitem" tabindex="-1" href="#"><i class="fa fa-clock-o card-menu-icons"></i>Remind in..</a>
-	    	<div id="{{_id}}_remaind" style="display:none;">
-		    	<ul class="remind-menu">
-		    		<li role="presentation" class="dp-card" id="1"><a role="menuitem" tabindex="-1" href="#">1 Hour</a></li>
-		    		<li role="presentation" class="dp-card" id="6"><a role="menuitem" tabindex="-1" href="#">6 Hours</a></li>
-		    		<li role="presentation" class="dp-card" id="24"><a role="menuitem" tabindex="-1" href="#">24 Hours</a></li>
-		    		<li role="presentation" class="dp-card" id="72"><a role="menuitem" tabindex="-1" href="#">3 Days</a></li>
-		    		<li role="presentation" class="dp-card" id="168"><a role="menuitem" tabindex="-1" href="#">7 Days</a></li>
-		    		<li role="presentation" class="dp-card" id="360"><a role="menuitem" tabindex="-1" href="#">15 Days</a></li>
-		    		<li role="presentation" class="dp-card" id="720"><a role="menuitem" tabindex="-1" href="#">30 Days</a></li>
-		    	</ul>
-	    	</div>
-	    </li>
-	    <li class="divider"></li>
-	    {{#if is_pinned}}
-	    <li role="presentation" class="dp-card" id="unpinCard"><a role="menuitem" tabindex="-1" href="#"><i class="fa fa-thumb-tack card-menu-icons"></i>Unpin this card</a></li>
-	    {{else}}
-	    <li role="presentation" class="dp-card" id="pinCard"><a role="menuitem" tabindex="-1" href="#"><i class="fa fa-thumb-tack card-menu-icons"></i>Pin this card to top</a></li>
-	    {{/if}}
-	    <li class="divider"></li>
-	    <li role="presentation" class="dp-card" id="dpDelete"><a role="menuitem" tabindex="-1" href="#"><i class="fa fa-trash card-menu-icons"></i>Delete card</a></li>
-		</ul>
-	<div class="parent-card-div">
-   <input type="text" id="{{_id}}" class="card-input inputtitle"  autocapitalize="none" autocorrect="off" value="{{cardTitle}}" style="{{#if is_selected}}background:lightyellow;{{/if}}
-   {{#if is_completed}}  text-decoration: line-through;color: #DDD;{{/if}}" onfocus="this.value = this.value;">
-    {{#if has_children}}
-    <i style="font-size: 6px;float:right;margin-top:14px;margin-right:10px;color:#EEE" class="fa fa-circle fa-sm yellow"></i>
-    {{/if}}
-    </div>
- </div>	
+  	</div>
+ 	</div>	
 </template>
