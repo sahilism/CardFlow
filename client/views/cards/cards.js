@@ -202,6 +202,7 @@ Template.cards.events({
 		  e.stopPropagation();
 		  return false;
 		}
+		// enter
 		if(e.keyCode === 13){
 			var count=userCards.find({user_id:Meteor.userId()}).count();
 			if(count > 1000){
@@ -225,12 +226,14 @@ Template.cards.events({
 			}
 			e.preventDefault();
 		}
+		// up arrow
 		if(e.keyCode === 38){
-			$(e.currentTarget).parent().parent().prev('.card').find("input[type=text]").eq(0).focus();
+			$(e.currentTarget).parent().parent().prev('.card').find(".inputtitle").eq(0).focus();
 			$(e.currentTarget).parent().parent().prev('.card').find('.parent-card-div').trigger('mousedown');
 		}
+		// down arrow
 		if(e.keyCode === 40){
-			$(e.currentTarget).parent().parent().next('.card').find("input[type=text]").eq(0).focus();
+			$(e.currentTarget).parent().parent().next('.card').find(".inputtitle").eq(0).focus();
 			$(e.currentTarget).parent().parent().next('.card').find('.parent-card-div').trigger('mousedown');
 		}
 
