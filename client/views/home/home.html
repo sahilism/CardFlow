@@ -32,12 +32,18 @@
           <ul class="dropdown-menu" style="top: 32px;left:auto;right:-15px;border-radius: 0px;padding: 10px 0px;position: absolute;float: right;background-color: white;-webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, .175);box-shadow: 0 6px 12px rgba(0, 0, 0, .175);border: 1px solid #ccc;min-width: 180px;" role="menu">
             {{#if currentUser}}
               {{#if isAdmin}}
-                <li class="li-item"><a href="/admin">Admin</a></li>
+                <li class="li-item">
+                  <a href="/admin">
+                    <i class="fa fa-user"></i><span>&nbsp;&nbsp;Admin</span>  
+                  </a>
+                </li>
                 <li class="divider"></li>
               {{/if}}
               {{#if homePage}}
                 <li class="li-item searh-item">
-                  <a href="#" id="toggleNavSearch">Search</a>
+                  <a href="#" id="toggleNavSearch">
+                    <i class="fa fa-search"></i><span>&nbsp;&nbsp;Search</span>  
+                  </a>
                   <div class="nav-search-div" style="display: none;">
                     <input type="text" id="searchCards" class="marg-l-10px marg-t-10px" placeholder="Start typing...">
                     <div class="marg-t-10 marg-l-10px">
@@ -49,11 +55,23 @@
                 </li>
                 <li class="divider"></li>
               {{/if}}
-              <li class="li-item"><a href="/account">Account</a></li>
+              <li class="li-item">
+                <a href="/account">
+                  <i class="fa fa-user"></i><span>&nbsp;&nbsp;Account</span>  
+                </a>
+              </li>
               <li class="divider"></li>
-              <li class="li-item"><a href="/help">Help</a></li>
+              <li class="li-item">
+                <a href="/help">
+                  <i class="fa fa-question"></i><span>&nbsp;&nbsp;Help</span>  
+                </a>
+              </li>
               <li class="divider"></li>
-              <li class="li-item"><a href="/logout">Logout</a></li>
+              <li class="li-item">
+                <a href="/logout">
+                  <i class="fa fa-sign-out"></i><span>&nbsp;&nbsp;Logout</span>  
+                </a>
+              </li>
             {{/if}}
           </ul>
           </li>

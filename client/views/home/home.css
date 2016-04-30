@@ -11,6 +11,9 @@ body {
 .dropdown-menu > li > a{
 	padding: 0px 10px;
 }
+.dropdown-menu > li > a > i{
+	width: 15px;
+}
 #logo{
 	  cursor: pointer;
 	  width: 180px;
