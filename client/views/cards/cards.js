@@ -15,12 +15,23 @@ Template.cards.onCreated(function () {
 	cardsDict.set('searchResults', []);
 	cardsDict.set('associateIds', []);
 });
-Template.cards.destroyed = function () {
+Template.cards.onDestroyed(function () {
 	
-};
-Template.cards.rendered = function () {
-	
-};
+});
+Template.cards.onRendered(function () {
+	$(document).keyup(function (e) {
+	  if(e.which === 70 && e.altKey) {
+	    // enter pressed
+	    $('#navDropdown').addClass('open');
+	    Meteor.setTimeout(function () {
+	    	console.log('click');
+	    	$(".nav-search-div").css('display', 'block');
+	    	$("#searchCards").focus();
+	    }, 200);
+	    
+	  }
+	});
+});
 Template.cards.helpers({
 	pinnedCards: function (id) {
 		return userCards.find({$and: [ {user_id:Meteor.userId()}, {parent_id: id}, {is_pinned: true} ]},{sort: {createdAt: 1}});
@@ -56,6 +67,9 @@ Template.cards.helpers({
 
 
 Template.cards.events({
+	'keypress': function(e, t){
+		console.log('keypress');
+	},
 	'mouseover .card':function(e,tmpl){
 		$(e.currentTarget).find(".sort").css("opacity",1)
 	},

@@ -91,6 +91,9 @@ Template.navbar.helpers({
 		var t = Template.instance();
 		var res = t.dataDict.get('searchResults');
 		return res;
+	},
+	homePage: function(){
+		return Router.current().route.getName() === "home"
 	}
 });
 
@@ -105,6 +108,7 @@ Template.navbar.events({
 		e.stopPropagation();
 	},
 	'input #searchCards': function(e, t){
+		e.preventDefault();
 		var text = e.currentTarget.value;
 		if(text){
 			var res =  userCards.find({ cardTitle: {$regex: text, $options: 'i'} }, {limit: 5}).fetch();
@@ -112,6 +116,11 @@ Template.navbar.events({
 		}else{
 			t.dataDict.set('searchResults', [])
 		}
+		e.stopPropagation();
+	},
+	'click #searchResults, click .searh-item': function(e, t){
+		e.preventDefault();
+		e.stopPropagation();
 	},
 	'click #goToCard': function(e, t){
 		var self = this;
@@ -119,5 +128,8 @@ Template.navbar.events({
 		$(".nav-search-div").toggle();
 		t.dataDict.set('searchResults', [])
 		$("#searchCards").val("");
+		Meteor.setTimeout(function () {
+			$("#"+self._id).focus();
+		}, 500);
 	}
 });
