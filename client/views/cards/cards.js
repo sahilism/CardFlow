@@ -19,16 +19,16 @@ Template.cards.onDestroyed(function () {
 	
 });
 Template.cards.onRendered(function () {
-	$(document).keyup(function (e) {
+	$(document).keydown(function (e) {
 	  if(e.which === 70 && e.altKey) {
 	    // enter pressed
+	    e.preventDefault();
 	    $('#navDropdown').addClass('open');
 	    Meteor.setTimeout(function () {
-	    	console.log('click');
 	    	$(".nav-search-div").css('display', 'block');
 	    	$("#searchCards").focus();
 	    }, 200);
-	    
+	    e.stopPropagation();
 	  }
 	});
 });
