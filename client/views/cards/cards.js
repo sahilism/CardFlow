@@ -408,11 +408,20 @@ Template.displayCard.events({
 	'click #editNotes': function(e, t){
 		e.preventDefault();
 		var self = this;
-		$("#card-menu-dd-"+self._id).css('width', "100%");
-		$(".notes-div-"+self._id).css('display', 'block');
-		$(".notes-"+self._id).css('width', "95%");
-		$(".notes-"+self._id).val(self.notes);
-		$(".notes-"+self._id).focus();
+		var display = $(".notes-div-"+self._id).css('display');
+		if(display === 'block'){
+			$(".notes-"+self._id).val("");
+			$("#card-menu-dd-"+self._id).css('width', "auto");
+			$(".notes-div-"+self._id).css('display', 'none');
+			$('.cards-list').click();
+		}else{
+			$("#card-menu-dd-"+self._id).css('width', "100%");
+			$(".notes-div-"+self._id).css('display', 'block');
+			$(".notes-"+self._id).css('width', "95%");
+			$(".notes-"+self._id).val(self.notes);
+			$(".notes-"+self._id).focus();	
+		}
+		
 		e.stopPropagation();
 	},
 	'click #saveNote': function(e, t){
@@ -420,10 +429,7 @@ Template.displayCard.events({
 		var val = $(".notes-"+self._id).val();
 		userCards.update({ _id: self._id}, { $set: { notes: val } });
 		toastr.success('notes saved');
-		$(".notes-"+self._id).val("");
-		$("#card-menu-dd-"+self._id).css('width', "auto");
-		$(".notes-div-"+self._id).css('display', 'none');
-		$('.cards-list').click();
+		
 	},
 	'click #cancelNote': function(e, t){
 		var self = this;
@@ -431,7 +437,12 @@ Template.displayCard.events({
 		$("#card-menu-dd-"+self._id).css('width', "auto");
 		$(".notes-div-"+self._id).css('display', 'none');
 		$('.cards-list').click();
-	}
+	},
+	'keydown #cardNotes':_.throttle(function(e, t){
+		var self = this;
+		var res = $(".notes-"+self._id).val();
+		userCards.update({ _id: self._id}, { $set: { notes: res } });
+	},300)
 });
 
 var moveCard = function(source, dest){
