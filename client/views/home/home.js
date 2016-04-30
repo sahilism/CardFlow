@@ -131,5 +131,6 @@ Template.navbar.events({
 		Meteor.setTimeout(function () {
 			$("#"+self._id).focus();
 		}, 500);
+		$('#navDropdown').removeClass('open');
 	}
 });

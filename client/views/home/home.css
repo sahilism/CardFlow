@@ -46,11 +46,17 @@ body {
 .marg-l-5px{
 	margin-left: 5px !important;
 }
-
+.marg-l-10px{
+	margin-left: 10px !important;	
+}
 .marg-t-10px{
 	margin-top: 10px !important;
 }
 
 .width-90pc{
 	width: 90% !important;
+}
+
+.font-12{
+	font-size: 12px !important;
 }
