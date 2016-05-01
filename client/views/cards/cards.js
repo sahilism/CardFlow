@@ -43,6 +43,9 @@ Template.cards.helpers({
 		}
 		return res.length - 1;
 	},
+	webhook: function(){
+		return Meteor.absoluteUrl()+"webhook/"+Meteor.userId()+"/"+this._id;
+	},
 	selectedCard: function(){
 		var sId = Session.get('selectedCard');
 		var res = userCards.findOne({ _id: sId });
