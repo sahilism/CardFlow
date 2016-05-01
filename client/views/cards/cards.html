@@ -36,9 +36,13 @@
 								<li>Notes: <br>{{{formatText notes}}}</li>
 							{{/if}}
 							<li>Created: {{formatReminderDate createdAt}}</li>
-							<li>Direct Children: {{directChildren}}</li>
-							<li>Total Descendants: {{totalDescendants}}</li>
-							<li>WebHook: {{webhook}}</li>
+							<!-- <li>Direct Children: {{directChildren}}</li>
+							<li>Total Descendants: {{totalDescendants}}</li> -->
+							<li style="word-break: break-all;">
+								WebHook: 
+									<input type="text" class="visible-md visible-lg visible-sm" style="width: 450px;" id="webhook" value="{{webhook}}">
+									<input type="text" class="visible-xs" style="width: 200px;display: inline-block !important;" id="webhook" value="{{webhook}}">
+							</li>
 						</ul>
 					</div>
         {{/with}}

@@ -31,6 +31,9 @@ Template.cards.onRendered(function () {
 	    e.stopPropagation();
 	  }
 	});
+
+	//tooltip
+	 $("[data-toggle='tooltip']").tooltip();
 });
 Template.cards.helpers({
 	directChildren: function(){

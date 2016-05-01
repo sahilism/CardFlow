@@ -46,7 +46,7 @@ body {
 	cursor: pointer;;
 }
 
-.marg-l-5px{
+.marg-l-5px, .marg-l-5{
 	margin-left: 5px !important;
 }
 .marg-l-10px{
