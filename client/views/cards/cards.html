@@ -17,6 +17,38 @@
 		{{/if}}
 	</div>
 </div>
+<div class="modal fade" id="showCardInfo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Card Details</h4>
+      </div>
+      <div class="modal-body">
+        {{#with selectedCard}}
+					<div class="details">
+						<ul class="card-details">
+							<li>Title: {{cardTitle}}</li>
+							{{#if remind_at}}
+								<li>Reminder: {{formatReminderDate remind_at}}</li>
+							{{/if}}
+							{{#if notes}}
+								<li>Notes: <br>{{{formatText notes}}}</li>
+							{{/if}}
+							<li>Created: {{formatReminderDate createdAt}}</li>
+							<li>Direct Children: {{directChildren}}</li>
+							<li>Total Descendants: {{totalDescendants}}</li>
+						</ul>
+					</div>
+        {{/with}}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 </template>
 
 <template name="displayCard">
@@ -86,6 +118,12 @@
 	    {{/if}}
 	    <li class="divider"></li>
 	    <li role="presentation" class="dp-card" id="dpDelete"><a role="menuitem" tabindex="-1" href="#"><i class="fa fa-trash card-menu-icons"></i>Delete card</a></li>
+	    <li class="divider"></li>
+	    <li role="presentation" class="dp-card" id="showCardDetails">
+	    	<a role="menuitem" tabindex="-1" href="#">
+	    		<i class="fa fa-info card-menu-icons"></i>Card Details
+	    	</a>
+	    </li>
 		</ul>
 	<div class="parent-card-div">
    <input type="text" id="{{_id}}" class="card-input inputtitle"  autocapitalize="none" autocorrect="off" value="{{cardTitle}}" style="{{#if is_selected}}background:lightyellow;{{/if}}

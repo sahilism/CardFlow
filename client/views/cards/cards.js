@@ -33,6 +33,21 @@ Template.cards.onRendered(function () {
 	});
 });
 Template.cards.helpers({
+	directChildren: function(){
+		return userCards.find({ parent_id: this._id}).count();
+	},
+	totalDescendants: function(){
+		var res = getAssociateIds(this._id, Meteor.userId());
+		if(!res){
+			res = [];
+		}
+		return res.length - 1;
+	},
+	selectedCard: function(){
+		var sId = Session.get('selectedCard');
+		var res = userCards.findOne({ _id: sId });
+		return res;
+	},
 	pinnedCards: function (id) {
 		return userCards.find({$and: [ {user_id:Meteor.userId()}, {parent_id: id}, {is_pinned: true} ]},{sort: {createdAt: 1}});
 	},
@@ -88,6 +103,7 @@ Template.cards.events({
 		}
 	},
 	'keydown .inputtitle': function (e,tmpl) {
+		console.log(e);
 		var self = this;
 		if(e.altKey && e.keyCode === 77){
 			console.log("alt+m");
@@ -198,6 +214,14 @@ Template.cards.events({
 					$(".mtt-input-"+self._id).focus();
 				}, 200);	
 		  }, 200);
+		  e.preventDefault();
+		  e.stopPropagation();
+		  return false;
+		}else if(e.altKey && e.keyCode === 73){
+			// show info "alt+i"
+			console.log("info");
+		  Session.set('selectedCard', self._id);
+			$("#showCardInfo").modal('show');
 		  e.preventDefault();
 		  e.stopPropagation();
 		  return false;
@@ -382,6 +406,11 @@ Template.displayCard.helpers({
 	}
 });
 Template.displayCard.events({
+	'click #showCardDetails': function(){
+		var self = this;
+		Session.set('selectedCard', self._id);
+		$("#showCardInfo").modal('show');
+	},
 	'click #moveCard': function(e, t){
 		e.preventDefault();
 		var self = this;
