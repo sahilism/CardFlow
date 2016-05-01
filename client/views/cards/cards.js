@@ -22,7 +22,7 @@ Template.cards.onDestroyed(function () {
 });
 Template.cards.onRendered(function () {
 	$(document).keydown(function (e) {
-	  if(e.which === 70 && e.altKey) {
+	  if(e.which === 70 && e.ctrlKey) {
 	    // enter pressed
 	    e.preventDefault();
 	    $('#navDropdown').addClass('open');
@@ -283,7 +283,6 @@ Template.displayCard.helpers({
 });
 Template.displayCard.events({
 	'keydown .inputtitle': function (e,tmpl) {
-		console.log(e);
 		var self = this;
 		// up arrow
 		if(e.keyCode === 38){
@@ -297,10 +296,9 @@ Template.displayCard.events({
 			$(e.currentTarget).parent().parent().next('.card').find('.parent-card-div').trigger('mousedown');
 			return;
 		}
-		if(e.altKey && e.keyCode === 77){
-			console.log("alt+m");
+		if(e.ctrlKey && e.keyCode === 77){
 			e.preventDefault();
-			if(this.parent_id === tmpl.data.id){
+			if(this.parent_id === Template.parentData(2).id){
 				if(this.is_completed){
 					markAsUnComplete(this._id);	
 				}
@@ -311,9 +309,9 @@ Template.displayCard.events({
 			e.stopPropagation();
 			return;
 		}
-		else if(e.altKey && e.keyCode === 80){
+		else if(e.ctrlKey && e.keyCode === 80){
 			e.preventDefault();
-			if(this.parent_id === tmpl.data.id){
+			if(this.parent_id === Template.parentData(2).id){
 				if(this.is_pinned){
 					userCards.update({_id: this._id}, {$set: {is_pinned: false}});	
 				}
@@ -324,11 +322,11 @@ Template.displayCard.events({
 			}
 			return;
 		}
-		else if(e.altKey && e.keyCode === 68){
+		else if(e.ctrlKey && e.keyCode === 68){
 			e.preventDefault();
 			var count=userCards.find({parent_id: this._id}).count();
 			if(count > 0){
-				if(this.parent_id === tmpl.data.id){
+				if(this.parent_id === Template.parentData(2).id){
 					bootbox.confirm({
 				        message:"This will permanently delete the card and its children. Okay?",
 				        buttons: {
@@ -401,8 +399,7 @@ Template.displayCard.events({
 			}
 			e.preventDefault();
 			return;
-		}else if(e.altKey && e.keyCode === 83){
-			console.log("alt+s");
+		}else if(e.ctrlKey && e.keyCode === 83){
 		  var ddId = "#card-dd-"+self._id;
 		  Meteor.setTimeout(function () {
 		  	$(ddId).click();
