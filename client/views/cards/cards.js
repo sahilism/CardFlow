@@ -251,7 +251,7 @@ Template.cards.events({
 		if(self.parent_id === "root"){
 			cardsDict.set('mergeAssociateIds', [self._id])	
 		}else{
-			cardsDict.set('mergeAssociateIds', [self._id, self.parent_id])
+			cardsDict.set('mergeAssociateIds', [self._id])
 		}
 		cardsDict.set('searchText', text);
 		var query = [];
