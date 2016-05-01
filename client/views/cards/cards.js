@@ -552,15 +552,14 @@ var mergeCard = function(source, dest){
 	userCards.find({$and: [{parent_id: dest._id},{is_selected: true}] }).forEach(function (p_id) {
 		userCards.update({_id: p_id._id}, {$set: {is_selected: false}});
 	});
-	// selectRootId(dest._id)
-	userCards.update({ _id: source._id}, {$set: { parent_id: dest._id, is_selected: true } });
-	userCards.update({ _id: dest._id}, {$set: { has_children: true} });
-	if(source.parent_id !== "root"){
-		var res = userCards.findOne({ parent_id: source.parent_id});
-		if(!res){
-			userCards.update({ _id: source.parent_id}, {$set: { has_children: false }})
-		}
-	}
+	selectRootId(dest._id)
+	userCards.find({parent_id: source._id}).forEach(function (p_id) {
+		userCards.update({_id: p_id._id}, {$set: {parent_id: dest._id}});
+	});
+	var title = dest.cardTitle+" ( "+source.cardTitle+" merged)";
+	userCards.update({ _id: dest._id}, {$set: { has_children: true, cardTitle: title} });
+	
+
 	$("#"+dest._id).click()
 }
 
