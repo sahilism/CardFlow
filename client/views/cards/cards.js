@@ -258,7 +258,7 @@ Template.cards.events({
 		if(text){
 			query.push({ cardTitle: {$regex: text, $options: 'i'} });
 		}
-		getMergeNestedChildIds(self._id, Meteor.userId());
+		getMergeNestedChildIds(self._id);
 		var aIds = cardsDict.get('mergeAssociateIds');
 		// console.log(aIds, aIds.length);
 		query.push({ _id: { $nin: aIds } });
@@ -266,7 +266,7 @@ Template.cards.events({
 		var findQuery = {};
 		findQuery['$and'] = query;
 		var resCards = userCards.find(findQuery, { limit: 5 }).fetch();
-		cardsDict.set('searchResults', resCards)
+		cardsDict.set('mergeSearchResults', resCards)
 	},
 });
 
@@ -275,7 +275,7 @@ Template.displayCard.helpers({
 		return cardsDict.get('searchResults') || [];
 	},
 	mergeSearchResults: function(){
-		return cardsDict.get('searchResults') || [];
+		return cardsDict.get('mergeSearchResults') || [];
 	},
 	notRoot: function(){
 		return this.parent_id !== "root";
@@ -470,7 +470,7 @@ Template.displayCard.events({
 		e.preventDefault();
 		var self = this;
 		var sourceRec = Template.parentData(1);
-		mergeCard(sourceRec, self)
+		mergeCard(sourceRec, self);
 		e.stopPropagation();
 	},
 	'click #moveCardToRoot': function(e, t){
@@ -556,9 +556,16 @@ var mergeCard = function(source, dest){
 	userCards.find({parent_id: source._id}).forEach(function (p_id) {
 		userCards.update({_id: p_id._id}, {$set: {parent_id: dest._id}});
 	});
-	var title = dest.cardTitle+" ( "+source.cardTitle+" merged)";
-	userCards.update({ _id: dest._id}, {$set: { has_children: true, cardTitle: title} });
+	var title = dest.cardTitle+" ("+source.cardTitle+" merged)";
+
+	var childInfo = userCards.findOne({ parent_id: dest._id});
+	if(childInfo){
+		userCards.update({ _id: dest._id}, {$set: { has_children: true, cardTitle: title} });
+	}else{
+		userCards.update({ _id: dest._id}, {$set: { has_children: false, cardTitle: title} });
+	}
 	
+	userCards.remove({ _id: source._id})
 
 	$("#"+dest._id).click()
 }
@@ -604,6 +611,12 @@ var showDropdown = function (element) {
 var getMoveNestedChildIds = function(id){
   var childCards = userCards.find({ parent_id: id}).fetch();
   if(childCards.length > 0){
+  	
+  	var ids = cardsDict.get('associateIds') || [];
+    var pIds = _.pluck(childCards, '_id');
+    ids = ids.concat(pIds);
+    cardsDict.set('associateIds', ids)
+
     childCards.forEach(function (childCardInfo) {
       return getMoveNestedChildIds(childCardInfo._id);
     });
@@ -617,9 +630,13 @@ var getMoveNestedChildIds = function(id){
   }
 }
 
-var getMergeNestedChildIds = function(id){
+getMergeNestedChildIds = function(id){
   var childCards = userCards.find({ parent_id: id}).fetch();
   if(childCards.length > 0){
+  	var ids = cardsDict.get('mergeAssociateIds') || [];
+    var pIds = _.pluck(childCards, '_id');
+    ids = ids.concat(pIds);
+    cardsDict.set('mergeAssociateIds', ids)
     childCards.forEach(function (childCardInfo) {
       return getMergeNestedChildIds(childCardInfo._id);
     });
