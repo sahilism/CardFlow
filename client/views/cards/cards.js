@@ -1,5 +1,5 @@
 var cardsDict =  new ReactiveDict();
-var connectionStatus = function(){
+connectionStatus = function(){
 	 if(Meteor.status().connected){
 	    return true;
 	  }
@@ -13,7 +13,9 @@ Template.cards.onCreated(function () {
 	var self = this;
 	cardsDict.set('searchText', null);
 	cardsDict.set('searchResults', []);
+	cardsDict.set('mergeSearchResults', []);
 	cardsDict.set('associateIds', []);
+	cardsDict.set('mergeAssociateIds', []);
 });
 Template.cards.onDestroyed(function () {
 	
@@ -212,7 +214,7 @@ Template.cards.events({
 		if(text){
 			query.push({ cardTitle: {$regex: text, $options: 'i'} });
 		}
-		getNestedChildIds(self._id);
+		getMoveNestedChildIds(self._id);
 		var aIds = cardsDict.get('associateIds');
 		// console.log(aIds, aIds.length);
 		query.push({ _id: { $nin: aIds } });
@@ -231,11 +233,48 @@ Template.cards.events({
 		}, 200);
 		e.preventDefault();
 		e.stopPropagation();
-	}
+	},
+	'click #toggleMergeSearch': function(e, t){
+		cardsDict.set('mergeSearchResults', []);
+		var id = this._id;
+		Meteor.setTimeout(function () {
+			$("#"+id+"_merge").css('display', 'block');	
+			$(".merge-input-"+id).focus();
+		}, 200);
+		e.preventDefault();
+		e.stopPropagation();
+	},
+	'input #searchMergeCards': function(e, t){
+		var self  = this;
+		var text = e.currentTarget.value;
+		// console.log(self);
+		if(self.parent_id === "root"){
+			cardsDict.set('mergeAssociateIds', [self._id])	
+		}else{
+			cardsDict.set('mergeAssociateIds', [self._id, self.parent_id])
+		}
+		cardsDict.set('searchText', text);
+		var query = [];
+		if(text){
+			query.push({ cardTitle: {$regex: text, $options: 'i'} });
+		}
+		getMergeNestedChildIds(self._id, Meteor.userId());
+		var aIds = cardsDict.get('mergeAssociateIds');
+		// console.log(aIds, aIds.length);
+		query.push({ _id: { $nin: aIds } });
+
+		var findQuery = {};
+		findQuery['$and'] = query;
+		var resCards = userCards.find(findQuery, { limit: 5 }).fetch();
+		cardsDict.set('searchResults', resCards)
+	},
 });
 
 Template.displayCard.helpers({
 	moveSearchResults: function(){
+		return cardsDict.get('searchResults') || [];
+	},
+	mergeSearchResults: function(){
 		return cardsDict.get('searchResults') || [];
 	},
 	notRoot: function(){
@@ -244,6 +283,7 @@ Template.displayCard.helpers({
 });
 Template.displayCard.events({
 	'keydown .inputtitle': function (e,tmpl) {
+		console.log(e);
 		var self = this;
 		// up arrow
 		if(e.keyCode === 38){
@@ -390,12 +430,12 @@ Template.displayCard.events({
 			}
 			else{
 				if(connectionStatus()){
-					if(this.parent_id === tmpl.data.id){
-						var ps_card=userCards.findOne({$and: [{parent_id:this.parent_id},{is_selected: true}]});
+					if(self.parent_id === Template.parentData(2).id){
+						var ps_card=userCards.findOne({$and: [{parent_id:self.parent_id},{is_selected: true}]});
 						if(ps_card){
 							userCards.update({_id: ps_card._id}, {$set: {is_selected: false}});
 						}
-						var res=userCards.insert({user_id:Meteor.userId(),has_children: false,is_selected:true,parent_id:this.parent_id,createdAt:Date.now()});
+						var res=userCards.insert({user_id:Meteor.userId(),has_children: false,is_selected:true,parent_id:self.parent_id,createdAt:Date.now()});
 							$("#"+res).focus();
 							Meteor.call('updatedcardTime', res);
 					}
@@ -427,6 +467,13 @@ Template.displayCard.events({
 		var self = this;
 		var sourceRec = Template.parentData(1);
 		moveCard(sourceRec, self)
+		e.stopPropagation();
+	},
+	'click #mergeCard': function(e, t){
+		e.preventDefault();
+		var self = this;
+		var sourceRec = Template.parentData(1);
+		mergeCard(sourceRec, self)
 		e.stopPropagation();
 	},
 	'click #moveCardToRoot': function(e, t){
@@ -488,7 +535,23 @@ Template.displayCard.events({
 var moveCard = function(source, dest){
 	// focus should be on source parent even after moving
 
+	userCards.find({$and: [{parent_id: dest._id},{is_selected: true}] }).forEach(function (p_id) {
+		userCards.update({_id: p_id._id}, {$set: {is_selected: false}});
+	});
+	// selectRootId(dest._id)
+	userCards.update({ _id: source._id}, {$set: { parent_id: dest._id, is_selected: true } });
+	userCards.update({ _id: dest._id}, {$set: { has_children: true} });
+	if(source.parent_id !== "root"){
+		var res = userCards.findOne({ parent_id: source.parent_id});
+		if(!res){
+			userCards.update({ _id: source.parent_id}, {$set: { has_children: false }})
+		}
+	}
+	$("#"+dest._id).click()
+}
 
+var mergeCard = function(source, dest){
+	// focus should be on source parent even after moving
 	userCards.find({$and: [{parent_id: dest._id},{is_selected: true}] }).forEach(function (p_id) {
 		userCards.update({_id: p_id._id}, {$set: {is_selected: false}});
 	});
@@ -521,21 +584,6 @@ var deleteChildCards = function(id){
 	userCards.remove({_id: id});
 }
 
-var getNestedChildIds = function(id){
-	var childCards = userCards.find({ parent_id: id}).fetch();
-	if(childCards.length > 0){
-		childCards.forEach(function (childCardInfo) {
-			return getNestedChildIds(childCardInfo._id);
-		});
-	}else{
-		var ids = cardsDict.get('associateIds') || [];
-		if(ids.indexOf(id) <= -1){
-			ids.push(id);
-			cardsDict.set('associateIds', ids)
-		}
-		return id;
-	}
-}
 
 selectRootId = function(id){
 	var cardInfo = userCards.findOne({ _id: id});
@@ -556,3 +604,35 @@ var showDropdown = function (element) {
   event.initMouseEvent('mousedown', true, true, window);
   element.dispatchEvent(event);
 };
+
+var getMoveNestedChildIds = function(id){
+  var childCards = userCards.find({ parent_id: id}).fetch();
+  if(childCards.length > 0){
+    childCards.forEach(function (childCardInfo) {
+      return getMoveNestedChildIds(childCardInfo._id);
+    });
+  }else{
+    var ids = cardsDict.get('associateIds') || [];
+    if(ids.indexOf(id) <= -1){
+      ids.push(id);
+      cardsDict.set('associateIds', ids)
+    }
+    return id;
+  }
+}
+
+var getMergeNestedChildIds = function(id){
+  var childCards = userCards.find({ parent_id: id}).fetch();
+  if(childCards.length > 0){
+    childCards.forEach(function (childCardInfo) {
+      return getMergeNestedChildIds(childCardInfo._id);
+    });
+  }else{
+    var ids = cardsDict.get('mergeAssociateIds') || [];
+    if(ids.indexOf(id) <= -1){
+      ids.push(id);
+      cardsDict.set('mergeAssociateIds', ids)
+    }
+    return id;
+  }
+}

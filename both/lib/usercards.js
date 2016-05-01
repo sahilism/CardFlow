@@ -1,4 +1,7 @@
 getAssociateIds = function(id, userId){
+  if(Meteor.isServer){
+    console.log("running on server");
+  }
   gArr = [id];
   var res = getNestedChildIds(id, userId);
   return gArr;

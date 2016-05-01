@@ -104,6 +104,21 @@
 		    </li>
 		    <li class="divider"></li>
 	    {{/if}}
+
+	    <li role="presentation" class="dp-card" id="">
+	    	<a role="menuitem" tabindex="-1" href="#" class="merge-{{_id}}" id="toggleMergeSearch">
+	    		<i class="fa fa-code-fork card-menu-icons"></i>Merge this card to..
+	    	</a>
+	    	<div id="{{_id}}_merge" class="card-pad marg-t-10" style="display:none;">
+	    		<input type="text" id="searchMergeCards" class="merge-input-{{_id}}" placeholder="Start typing...">
+	    		<div class="marg-t-10">
+	    			{{#each mergeSearchResults}}
+							<div class="cursor-p pad-5" id="mergeCard">{{cardTitle}}</div>
+	    			{{/each}}
+	    		</div>
+	    	</div>
+	    </li>
+	    <li class="divider"></li>
 	    <li role="presentation" class="dp-card" id="dropdownMenu2">
 	    	<a role="menuitem" tabindex="-1" href="#"><i class="fa fa-clock-o card-menu-icons"></i>Remind in..</a>
 	    	<div id="{{_id}}_remaind" style="display:none;">
