@@ -104,3 +104,17 @@ Router.route("/help",{
 		}
 	}
 });
+
+Router.route('/webhook/:id/:cardId', { where: 'server' })
+  .get(function () {
+    // GET /webhooks/stripe
+  })
+  .post(function () {
+    // POST /webhooks/stripe
+    console.log(this.request);
+    console.log(this.request.body);
+    this.response.end("Got you")
+  })
+  .put(function () {
+    // PUT /webhooks/stripe
+  })
