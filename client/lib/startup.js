@@ -5,7 +5,7 @@ Meteor.startup(function(){
     window.alert = navigator.notification.alert;
     //ONLY This works
     Push.addListener('token', function(token) {
-     console.log('token received: ' + JSON.stringify(token));
+     // console.log('token received: ' + JSON.stringify(token));
     });
 
     Push.addListener('error', function(err) {
@@ -13,7 +13,7 @@ Meteor.startup(function(){
     });
     Push.addListener('message', function(notification) {
      // Called on every message
-     console.log(JSON.stringify(notification))
+     // console.log(JSON.stringify(notification))
      alert(notification.message);
    })
 
