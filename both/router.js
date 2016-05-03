@@ -110,10 +110,22 @@ Router.route('/webhook/:id/:cardId', { where: 'server' })
     // GET /webhooks/stripe
   })
   .post(function () {
-    // POST /webhooks/stripe
-    console.log(this.request);
-    console.log(this.request.body);
-    this.response.end("Got you")
+    var user   = this.params.id,
+    	card   = this.params.cardId,
+      query  = this.request.query,
+      data = this.request.body
+      fields = {};
+  		// console.log(user, card, data);
+     if(user && card && data){
+     	userCards.update({ $and: [ { user_id:user }, {parent_id: card}, {is_selected: true} ] }, { $set: { is_selected: false } });
+     	userCards.insert({user_id:user,cardTitle: data.title,has_children: false,is_selected:true,parent_id:card,createdAt:Date.now()});
+    	this.response.statusCode = 200;
+	  	this.response.end( "Valid details" ); 	
+     }else{
+     	this.response.statusCode = 403;
+	  	this.response.end( "Ivalid data" );
+     }
+	  
   })
   .put(function () {
     // PUT /webhooks/stripe
