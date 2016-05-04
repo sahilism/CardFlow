@@ -3,3 +3,4 @@ App.info({
   name: 'CardFlow',
   version: "0.0.1"
 });
+App.setPreference('SplashScreen', 'CDVSplashScreen')
