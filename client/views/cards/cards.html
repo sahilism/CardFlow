@@ -60,7 +60,7 @@
 </template>
 
 <template name="displayCard">
-	<div class="card" style="{{#if is_selected}}background:lightyellow;{{/if}};position:relative;">
+	<div class="card {{#if color}}{{color}}{{/if}}" style="{{#if is_selected}}background:lightyellow;{{/if}};position:relative;">
 	 	<div class="" data-toggle="dropdown" aria-expanded="true" id="card-dd-{{_id}}" style="height: 34px;width: 14px;float: left;padding: 0px;margin: 0px;cursor:pointer;"><i class="fa fa-sort-desc fa-sm dropdown-toggle sort" style="opacity:0;"></i></div>
 		<ul class="dropdown-menu card-menu-list" id="card-menu-dd-{{_id}}" role="menu" aria-labelledby="dropdownMenu1">
 			{{#if is_completed}}
@@ -68,6 +68,18 @@
 			{{else}}
 	    	<li role="presentation" class="dp-card" id="dpMarkAsCompl"><a role="menuitem" tabindex="-1" href="#"><i class="fa fa-check card-menu-icons"></i>Mark as completed</a></li>
 	    {{/if}}
+      <li class="divider"></li>
+      <li role="presentation" class="dp-card">
+        <a role="menuitem" tabindex="-1" href="#" id="toggleLabel">
+          <i class="fa fa-tag card-menu-icons"></i>Label
+        </a>
+        <div class="label-div-{{_id}} width-100pc pad-l-10 marg-t-10" style="display: none;">
+          <div class="notes-btns-div width-90pc">
+            <button class="btn btn-sm btn-default label-btn bg-red pull-left" id="labelRed"></button>
+            <button class="btn btn-sm btn-success label-btn bg-blue pull-right" id="labelBlue"></button>
+          </div>
+        </div>
+      </li>
 	    <li class="divider"></li>
     	<li role="presentation" class="dp-card">
     		<a role="menuitem" tabindex="-1" href="#" id="editNotes">

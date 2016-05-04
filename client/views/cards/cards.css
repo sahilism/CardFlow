@@ -128,3 +128,21 @@ margin-right:10px;
 .card-details li{
   margin-bottom: 10px
 }
+.label-btn{
+  width: 60px;
+  height: 30px;
+}
+.bg-red, .bg-red:focus, .bg-red:hover, .bg-red:active{
+  background-color: red;
+}
+.bg-blue, .bg-blue:focus, .bg-blue:hover, .bg-blue:active{
+  background-color: blue;
+}
+.border-red{
+  border-left-color: red !important;
+  border-left-width: 2px !important;
+}
+.border-blue{
+  border-left-color: blue !important;
+  border-left-width: 2px !important;
+}

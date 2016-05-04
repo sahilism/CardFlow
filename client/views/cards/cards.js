@@ -526,7 +526,18 @@ Template.displayCard.events({
 		var self = this;
 		var res = $(".notes-"+self._id).val();
 		userCards.update({ _id: self._id}, { $set: { notes: res } });
-	},300)
+	},300),
+	'click #toggleLabel': function(e, t){
+		e.preventDefault();
+		$(".label-div-"+this._id).toggle();
+		e.stopPropagation();
+	},
+	'click #labelBlue': function(e, t){
+		userCards.update({ _id: this._id}, {$set: { color: 'border-blue' }});
+	},
+	'click #labelRed': function(e, t){
+		userCards.update({ _id: this._id}, {$set: { color: 'border-red' }});
+	}
 });
 
 var moveCard = function(source, dest){

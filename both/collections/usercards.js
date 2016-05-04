@@ -51,5 +51,10 @@ Schemas.userCards = new SimpleSchema({
         label: "Notes",
         optional: true
     },
+    color: {
+        type: String,
+        label: "Notes",
+        optional: true
+    },
 });
 userCards.attachSchema(Schemas.userCards)
