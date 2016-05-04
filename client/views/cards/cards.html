@@ -70,15 +70,22 @@
 	    {{/if}}
       <li class="divider"></li>
       <li role="presentation" class="dp-card">
-        <a role="menuitem" tabindex="-1" href="#" id="toggleLabel">
-          <i class="fa fa-tag card-menu-icons"></i>Label
-        </a>
-        <div class="label-div-{{_id}} width-100pc pad-l-10 marg-t-10" style="display: none;">
-          <div class="notes-btns-div width-90pc">
-            <button class="btn btn-sm btn-default label-btn bg-red pull-left" id="labelRed"></button>
-            <button class="btn btn-sm btn-success label-btn bg-blue pull-right" id="labelBlue"></button>
+        {{#if color}}
+          <a role="menuitem" tabindex="-1" href="#" id="removeLabel">
+            <i class="fa fa-tag card-menu-icons"></i>Remove label
+          </a>
+        {{else}}
+          <a role="menuitem" tabindex="-1" href="#" id="toggleLabel">
+            <i class="fa fa-tag card-menu-icons"></i>Label
+          </a>
+          <div class="label-div-{{_id}} width-100pc pad-l-10 marg-t-10" style="display: none;">
+            <div class="notes-btns-div width-90pc">
+              <button class="btn btn-sm btn-default label-btn bg-red pull-left" id="labelRed"></button>
+              <button class="btn btn-sm btn-success label-btn bg-blue pull-right" id="labelBlue"></button>
+            </div>
           </div>
-        </div>
+          
+        {{/if}}
       </li>
 	    <li class="divider"></li>
     	<li role="presentation" class="dp-card">

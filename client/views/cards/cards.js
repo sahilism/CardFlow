@@ -537,6 +537,9 @@ Template.displayCard.events({
 	},
 	'click #labelRed': function(e, t){
 		userCards.update({ _id: this._id}, {$set: { color: 'border-red' }});
+	},
+	'click #removeLabel': function(){
+		userCards.update({ _id: this._id}, {$unset: { color: '' }});
 	}
 });
 
