@@ -115,12 +115,36 @@ Router.route('/webhook/:id/:cardId', { where: 'server' })
 	console.log(user, card, data);
  	if(user && card && data){
  		userCards.update({ $and: [ { user_id:user }, {parent_id: card}, {is_selected: true} ] }, { $set: { is_selected: false } });
- 	userCards.insert({user_id:user,cardTitle: data.text,has_children: false,is_selected:true,parent_id:card,createdAt:Date.now()});
-	this.response.statusCode = 200;
-	this.response.end( "Valid details" ); 	
- }else{
- 	this.response.statusCode = 403;
-	this.response.end( "Ivalid data" );
- }
+	 	userCards.insert({user_id:user,cardTitle: data.text,has_children: false,is_selected:true,parent_id:card,createdAt:Date.now()});
+		this.response.statusCode = 200;
+		this.response.end( "Valid details" ); 	
+	 }else{
+	 	this.response.statusCode = 403;
+		this.response.end( "Ivalid data" );
+	 }
   
+})
+
+Router.route('/add/:id/:cardId', { where: 'server' })
+.get(function () {
+	var user   = this.params.id,
+  	card   = this.params.cardId,
+    query  = this.request.query    
+	// console.log(user, card, query);
+	if(user && card && query){
+ 		userCards.update({ $and: [ { user_id:user }, {parent_id: card}, {is_selected: true} ] }, { $set: { is_selected: false } });
+ 		if(query.title){
+ 			var cardTitle = query.title +" - "+query.url;
+ 		}else{
+ 			var cardTitle = query.url;
+ 		}
+	 	userCards.insert({user_id:user,cardTitle: cardTitle,has_children: false,is_selected:true,parent_id:card,createdAt:Date.now()});
+	 	var alertMsg = "alert('successfully added!');";
+	 }else{
+	 	var alertMsg = "alert('Invalid Data!');";
+	 }
+
+	this.response.statusCode = 200;
+	this.response.setHeader("Content-Type", "application/javascript");
+	this.response.end(alertMsg); 	
 })
