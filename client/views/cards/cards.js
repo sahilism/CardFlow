@@ -38,6 +38,13 @@ Template.cards.onRendered(function () {
 	 $("[data-toggle='tooltip']").tooltip();
 });
 Template.cards.helpers({
+	bookmarkletCode: function(){
+		// console.log(this);
+		// var str = "javascript:(function(){location.href='http://localhost:4000/add/"+Meteor.userId()+"/"+this._id+"?url='+encodeURIComponent(location.href)+'&title='+encodeURIComponent(document.title);})();";
+		// var str = "javascript:(function(){var recURL='http://localhost:4000/add/"+Meteor.userId()+"/"+this._id+"?url='+encodeURIComponent(location.href)+'&title='+encodeURIComponent(document.title);document.body.appendChild(document.createElement('script')).src=recURL;})();";
+		var str = "javascript:(function(){window.open('http://cardflow.com/');})();";
+		return str;
+	},
 	directChildren: function(){
 		return userCards.find({ parent_id: this._id}).count();
 	},

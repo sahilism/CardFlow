@@ -23,3 +23,7 @@
 //      console.log(notification.message);
 //    });
 // )}
+
+Meteor.startup(function () {
+  Blaze._allowJavascriptUrls()
+});
