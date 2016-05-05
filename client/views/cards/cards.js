@@ -41,7 +41,7 @@ Template.cards.helpers({
 	bookmarkletCode: function(){
 		// console.log(this);
 		// var str = "javascript:(function(){location.href='http://localhost:4000/add/"+Meteor.userId()+"/"+this._id+"?url='+encodeURIComponent(location.href)+'&title='+encodeURIComponent(document.title);})();";
-		var str = "javascript:(function(){var recURL='http://localhost:4000/add/"+Meteor.userId()+"/"+this._id+"?url='+encodeURIComponent(location.href)+'&title='+encodeURIComponent(document.title);document.body.appendChild(document.createElement('script')).src=recURL;})();";
+		var str = "javascript:(function(){var recURL='http://www.cardflow.com/add/"+Meteor.userId()+"/"+this._id+"?url='+encodeURIComponent(location.href)+'&title='+encodeURIComponent(document.title);document.body.appendChild(document.createElement('script')).src=recURL;})();";
 		// var str = "javascript:(function(){window.open('http://cardflow.com/');})();";
 		return str;
 	},
@@ -422,7 +422,7 @@ Template.displayCard.events({
 			e.preventDefault();
 		  Session.set('selectedCard', self._id);
 			$("#showCardInfo").modal('show');
-		  
+		  bindCopyEvent();
 		  e.stopPropagation();
 		  return;
 		}
@@ -465,6 +465,8 @@ Template.displayCard.events({
 		var self = this;
 		Session.set('selectedCard', self._id);
 		$("#showCardInfo").modal('show');
+
+		bindCopyEvent();
 	},
 	'click #moveCard': function(e, t){
 		e.preventDefault();
@@ -669,4 +671,26 @@ getMergeNestedChildIds = function(id){
     }
     return id;
   }
+}
+
+function bindCopyEvent(){
+	var copyTextareaBtn = document.querySelector('#copyBooklet');
+	copyTextareaBtn.addEventListener('click', function(event) {
+	  var copyTextarea = document.querySelector('.bookletInfo');
+	  copyTextarea.select();
+
+	  try {
+	    var successful = document.execCommand('copy');
+	    if(successful){
+	    	toastr.success("Booklet copied.")
+	    }else{
+	    	toastr.success("Cannot copy booklet.")
+	    }
+	    // var msg = successful ? 'successful' : 'unsuccessful';
+	    // console.log('Copying text command was ' + msg);
+	  } catch (err) {
+	    // console.log('Oops, unable to copy');
+	    toastr.success("Cannot copy booklet.")
+	  }
+	});
 }

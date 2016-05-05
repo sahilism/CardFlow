@@ -46,7 +46,21 @@
 									WebHook: <input type="text" class="" style="width: 200px;display: inline-block !important;" id="webhook" value="{{webhook}}">
 								</span>
 							</li>
-              <li>Bookmarklet: <a href="{{bookmarkletCode}}" class="cursor-p">Add this to bookmark</a></li>
+              <!-- <li>Bookmarklet: <a href="{{bookmarkletCode}}" class="cursor-p">Add this to bookmark</a></li> -->
+              <li>
+                <!-- Bookmarklet: 
+                <input type="text" class="bookletInfo" style="display:none;" value="{{bookmarkletCode}}">
+                <a href="{{bookmarkletCode}}" class="cursor-p">Add this to bookmark</a>
+                <i class="fa fa-clipboard cursor-p" id="copyBooklet"></i> -->
+                <span class="visible-md visible-lg visible-sm">
+                  Bookmarklet:  <input type="text" class="bookletInfo" style="width: 400px;display: inline-block !important;" value="{{bookmarkletCode}}">
+                  <i class="fa fa-clipboard cursor-p" id="copyBooklet"></i>
+                </span>
+                <span class="visible-xs">
+                  Bookmarklet: <input type="text" class="bookletInfo" style="width: 150px;display: inline-block !important;" value="{{bookmarkletCode}}">
+                  <i class="fa fa-clipboard cursor-p" id="copyBooklet"></i>
+                </span>
+              </li>
 						</ul>
 					</div>
         {{/with}}
