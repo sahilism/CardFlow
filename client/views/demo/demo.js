@@ -165,8 +165,8 @@ Template.demo.events({
 			}
 			else{
 				var count=demoCards.find({session_id: Session.get("sessionid")}).count();
-				if(count > 1000){
-					toastr.error("You have reached maximum number of cards: 1000");
+				if(count > 10000){
+					toastr.error("You have reached maximum number of cards: 10000");
 				}
 				else{
 					if(connectionStatus()){
@@ -190,8 +190,8 @@ Template.demo.events({
 		}
 		if(e.keyCode === 13){
 			var count=demoCards.find({session_id: Session.get("sessionid")}).count();
-			if(count > 1000){
-				toastr.error("You have reached maximum number of cards: 1000");
+			if(count > 10000){
+				toastr.error("You have reached maximum number of cards: 10000");
 			}
 			else{
 				if(connectionStatus()){
@@ -233,8 +233,8 @@ Template.demo.events({
 		var id=this.id;
 		if(id === tmpl.data.id){
 			var count=demoCards.find({session_id: Session.get("sessionid")}).count();
-			if(count > 1000){
-				toastr.error("You have reached maximum number of cards: 1000");
+			if(count > 10000){
+				toastr.error("You have reached maximum number of cards: 10000");
 			}
 			else{
 			 	if(connectionStatus()){

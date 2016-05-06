@@ -122,8 +122,8 @@ Template.cards.events({
 		var id=this.id;
 		if(id === tmpl.data.id){
 			var count=userCards.find({user_id:Meteor.userId()}).count();
-			if(count > 1000){
-				toastr.error("You have reached maximum number of cards: 1000");
+			if(count > 10000){
+				toastr.error("You have reached maximum number of cards: 10000");
 			}
 			else{
 			 	if(connectionStatus()){
@@ -383,8 +383,8 @@ Template.displayCard.events({
 			}
 			else{
 				var count=userCards.find({user_id:Meteor.userId()}).count();
-				if(count > 1000){
-					toastr.error("You have reached maximum number of cards: 1000");
+				if(count > 10000){
+					toastr.error("You have reached maximum number of cards: 10000");
 				}
 				else{
 					if(connectionStatus()){
@@ -429,8 +429,8 @@ Template.displayCard.events({
 		// enter
 		if(e.keyCode === 13){
 			var count=userCards.find({user_id:Meteor.userId()}).count();
-			if(count > 1000){
-				toastr.error("You have reached maximum number of cards: 1000");
+			if(count > 10000){
+				toastr.error("You have reached maximum number of cards: 10000");
 			}
 			else{
 				if(connectionStatus()){
