@@ -674,23 +674,26 @@ getMergeNestedChildIds = function(id){
 }
 
 function bindCopyEvent(){
-	var copyTextareaBtn = document.querySelector('#copyBooklet');
-	copyTextareaBtn.addEventListener('click', function(event) {
-	  var copyTextarea = document.querySelector('.bookletInfo');
-	  copyTextarea.select();
+	Meteor.setTimeout(function () {
+		var copyTextareaBtn = document.querySelector('#copyBooklet');
+		copyTextareaBtn.addEventListener('click', function(event) {
+		  var copyTextarea = document.querySelector('.bookletInfo');
+		  copyTextarea.select();
 
-	  try {
-	    var successful = document.execCommand('copy');
-	    if(successful){
-	    	toastr.success("Booklet copied.")
-	    }else{
-	    	toastr.success("Cannot copy booklet.")
-	    }
-	    // var msg = successful ? 'successful' : 'unsuccessful';
-	    // console.log('Copying text command was ' + msg);
-	  } catch (err) {
-	    // console.log('Oops, unable to copy');
-	    toastr.success("Cannot copy booklet.")
-	  }
-	});
+		  try {
+		    var successful = document.execCommand('copy');
+		    if(successful){
+		    	toastr.success("Booklet copied.")
+		    }else{
+		    	toastr.error("Cannot copy booklet.")
+		    }
+		    // var msg = successful ? 'successful' : 'unsuccessful';
+		    // console.log('Copying text command was ' + msg);
+		  } catch (err) {
+		    // console.log('Oops, unable to copy');
+		    toastr.success("Cannot copy booklet.")
+		  }
+		});
+	}, 1000);
+	
 }

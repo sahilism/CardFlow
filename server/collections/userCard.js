@@ -5,8 +5,8 @@ userCards.allow({
 				userCards.update({_id:doc.parent_id}, {$set: {has_children: true}});
 			}
 			if(_.has(doc,"user_id")){
-				if(userCards.find({user_id:doc.user_id}).count() > 1000){
-					throw new Meteor.Error(401, 'You have reached maximum number of cards: 1000');
+				if(userCards.find({user_id:doc.user_id}).count() > 10000){
+					throw new Meteor.Error(401, 'You have reached maximum number of cards: 10000');
 					return false;
 				}
 			}
