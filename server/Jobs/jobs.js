@@ -41,7 +41,7 @@ SyncedCron.add({
       Logs.insert({title: "Sanity check violation",desc:"No orphan cards job started.",timestamp: Date.now()});
       userCards.find().forEach(function (card) {
         var isParentExists= userCards.findOne({_id: card.parent_id});
-      	if(!isParentExists && (card.parent_id !== "root") ){
+      	if(!isParentExists && (card.parent_id !== "root" && card.parent_id !== "inbox") ){
             Logs.insert({title: "Sanity check violation",desc:"Card parent id doesn't exists and the card is not a root",user:card.user_id,timestamp: Date.now(),card_id: card._id});
            var ssid={card_id:card._id};
            var cardid=card._id;

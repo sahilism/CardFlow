@@ -7,6 +7,11 @@ Template.home.events({
 		e.preventDefault();
 		$(".nav-search-div").toggle();
 		e.stopPropagation();
+	},
+	'click #toggleInbox': function(e, t){
+		e.preventDefault();
+		$(".inbox-div").toggle();
+		e.stopPropagation();
 	}
 });
 Template.home.onRendered(function(){
@@ -94,6 +99,9 @@ Template.navbar.helpers({
 	},
 	homePage: function(){
 		return Router.current().route.getName() === "home"
+	},
+	inboxCards: function(){
+		return userCards.find({ $and: [ { user_id: Meteor.userId() }, { parent_id: 'inbox' } ] }, { sort: { createdAt: -1 } });
 	}
 });
 
