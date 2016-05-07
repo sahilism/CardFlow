@@ -549,7 +549,13 @@ Template.displayCard.events({
 	},
 	'click #removeLabel': function(){
 		userCards.update({ _id: this._id}, {$unset: { color: '' }});
-	}
+	},
+	'click #labelOrange': function(e, t){
+		userCards.update({ _id: this._id}, {$set: { color: 'border-orange' }});
+	},
+	'click #label4CAF50': function(e, t){
+		userCards.update({ _id: this._id}, {$set: { color: 'border-4CAF50' }});
+	},
 });
 
 var moveCard = function(source, dest){

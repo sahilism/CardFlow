@@ -138,11 +138,26 @@ margin-right:10px;
 .bg-blue, .bg-blue:focus, .bg-blue:hover, .bg-blue:active{
   background-color: blue;
 }
+.bg-orange, .bg-orange:focus, .bg-orange:hover, .bg-orange:active{
+  background-color: orange;
+}
+
+.bg-4CAF50, .bg-4CAF50:focus, .bg-4CAF50:hover, .bg-4CAF50:active{
+  background-color: #4CAF50;
+}
 .border-red{
   border-left-color: red !important;
   border-left-width: 2px !important;
 }
 .border-blue{
   border-left-color: blue !important;
+  border-left-width: 2px !important;
+}
+.border-orange{
+  border-left-color: orange !important;
+  border-left-width: 2px !important;
+}
+.border-4CAF50{
+  border-left-color: #4CAF50 !important;
   border-left-width: 2px !important;
 }
