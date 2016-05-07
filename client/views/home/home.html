@@ -54,20 +54,34 @@
                   </div>
                 </li>
                 <li class="divider"></li>
-                <!-- <li class="li-item searh-item">
-                  <a href="#" id="toggleNavSearch">
-                    <i class="fa fa-inbox"></i><span>&nbsp;&nbsp;Inbox</span>  
+                <li class="li-item searh-item">
+                  <a href="#" id="toggleInbox">
+                    <i class="fa fa-inbox"></i><span>&nbsp;&nbsp;Inbox ({{inboxCount}})</span>  
                   </a>
                   <div class="inbox-div" style="display: none;">
-                    <input type="text" id="searchCards" class="marg-l-10px marg-t-10px" placeholder="Start typing...">
-                    <div class="marg-t-10 marg-l-10px">
+                    
+                    <div class="marg-t-10 marg-l-10px inbox-cards">
                       {{#each inboxCards}}
-                        <div class="cursor-p pad-3 font-12" id="">{{cardTitle}}</div>
+                        <div class="cursor-p pad-3 font-12 toggleInboxCardOptions" id="">{{cardTitle}}</div>
+                        <div class="inbox-card-div inbox-card-{{_id}}" style="display: none;">
+                          <ul class="inbox-list">
+                            <li class="font-12 cursor-p pad-t-5 showInboxSearchDiv">Send this to...
+                            <div class="inbox-card-search ib-c-s-{{_id}}" style="display: none;">
+                              <input type="text" id="searchCards" class="marg-t-10px" placeholder="Start typing...">
+                              {{#each navSearchResults}}
+                                <div class="cursor-p pad-3 font-12" id="addToCard">{{cardTitle}}</div>
+                              {{/each}}
+                            </div>
+                            </li>
+                            <li class="font-12 cursor-p pad-t-5" id="setAsRootCard">Make this a root card</li>
+                            <li class="font-12 cursor-p pad-t-5" id="deleteCard">Delete</li>
+                          </ul>
+                        </div>
                       {{/each}}
                     </div>
                   </div>
                 </li>
-                <li class="divider"></li> -->
+                <li class="divider"></li>
               {{/if}}
               <li class="li-item">
                 <a href="/account">

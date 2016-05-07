@@ -102,6 +102,12 @@ Template.navbar.helpers({
 	},
 	inboxCards: function(){
 		return userCards.find({ $and: [ { user_id: Meteor.userId() }, { parent_id: 'inbox' } ] }, { sort: { createdAt: -1 } });
+	},
+	inboxCount: function(){
+		return userCards.find({ $and: [ { user_id: Meteor.userId() }, { parent_id: 'inbox' } ] }).count();
+	},
+	inboxSearchResults: function(e, t){
+
 	}
 });
 
@@ -140,5 +146,38 @@ Template.navbar.events({
 			$("#"+self._id).focus();
 		}, 500);
 		$('#navDropdown').removeClass('open');
+	},
+	'click #addToCard': function(e, t){
+		var self = this;
+		var card = t.dataDict.get('selectedInboxCard');
+		if(!card){
+			return;
+		}
+		userCards.update({ _id: card}, {$set: { parent_id: self._id }});
+		t.dataDict.set('searchResults', [])
+		$("#searchCards").val("");
+		selectRootId(self._id);
+	},
+	'click #setAsRootCard': function(e, t){
+		var self = this;
+		userCards.update({ _id: self._id}, {$set: { parent_id: "root" }});
+		t.dataDict.set('searchResults', [])
+		selectRootId(self._id);
+	},
+	'click #deleteCard': function(e, t){
+		var self = this;
+		userCards.remove({ _id: self._id});
+	},
+	'click .toggleInboxCardOptions': function(){
+		$(".inbox-card-div").css('display', 'none');
+		$(".inbox-card-"+this._id).toggle();
+	},
+	'click .showInboxSearchDiv': function(e, t){
+		e.preventDefault();
+		$(".inbox-card-search").css('display', 'none');
+		t.dataDict.set('selectedInboxCard', this._id)
+		t.dataDict.set('searchResults', [])
+		$(".ib-c-s-"+this._id).toggle();
+		e.stopPropagation();
 	}
 });
