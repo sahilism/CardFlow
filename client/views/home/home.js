@@ -150,17 +150,19 @@ Template.navbar.events({
 	'click #addToCard': function(e, t){
 		var self = this;
 		var card = t.dataDict.get('selectedInboxCard');
-		if(!card){
+		var cardInfo = userCards.findOne({ _id: card})
+		if(!card || !cardInfo){
 			return;
 		}
-		userCards.update({ _id: card}, {$set: { parent_id: self._id }});
+
+		userCards.update({ _id: card}, {$set: { parent_id: self._id, cardTitle: cardInfo.inboxTitle }, $unset: { inboxTitle: "" } });
 		t.dataDict.set('searchResults', [])
 		$("#searchCards").val("");
 		selectRootId(self._id);
 	},
 	'click #setAsRootCard': function(e, t){
 		var self = this;
-		userCards.update({ _id: self._id}, {$set: { parent_id: "root" }});
+		userCards.update({ _id: card}, {$set: { parent_id: "root", cardTitle: self.inboxTitle }, $unset: { inboxTitle: "" } });
 		t.dataDict.set('searchResults', [])
 		selectRootId(self._id);
 	},

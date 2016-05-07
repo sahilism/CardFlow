@@ -11,6 +11,11 @@ Schemas.userCards = new SimpleSchema({
         label: "title",
         optional: true
     },
+    inboxTitle: {
+        type: String,
+        label: "title",
+        optional: true
+    },
     parent_id: {
         type: String,
         label: "parent card",
