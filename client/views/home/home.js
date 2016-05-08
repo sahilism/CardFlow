@@ -172,7 +172,7 @@ Template.navbar.events({
 		userCards.remove({ _id: self._id});
 	},
 	'click .toggleInboxCardOptions': function(){
-		$(".inbox-card-div").css('display', 'none');
+		// $(".inbox-card-div").css('display', 'none');
 		$(".inbox-card-"+this._id).toggle();
 		$(".search-card-"+this._id).focus();
 	},

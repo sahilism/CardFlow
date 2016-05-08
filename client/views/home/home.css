@@ -75,3 +75,8 @@ body {
   padding-left: 10px;
   padding-bottom: 10px;
 }
+
+#addToCard{
+	max-width: 100%;
+  word-break: break-all;
+}
