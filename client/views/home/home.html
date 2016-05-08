@@ -65,7 +65,7 @@
                         <div class="cursor-p pad-3 font-12 toggleInboxCardOptions" id="">{{inboxTitle}}</div>
                         <div class="inbox-card-div inbox-card-{{_id}}" style="display: none;">
                           <ul class="inbox-list">
-                            <li class="font-12 cursor-p pad-t-5 showInboxSearchDiv">Send this to...
+                            <li class="font-12 cursor-p pad-t-5 showInboxSearchDiv">  <i class="fa fa-paper-plane"></i> Send this to...
                             <div class="inbox-card-search ib-c-s-{{_id}}" style="display: none;">
                               <input type="text" id="searchCards" class="marg-t-10px" placeholder="Start typing...">
                               {{#each navSearchResults}}
@@ -73,8 +73,8 @@
                               {{/each}}
                             </div>
                             </li>
-                            <li class="font-12 cursor-p pad-t-5" id="setAsRootCard">Make this a root card</li>
-                            <li class="font-12 cursor-p pad-t-5" id="deleteCard">Delete</li>
+                            <li class="font-12 cursor-p pad-t-5" id="setAsRootCard"><i class="fa fa-home"></i> Make this a root card</li>
+                            <li class="font-12 cursor-p pad-t-5" id="deleteCard"><i class="fa fa-trash"></i> Delete</li>
                           </ul>
                         </div>
                       {{/each}}
