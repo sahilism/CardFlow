@@ -73,4 +73,5 @@ body {
 .inbox-list{
 	list-style: none;
   padding-left: 10px;
+  padding-bottom: 10px;
 }

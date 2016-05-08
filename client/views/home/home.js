@@ -174,6 +174,7 @@ Template.navbar.events({
 	'click .toggleInboxCardOptions': function(){
 		$(".inbox-card-div").css('display', 'none');
 		$(".inbox-card-"+this._id).toggle();
+		$(".search-card-"+this._id).focus();
 	},
 	'click .showInboxSearchDiv': function(e, t){
 		e.preventDefault();

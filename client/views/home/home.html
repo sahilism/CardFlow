@@ -40,20 +40,7 @@
                 <li class="divider"></li>
               {{/if}}
               {{#if homePage}}
-                <li class="li-item searh-item">
-                  <a href="#" id="toggleNavSearch">
-                    <i class="fa fa-search"></i><span>&nbsp;&nbsp;Search</span>  
-                  </a>
-                  <div class="nav-search-div" style="display: none;">
-                    <input type="text" id="searchCards" class="marg-l-10px marg-t-10px" placeholder="Start typing...">
-                    <div class="marg-t-10 marg-l-10px">
-                      {{#each navSearchResults}}
-                        <div class="cursor-p pad-3 font-12" id="goToCard">{{cardTitle}}</div>
-                      {{/each}}
-                    </div>
-                  </div>
-                </li>
-                <li class="divider"></li>
+                
                 <li class="li-item searh-item">
                   <a href="#" id="toggleInbox">
                     <i class="fa fa-inbox"></i><span>&nbsp;&nbsp;Inbox ({{inboxCount}})</span>  
@@ -66,8 +53,8 @@
                         <div class="inbox-card-div inbox-card-{{_id}}" style="display: none;">
                           <ul class="inbox-list">
                             <li class="font-12 cursor-p pad-t-5 showInboxSearchDiv">  <i class="fa fa-paper-plane"></i> Send this to...
-                            <div class="inbox-card-search ib-c-s-{{_id}}" style="display: none;">
-                              <input type="text" id="searchCards" class="marg-t-10px" placeholder="Start typing...">
+                            <div class="inbox-card-search ib-c-s-{{_id}}" style="display: block;">
+                              <input type="text" id="searchCards" class="marg-t-10px search-card-{{_id}}" placeholder="Start typing...">
                               {{#each navSearchResults}}
                                 <div class="cursor-p pad-3 font-12" id="addToCard">{{cardTitle}}</div>
                               {{/each}}
@@ -77,6 +64,21 @@
                             <li class="font-12 cursor-p pad-t-5" id="deleteCard"><i class="fa fa-trash"></i> Delete</li>
                           </ul>
                         </div>
+                      {{/each}}
+                    </div>
+                  </div>
+                </li>
+
+                <li class="divider"></li>
+                <li class="li-item searh-item">
+                  <a href="#" id="toggleNavSearch">
+                    <i class="fa fa-search"></i><span>&nbsp;&nbsp;Search</span>  
+                  </a>
+                  <div class="nav-search-div" style="display: none;">
+                    <input type="text" id="searchCards" class="marg-l-10px marg-t-10px" placeholder="Start typing...">
+                    <div class="marg-t-10 marg-l-10px">
+                      {{#each navSearchResults}}
+                        <div class="cursor-p pad-3 font-12" id="goToCard">{{cardTitle}}</div>
                       {{/each}}
                     </div>
                   </div>

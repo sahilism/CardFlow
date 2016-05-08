@@ -32,6 +32,15 @@ Template.cards.onRendered(function () {
 	    }, 200);
 	    e.stopPropagation();
 	  }
+	  if(e.which === 73 && e.ctrlKey) {
+	    // enter pressed
+	    e.preventDefault();
+	    $('#navDropdown').addClass('open');
+	    Meteor.setTimeout(function () {
+	    	$(".inbox-div").css('display', 'block');
+	    }, 200);
+	    e.stopPropagation();
+	  }
 	});
 
 	//tooltip
