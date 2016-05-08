@@ -156,13 +156,14 @@ Template.navbar.events({
 		}
 
 		userCards.update({ _id: card}, {$set: { parent_id: self._id, cardTitle: cardInfo.inboxTitle }, $unset: { inboxTitle: "" } });
+		userCards.update({_id: self._id}, { $set: { has_children: true } })
 		t.dataDict.set('searchResults', [])
 		$("#searchCards").val("");
 		selectRootId(self._id);
 	},
 	'click #setAsRootCard': function(e, t){
 		var self = this;
-		userCards.update({ _id: card}, {$set: { parent_id: "root", cardTitle: self.inboxTitle }, $unset: { inboxTitle: "" } });
+		userCards.update({ _id: self._id}, {$set: { parent_id: "root", cardTitle: self.inboxTitle }, $unset: { inboxTitle: "" } });
 		t.dataDict.set('searchResults', [])
 		selectRootId(self._id);
 	},
