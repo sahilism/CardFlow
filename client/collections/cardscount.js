@@ -7,8 +7,8 @@ demoCards.find().observe({
 			demoCards.update({_id:doc.parent_id}, {$set: {has_children: true}});
 		}
 		if(_.has(doc,"session_id")){
-			if(demoCards.find({session_id:doc.session_id}).count() > 1000){
-				throw new Meteor.Error(401, 'You have reached maximum number of cards: 1000');
+			if(demoCards.find({session_id:doc.session_id}).count() > 10000){
+				throw new Meteor.Error(401, 'You have reached maximum number of cards: 10000');
 				return false;
 			}
 		}
