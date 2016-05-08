@@ -43,3 +43,7 @@ standard-minifier-js
 useraccounts:iron-routing
 raix:push
 nimble:restivus
+meteorhacks:npm
+
+
+npm-container

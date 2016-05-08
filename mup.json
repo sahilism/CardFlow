@@ -2,9 +2,9 @@
   // Server authentication info
   "servers": [
     {
-      "host": "188.166.250.49",
+      "host": "128.199.150.175",
       "username": "root",
-      "password": "f5b6d8b156509790@",
+      "password": "3be6691cf843c256@",
       // or pem file (ssh based authentication)
       // WARNING: Keys protected by a passphrase are not supported
       //"pem": "~/.ssh/id_rsa"
