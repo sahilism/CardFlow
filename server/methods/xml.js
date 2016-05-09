@@ -33,3 +33,16 @@ getParentXML = function(userId, parent_id){
   }
   
 }
+
+getUserJSON  = function(userId){
+  var userJSON = [];
+  getJSONCards(userId,'root', userJSON)
+  
+}
+
+getJSONCards = function(userId, parent_id, root){
+  var allCards = userCards.find({ $and: [ { user_id: userId }, { parent_id: parent_id } ] }).fetch();
+  if(allCards.length > 0){
+    
+  }
+}

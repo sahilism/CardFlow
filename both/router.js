@@ -149,15 +149,15 @@ Router.route('/add/:id/:cardId', { where: 'server' })
 	this.response.end(alertMsg); 	
 })
 
-Router.route('/xml/:_id', {
+Router.route('/json/:_id', {
   where: 'server',
   action: function() {
   	var userId = this.params._id;
   	console.log(userId);
-  	var obj = getUserXml(userId);
-  	console.log(obj);
-  	var res = convertJsonToXml( 'cards', obj);
-    this.response.writeHead(200, {'Content-Type': 'application/xml'});
+  	var obj = getUserJSON(userId);
+  	// console.log(obj);
+  	// var res = convertJsonToXml( 'cards', obj);
+    this.response.writeHead(200, {'Content-Type': 'application/json'});
     this.response.end(res);
   }
 });
