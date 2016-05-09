@@ -148,3 +148,16 @@ Router.route('/add/:id/:cardId', { where: 'server' })
 	this.response.setHeader("Content-Type", "application/javascript");
 	this.response.end(alertMsg); 	
 })
+
+Router.route('/xml/:_id', {
+  where: 'server',
+  action: function() {
+  	var userId = this.params._id;
+  	console.log(userId);
+  	var obj = getUserXml(userId);
+  	console.log(obj);
+  	var res = convertJsonToXml( 'cards', obj);
+    this.response.writeHead(200, {'Content-Type': 'application/xml'});
+    this.response.end(res);
+  }
+});

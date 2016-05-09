@@ -171,10 +171,17 @@ Template.navbar.events({
 		var self = this;
 		userCards.remove({ _id: self._id});
 	},
-	'click .toggleInboxCardOptions': function(){
+	'click .toggleInboxCardOptions': function(e, t){
 		// $(".inbox-card-div").css('display', 'none');
 		$(".inbox-card-"+this._id).toggle();
-		$(".search-card-"+this._id).focus();
+
+		//focus on search box
+		$(".inbox-card-search").css('display', 'none');
+		t.dataDict.set('selectedInboxCard', this._id)
+		t.dataDict.set('searchResults', [])
+		$(".ib-c-s-"+this._id).toggle();
+		$(".search-card-"+this._id).focus();	
+		
 	},
 	'click .showInboxSearchDiv': function(e, t){
 		e.preventDefault();
