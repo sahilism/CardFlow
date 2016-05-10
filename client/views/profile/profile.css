@@ -28,3 +28,7 @@ span.tags
 .row-centered {
     text-align:center;
 }
+
+.pad-l-0{
+    padding-left: 0 !important;
+}
