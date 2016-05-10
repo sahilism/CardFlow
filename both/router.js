@@ -153,11 +153,10 @@ Router.route('/json/:_id', {
   where: 'server',
   action: function() {
   	var userId = this.params._id;
-  	console.log(userId);
   	var obj = getUserJSON(userId);
   	// console.log(obj);
   	// var res = convertJsonToXml( 'cards', obj);
     this.response.writeHead(200, {'Content-Type': 'application/json'});
-    this.response.end(res);
+    this.response.end(obj);
   }
 });
