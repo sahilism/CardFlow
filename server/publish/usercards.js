@@ -20,6 +20,13 @@ Meteor.publish('sanityLogs', function () {
 	return Logs.find({},{sort: {timestamp: -1},limit: 20});
 });
 
+Meteor.publish('getPathCards', function () {
+  if(this.userId){
+    var res = getPathCardsFn(this.userId);
+    return userCards.find({ _id: { $in: res }});
+  }
+  this.ready();
+});
 var subs = { };
 Meteor.publish('getUsersCardsCount',function(){
 	var subscription = this;
