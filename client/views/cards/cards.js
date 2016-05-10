@@ -565,6 +565,13 @@ Template.displayCard.events({
 	'click #label4CAF50': function(e, t){
 		userCards.update({ _id: this._id}, {$set: { color: 'border-4CAF50' }});
 	},
+	'click .appendDD': function(e, t){
+		var self = this;
+		var res = $("#card-menu-dd-"+self._id)[0];
+		if(!res){
+			Blaze.renderWithData(Template.dropdownMenu, self, t.$("#append-dd-"+self._id).get(0));
+		}
+	}
 });
 
 var moveCard = function(source, dest){
