@@ -1,0 +1,57 @@
+<template name="demoMain">
+ <nav class="navbar navbar-default navbar-fixed-top" style="box-shadow: 0px 1px 5px #bbb;border: none;min-height: 42px;height:42px">
+    <div class="col-xs-12">
+      <a href="/home" class="pull-left" style="text-decoration:none;"><h1 id="logo">CardFlow.com</h1></a>
+      <div class="nav navbar-nav navbar-right pull-right" style="margin-right:10px;margin-top:10px;">
+          <i style="color:#bbb;cursor:pointer;vertical-align:-44%;font-size:1.6em" aria-haspopup="true" aria-expanded="false" class="dropdown-toggle fa fa-cog fa-lg" data-toggle="dropdown"></i>
+ 			<ul class="dropdown-menu" style="top: 41px;border-radius: 0px;padding: 10px 0px;" role="menu">            <li><a id="createAccount" style="cursor:pointer">Signup to save cards</a></li>
+ 						<li class="divider"></li>
+ 						<li><a href="/home" style="cursor:pointer">Back to home page</a></li>
+          </ul>
+      </div>
+    </div>
+  </nav>
+	<div class="container hideonmobile" style="margin-top:50px;width:100%;position:fixed;bottom:0px;text-align:center;">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="alert alert-danger" role="alert">
+					<p>This is a demo. Please <a id="createAccount" style="cursor:pointer">signup</a> to save the cards. Or go back to <a href="/home">home page</a>.</p>
+				</div>
+			</div>
+		</div>
+	</div>
+	{{> demo id="root"}}
+</template>
+<template name="demo">
+<div class="cards-container">
+	<div class="cards-list">
+		{{#each userRootCards id}}
+		 <div class="card" style="{{#if is_selected}}background:lightyellow;{{/if}}">
+		 	<div class="" data-toggle="dropdown" aria-expanded="true"  style="height: 34px;width: 14px;float: left;padding: 0px;margin: 0px;cursor:pointer;"><i class="fa fa-sort-desc fa-sm dropdown-toggle sort" style="opacity:0;"></i></div>
+			<ul class="dropdown-menu card-menu-list" role="menu" aria-labelledby="dropdownMenu1" style="top:inherit">
+				{{#if is_completed}}
+					<li role="presentation" id="dpMarkAsUnCompl"><a role="menuitem" tabindex="-1" href="#">Mark as uncompleted</a></li>
+				{{else}}
+			    	<li role="presentation" id="dpMarkAsCompl"><a role="menuitem" tabindex="-1" href="#">Mark as completed</a></li>
+			    {{/if}}
+			    <li class="divider"></li>
+			    <li role="presentation" id="dpDelete"><a role="menuitem" tabindex="-1" href="#">Delete card</a></li>
+			</ul>
+			<div class="parent-card-div">
+	       <input type="text" id="{{_id}}" class="card-input inputtitle"  autocapitalize="none" autocorrect="off" value="{{cardTitle}}" style="{{#if is_selected}}background:lightyellow;{{/if}}
+	       {{#if is_completed}}  text-decoration: line-through;color: #DDD;{{/if}}" onfocus="this.value = this.value;">
+	        {{#if has_children}}
+	        <i style="font-size: 6px;float:right;margin-top:14px;margin-right:10px;color:#EEE" class="fa fa-circle fa-sm yellow"></i>
+	        {{/if}}
+	        </div>
+	      </div>	
+		{{/each}}
+		<input type="button" class="addCardButton" id="createRootCard" value="{{buttonText}}">
+	</div>
+	<div class="childcards-container">
+		{{#if selected_parent}}
+			{{> demo id=selected_parent}}
+		{{/if}}
+	</div>
+</div>
+</template>

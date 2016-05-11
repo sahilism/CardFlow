@@ -5,23 +5,78 @@ body {
 	font-family: 'Open Sans',
 	sans-serif; 
 	font-size:12px; 
-	background-color: #fafafa; 
+	background-color: #f6f6f6; 
 	margin:0px;
 }
 .dropdown-menu > li > a{
 	padding: 0px 10px;
 }
+.dropdown-menu > li > a > i{
+	width: 15px;
+}
 #logo{
 	  cursor: pointer;
 	  width: 180px;
 	  color: #999;
-	  font-weight: 600;
+	  /*font-weight: 600;*/
 	  font-size: 2em;
-	  //margin-left:5px;
-	  margin-top: 12px;
+	  /*margin-left:5px;*/
+	  margin-top: 9px;
 	  margin-bottom: 0px;
 	  /*float: left;*/
 }
+
+.navbar-nav {
+	min-height: 40px;
+}
+
 .navbar-nav > li {
 	max-height: 40px;
+}
+
+.card-pad{
+	padding: 0 10px;
+}
+
+.marg-t-10, .marg-t-10px{
+	margin-top: 10px;
+}
+.pad-t-10{
+	padding-top: 10px;
+}
+.pad-t-5{
+	padding-top: 5px;
+}
+.cursor-p{
+	cursor: pointer;;
+}
+
+.marg-l-5px, .marg-l-5{
+	margin-left: 5px !important;
+}
+.marg-l-10px{
+	margin-left: 10px !important;	
+}
+
+
+.width-90pc{
+	width: 90% !important;
+}
+
+.font-12{
+	font-size: 12px !important;
+}
+.inbox-cards{
+	max-height: 200px;
+  overflow-y: auto;
+}
+.inbox-list{
+	list-style: none;
+  padding-left: 10px;
+  padding-bottom: 10px;
+}
+
+#addToCard{
+	max-width: 100%;
+  word-break: break-all;
 }

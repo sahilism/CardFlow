@@ -1,3 +1,15 @@
+Template.profile.onCreated(function(){
+	Session.set('jsonData', null);
+	Meteor.call('getProfileJson', Meteor.userId(), function (error, result) {
+		if(error){
+		}else{
+			console.log(result);
+			var obj = result;
+			var data = "application/json;," + encodeURIComponent(JSON.stringify(obj, 0, 2));
+			$('<a href="data:' + data + '" download="cards.json" style="color:white;font-size: 14px;">Download JSON</a>').appendTo('.downloadDiv');
+		}
+	});
+})
 Template.profile.events({
 	'click #resetAccount': function (e,tmpl) {
 		e.preventDefault();
@@ -12,6 +24,23 @@ Template.profile.events({
 	      	toastr.error(err.message)
 	      }
 	    });
+	},
+	'click #goHome':function(){
+		Router.go('home');
+	},
+	'click #downloadJson': function(e, t){
+		Meteor.call('getProfileJson', Meteor.userId(), function (error, result) {
+			if(error){
+				toastr.error(error.reason);
+			}else{
+				var obj = result;
+				var data = "text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(obj));
+				$('<a href="data:' + data + '" download="cards.json" id="downloadAsFile">download JSON</a>').appendTo('.container');
+				Meteor.setTimeout(function () {
+					$("#downloadAsFile").click();
+				}, 500);
+			}
+		});
 	}
 });
 Template.profile.created = function () {

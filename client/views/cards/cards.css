@@ -1,17 +1,17 @@
 .card{
-  width: 300px;
+  width: 312px;
   font-size: 12px;
   line-height: 1.42857143;
   color: #777;
   background: #fff;
-  margin:2px 0px;
+  margin:0px 0px 2px 0px;
   display: block;
   height: 34px;
   border: 1px solid #f6f6f6 !important;
 }
 .card-input{
-  width:90%;
-  padding: 8px 12px 5px 12px;
+  width:86%;
+  padding: 8px 0px 5px 0px;
   border-radius:0px;
   outline: none;
   border: 0px !important;
@@ -26,7 +26,8 @@
   width: 100000px; 
 }
 .cards-list{
-  width: 302px;
+  position: relative;
+  width: 314px;
     float: left;
     margin: 0px;
     padding: 0px;
@@ -36,14 +37,127 @@
   outline: none;
   border: 1px solid #f6f6f6;
   margin-top: 0px;
-  float: right;
+  width: 312px;
   background-color: #fff;
   display: inline-block;
   cursor: pointer;
-  color: #777;
+  color: #999;
   font-size: 12px;
   padding: 6px 14px 4px 14px;
   text-decoration: none;
   margin-right: 2px;
   height: 34px;
+}
+.sort {
+  color: #DDD;
+  float: left;
+    padding-top: 6px;
+  padding-left: 2px;
+  width: 14px;
+  font-size: 1.33em;
+}
+.dp-card{
+  font-size: 12px;
+  color: #666;
+}
+.card-menu-list{
+  top:inherit;
+  position:absolute;
+  margin-top:28px;
+  box-shadow: 0px 0px 5px 0px rgba(50, 50, 50, 0.1);
+  border-radius: 0px;
+  padding:10px 0px;
+}
+
+.card-menu-icons{
+margin-right:10px;
+
+}
+
+.remind-menu{
+  list-style: none;
+  padding: 5px 0px 0px 20px;
+}
+.remind-menu > li > a {
+  padding: 0px 10px;
+  display: block;
+  padding: 3px 20px;
+  clear: both;
+  font-weight: normal;
+  line-height: 1.42857143;
+  color: #333;
+  white-space: nowrap;
+
+}
+.remind-menu > li > a:hover, .remind-menu > li > a:focus {
+  color: #262626;
+  text-decoration: none;
+  background-color: #f5f5f5;
+}
+
+@media only screen and (max-width: 480px)
+{
+.hideonmobile
+{
+  display: none;
+ } 
+}
+
+.pad-5{
+  padding: 5px !important;
+  display: block;
+}
+
+.pad-3{
+  padding: 3px !important;
+  display: block;
+}
+.width-100pc{
+  width: 100% !important;
+}
+
+.pad-l-10{
+  padding-left: 10px !important;
+}
+.notes-btns-div{
+  padding-top: 10px;
+  clear: both;
+  padding-bottom: 30px;
+  width: 95%;
+}
+.card-details li{
+  margin-bottom: 10px
+}
+.label-btn{
+  width: 60px;
+  height: 30px;
+}
+.bg-red, .bg-red:focus, .bg-red:hover, .bg-red:active{
+  background-color: red;
+}
+.bg-blue, .bg-blue:focus, .bg-blue:hover, .bg-blue:active{
+  background-color: blue;
+}
+.bg-orange, .bg-orange:focus, .bg-orange:hover, .bg-orange:active{
+  background-color: orange;
+}
+
+.bg-4CAF50, .bg-4CAF50:focus, .bg-4CAF50:hover, .bg-4CAF50:active{
+  background-color: #4CAF50;
+}
+.border-red{
+  border-left-color: red !important;
+  border-left-width: 2px !important;
+}
+.border-blue{
+  border-left-color: blue !important;
+  border-left-width: 2px !important;
+}
+.border-orange{
+  border-left-color: orange !important;
+  border-left-width: 2px !important;
+}
+.border-4CAF50{
+  border-left-color: #4CAF50 !important;
+  border-left-width: 2px !important;
 }

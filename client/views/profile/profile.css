@@ -25,3 +25,10 @@ span.tags
     font-weight: bold;
     padding: 2px 4px;
 }
+.row-centered {
+    text-align:center;
+}
+
+.pad-l-0{
+    padding-left: 0 !important;
+}

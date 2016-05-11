@@ -43,3 +43,58 @@ AccountsTemplates.configureRoute('signIn', {
 AccountsTemplates.configureRoute('signUp', {
     name: 'signup',
     path: '/signup'});
+AccountsTemplates.configureRoute('resetPwd', {
+    name: 'reset',
+    path: '/reset-password'});
+
+var mySubmitFunc = function(error, state){
+  if (!error) {
+    if (state === "signUp") {
+      var res=Session.get("creatingAccount");
+      if(res){
+        bootbox.confirm({
+            message:"Do you want to restore your demo cards or start afresh?",
+            buttons: {
+                'cancel': {
+                    label: 'Start from scratch',
+                    className: 'btn-default'
+                },
+                'confirm': {
+                    label: 'Restore demo cards',
+                    className: 'btn-primary'
+                }
+            },
+            callback:function(res){
+              if(res){
+                userCards.find({user_id: Meteor.userId()}).forEach(function (existcard) {
+                  userCards.remove({_id: existcard._id});
+                });
+                
+                demoCards.find({$and: [{session_id:Session.get("sessionid")}, {parent_id: "root"}]}).forEach(function (card) {
+                  saveCardsToserver(card,"root");
+                });
+              }
+              Meteor.subscribe('allusercards');
+            }
+        })
+      }
+    }
+  }
+};
+AccountsTemplates.configure({
+    onSubmitHook: mySubmitFunc
+});
+saveCardsToserver = function(card,pid){
+  var cardData= card;
+  card = _.omit(card, "session_id");
+  card = _.omit(card, "_id");
+  _.extend(card, {user_id: Meteor.userId(), _id: Random.id(), parent_id: pid});
+  var newId = userCards.insert(card);
+  var res=demoCards.find({parent_id: cardData._id}).count();
+  if(res > 0){
+    demoCards.find({parent_id: cardData._id}).forEach(function (childcard) {
+      saveCardsToserver(childcard,newId);
+    });
+  }
+  
+}

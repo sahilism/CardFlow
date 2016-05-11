@@ -1,21 +1,111 @@
 <template name="home">
 	{{> navbar}}
   <body>
-    {{> cards}}
+  <div style="margin-top:50px" >
+    {{> status}}
+  </div>
+    {{> cards id="root"}}
   </body>
 </template>
 <template name="navbar">
-  <nav class="navbar navbar-default navbar-fixed-top">
+  <nav class="navbar navbar-default navbar-fixed-top" style="box-shadow: 0px 1px 5px #bbb;border: none;min-height: 42px;height:42px">
     <div class="col-xs-12">
       <a href="/home" class="pull-left" style="text-decoration:none;"><h1 id="logo">CardFlow.com</h1></a>
-      <div class="nav navbar-nav navbar-right pull-right" style="margin-right:10px;margin-top:13px;">
-          <i style="color:#bbb;cursor:pointer;vertical-align:-44%;font-size:1.6em" aria-haspopup="true" aria-expanded="false" class="dropdown-toggle fa fa-cog fa-lg" data-toggle="dropdown"></i>
-          <ul class="dropdown-menu" role="menu">
-            <li><a href="/account">Account</a></li>
-            <li class="divider"></li>
-            <li><a href="/logout">Logout</a></li>
+      <ul class="nav navbar-nav navbar-right pull-right" style="margin-right:2px;margin-top:10px;">
+      {{#if reminders}}
+        <li class="dropdown" style="padding-left:5px;float:left">
+
+          <span style="color:#bbb;cursor:pointer;vertical-align:-30%;font-size:1.4em;background-color: #fff;padding: 1px 7px;color: #f00;border: 1px solid;" aria-haspopup="true" aria-expanded="false" class="dropdown-toggle fa" data-toggle="dropdown" id="dropdownMenu11"> {{remindCount}}</span>
+           <ul class="dropdown-menu" id="dropdownMenu111" style="top: 32px;left:auto;right:-48px;border-radius: 0px;position: absolute;float: right;background-color: white;-webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, .175);box-shadow: 0 6px 12px rgba(0, 0, 0, .175);border: 1px solid #ccc;width:300px;font-size:1em;" role="menu" aria-labelledby="dropdownMenu11">
+              {{#each reminders}}
+                <li style="padding:0px 0px">
+                    <a href="#" style="padding: 4px 10px;" class="sel_reminder"><span style="max-width: 250px;overflow: hidden;display: inline-block;">{{cardTitle}}</span>
+                    <span style="margin-top:2px" class="glyphicon glyphicon-remove remove_reminder pull-right"></span>
+                    </a>
+                </li>
+              {{/each}}
+           </ul>
+         </li>
+        {{/if}}
+         <li class="dropdown" id="navDropdown" style="padding-left:5px;float:left" data-toggle="dropdown">
+          <i style="color:#bbb;cursor:pointer;vertical-align:-44%;font-size:1.6em;padding-left:10px;" aria-haspopup="true" aria-expanded="false" class="dropdown-toggle fa fa-cog fa-lg" data-toggle="dropdown"></i>
+          <ul class="dropdown-menu" style="top: 32px;left:auto;right:-15px;border-radius: 0px;padding: 10px 0px;position: absolute;float: right;background-color: white;-webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, .175);box-shadow: 0 6px 12px rgba(0, 0, 0, .175);border: 1px solid #ccc;min-width: 180px;" role="menu">
+            {{#if currentUser}}
+              {{#if isAdmin}}
+                <li class="li-item">
+                  <a href="/admin">
+                    <i class="fa fa-users"></i><span>&nbsp;&nbsp;Admin</span>  
+                  </a>
+                </li>
+                <li class="divider"></li>
+              {{/if}}
+              {{#if homePage}}
+                
+                <li class="li-item searh-item">
+                  <a href="#" id="toggleInbox">
+                    <i class="fa fa-inbox"></i><span>&nbsp;&nbsp;Inbox ({{inboxCount}})</span>  
+                  </a>
+                  <div class="inbox-div" style="display: none;">
+                    
+                    <div class="marg-t-10 marg-l-10px inbox-cards">
+                      {{#each inboxCards}}
+                        <div class="cursor-p pad-3 font-12 toggleInboxCardOptions" id="">{{inboxTitle}}</div>
+                        <div class="inbox-card-div inbox-card-{{_id}}" style="display: none;">
+                          <ul class="inbox-list">
+                            <li class="font-12 cursor-p pad-t-5 showInboxSearchDiv">  <i class="fa fa-paper-plane"></i> Send this to...
+                            <div class="inbox-card-search ib-c-s-{{_id}}" style="display: none;">
+                              <input type="text" id="searchCards" class="marg-t-10px search-card-{{_id}}" placeholder="Start typing...">
+                              {{#each navSearchResults}}
+                                <div class="cursor-p pad-3 font-12" id="addToCard">{{cardTitle}}</div>
+                              {{/each}}
+                            </div>
+                            </li>
+                            <li class="font-12 cursor-p pad-t-5" id="setAsRootCard"><i class="fa fa-home"></i> Make this a root card</li>
+                            <li class="font-12 cursor-p pad-t-5" id="deleteCard"><i class="fa fa-trash"></i> Delete</li>
+                          </ul>
+                        </div>
+                      {{/each}}
+                    </div>
+                  </div>
+                </li>
+
+                <li class="divider"></li>
+                <li class="li-item searh-item">
+                  <a href="#" id="toggleNavSearch">
+                    <i class="fa fa-search"></i><span>&nbsp;&nbsp;Search</span>  
+                  </a>
+                  <div class="nav-search-div" style="display: none;">
+                    <input type="text" id="searchCards" class="marg-l-10px marg-t-10px" placeholder="Start typing...">
+                    <div class="marg-t-10 marg-l-10px">
+                      {{#each navSearchResults}}
+                        <div class="cursor-p pad-3 font-12" id="goToCard">{{cardTitle}}</div>
+                      {{/each}}
+                    </div>
+                  </div>
+                </li>
+                <li class="divider"></li>
+              {{/if}}
+              <li class="li-item">
+                <a href="/account">
+                  <i class="fa fa-user"></i><span>&nbsp;&nbsp;Account</span>  
+                </a>
+              </li>
+              <li class="divider"></li>
+              <li class="li-item">
+                <a href="/help">
+                  <i class="fa fa-question"></i><span>&nbsp;&nbsp;Help</span>  
+                </a>
+              </li>
+              <li class="divider"></li>
+              <li class="li-item">
+                <a href="/logout">
+                  <i class="fa fa-sign-out"></i><span>&nbsp;&nbsp;Logout</span>  
+                </a>
+              </li>
+            {{/if}}
           </ul>
-      </div>
+          </li>
+      </ul>
     </div>
   </nav>
 </template>

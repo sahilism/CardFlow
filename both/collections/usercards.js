@@ -11,6 +11,11 @@ Schemas.userCards = new SimpleSchema({
         label: "title",
         optional: true
     },
+    inboxTitle: {
+        type: String,
+        label: "title",
+        optional: true
+    },
     parent_id: {
         type: String,
         label: "parent card",
@@ -31,9 +36,29 @@ Schemas.userCards = new SimpleSchema({
         label: "has childred",
         optional: true
     },
-    is_root:{
+    is_completed:{
         type: Boolean,
-        label: "Is root card",
+        label: "Is Completed",
+        optional: true
+    },
+    is_pinned:{
+        type: Boolean,
+        label: "Is pinned",
+        optional: true
+    },
+    remind_at: {
+        type: String,
+        label: "Remind in",
+        optional: true
+    },
+    notes: {
+        type: String,
+        label: "Notes",
+        optional: true
+    },
+    color: {
+        type: String,
+        label: "Notes",
         optional: true
     },
 });
