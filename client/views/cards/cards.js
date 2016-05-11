@@ -1,4 +1,6 @@
 var cardsDict =  new ReactiveDict();
+var tempDict = new ReactiveDict();
+
 connectionStatus = function(){
 	 if(Meteor.status().connected){
 	    return true;
@@ -216,30 +218,6 @@ Template.cards.events({
 			}
 		})
 	},
-	'input #searchCards': function(e, t){
-		var self  = this;
-		var text = e.currentTarget.value;
-		// console.log(self);
-		if(self.parent_id === "root"){
-			cardsDict.set('associateIds', [self._id])	
-		}else{
-			cardsDict.set('associateIds', [self._id, self.parent_id])
-		}
-		cardsDict.set('searchText', text);
-		var query = [];
-		if(text){
-			query.push({ cardTitle: {$regex: text, $options: 'i'} });
-		}
-		getMoveNestedChildIds(self._id);
-		var aIds = cardsDict.get('associateIds');
-		// console.log(aIds, aIds.length);
-		query.push({ _id: { $nin: aIds } });
-
-		var findQuery = {};
-		findQuery['$and'] = query;
-		var resCards = userCards.find(findQuery, { limit: 5 }).fetch();
-		cardsDict.set('searchResults', resCards)
-	},
 	'click #toggleSearch': function(e, t){
 		cardsDict.set('searchResults', []);
 		var id = this._id;
@@ -313,6 +291,7 @@ Template.displayCard.events({
 			return;
 		}
 		if(e.ctrlKey && e.keyCode === 77){
+			// ctrl+m
 			e.preventDefault();
 			if(this.parent_id === Template.parentData(2).id){
 				if(this.is_completed){
@@ -326,6 +305,7 @@ Template.displayCard.events({
 			return;
 		}
 		else if(e.ctrlKey && e.keyCode === 80){
+			// ctrl+p
 			e.preventDefault();
 			if(this.parent_id === Template.parentData(2).id){
 				if(this.is_pinned){
@@ -339,6 +319,7 @@ Template.displayCard.events({
 			return;
 		}
 		else if(e.ctrlKey && e.keyCode === 68){
+			// ctrl+d
 			e.preventDefault();
 			var count=userCards.find({parent_id: this._id}).count();
 			if(count > 0){
@@ -371,6 +352,7 @@ Template.displayCard.events({
 			return;
 		}
 		else if(e.shiftKey && e.keyCode === 9){
+			// shift+tab
 			if(_.has(this,"parent_id")){
 				$("#"+this.parent_id).parent().find("input[type=text]").focus()[0];
 			}
@@ -378,6 +360,7 @@ Template.displayCard.events({
 			return;
 		}
 		else if(e.keyCode === 9){
+			// tab
 			var hasParent=userCards.find({parent_id:this._id}).fetch();
 			if(hasParent.length > 0){
 				var selected_card=userCards.findOne({$and: [{parent_id:this._id},{is_selected: true}]});
@@ -416,7 +399,14 @@ Template.displayCard.events({
 			e.preventDefault();
 			return;
 		}else if(e.ctrlKey && e.keyCode === 83){
+			// ctrl + s
 		  var ddId = "#card-dd-"+self._id;
+		  // console.log(ddId);
+		  var res = $("#card-menu-dd-"+self._id)[0];
+			if(res){
+				$("#card-menu-dd-"+self._id).remove();
+			}
+			Blaze.renderWithData(Template.dropdownMenu, self, tmpl.$("#append-dd-"+self._id).get(0));
 		  Meteor.setTimeout(function () {
 		  	$(ddId).click();
 				$(".mtt-"+self._id).click();
@@ -428,6 +418,7 @@ Template.displayCard.events({
 		  e.stopPropagation();
 		  return;
 		}if(e.ctrlKey && e.keyCode === 73){
+			// ctrl+i
 			e.preventDefault();
 		  Session.set('selectedCard', self._id);
 			$("#showCardInfo").modal('show');
@@ -568,9 +559,10 @@ Template.displayCard.events({
 	'click .appendDD': function(e, t){
 		var self = this;
 		var res = $("#card-menu-dd-"+self._id)[0];
-		if(!res){
-			Blaze.renderWithData(Template.dropdownMenu, self, t.$("#append-dd-"+self._id).get(0));
+		if(res){
+			$("#card-menu-dd-"+self._id).remove();
 		}
+		Blaze.renderWithData(Template.dropdownMenu, self, t.$("#append-dd-"+self._id).get(0));
 	}
 });
 
@@ -716,6 +708,56 @@ function bindCopyEvent(){
 		    toastr.success("Cannot copy booklet.")
 		  }
 		});
-	}, 1000);
-	
+	}, 1000);	
 }
+
+
+Template.dropdownMenu.onCreated(function(){
+});
+
+Template.dropdownMenu.helpers({
+	moveSearchResults: function(){
+		return cardsDict.get('searchResults') || [];
+	},
+	mergeSearchResults: function(){
+		return cardsDict.get('mergeSearchResults') || [];
+	},
+	notRoot: function(){
+		return this.parent_id !== "root";
+	}
+});
+
+Template.dropdownMenu.onRendered(function(){
+
+})
+
+Template.dropdownMenu.events({
+	'input #searchCards': function(e, t){
+		var self  = this;
+		var text = e.currentTarget.value;
+		// console.log(self);
+		if(self.parent_id === "root"){
+			cardsDict.set('associateIds', [self._id])	
+		}else{
+			cardsDict.set('associateIds', [self._id, self.parent_id])
+		}
+		cardsDict.set('searchText', text);
+		var query = [];
+		if(text){
+			query.push({ cardTitle: {$regex: text, $options: 'i'} });
+		}
+		getMoveNestedChildIds(self._id);
+		var aIds = cardsDict.get('associateIds');
+		// console.log(aIds, aIds.length);
+		query.push({ _id: { $nin: aIds } });
+
+		var findQuery = {};
+		findQuery['$and'] = query;
+		var resCards = userCards.find(findQuery, { limit: 5 }).fetch();
+		cardsDict.set('searchResults', resCards)
+	},
+});
+
+Template.dropdownMenu.onDestroyed(function(){
+
+});
