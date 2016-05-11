@@ -263,9 +263,6 @@ Template.cards.events({
 		cardsDict.set('mergeSearchResults', resCards)
 	},
 });
-Template.childcardstmpl.helpers({
-});	
-
 Template.displayCard.helpers({
 	moveSearchResults: function(){
 		return cardsDict.get('searchResults') || [];
