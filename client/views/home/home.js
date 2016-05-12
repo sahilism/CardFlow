@@ -104,7 +104,10 @@ Template.navbar.helpers({
 		return res;
 	},
 	homePage: function(){
-		return Router.current().route.getName() === "home"
+		if(Router.current()){
+			return Router.current().route.getName() === "home"	
+		}
+		return false;
 	},
 	inboxCards: function(){
 		return userCards.find({ $and: [ { user_id: Meteor.userId() }, { parent_id: 'inbox' } ] }, { sort: { createdAt: -1 } });
