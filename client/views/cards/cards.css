@@ -161,3 +161,6 @@ margin-right:10px;
   border-left-color: #4CAF50 !important;
   border-left-width: 2px !important;
 }
+.break-word{
+  word-wrap: break-word;
+}

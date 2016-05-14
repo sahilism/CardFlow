@@ -47,3 +47,4 @@ nimble:restivus
 
 npm-container
 nspangler:autoreconnect
+kadira:login-state

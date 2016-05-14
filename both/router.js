@@ -120,9 +120,24 @@ Router.route('/webhook/:id/:cardId', { where: 'server' })
 		this.response.end( "Valid details" ); 	
 	 }else{
 	 	this.response.statusCode = 403;
-		this.response.end( "Ivalid data" );
+		this.response.end( "Invalid data" );
 	 }
   
+})
+
+Router.route('/create/inbox', { where: 'server' })
+.post(function () {
+	console.log(this.request);
+	var body = this.request.body;
+	if(body && body.text && body.user){
+		userCards.insert({user_id:body.user,inboxTitle:body.text,has_children: false,is_selected:false,parent_id:"inbox",createdAt:Date.now()});
+		this.response.statusCode = 200;
+		this.response.end( "Saved to inbox." );	
+	}else{
+		this.response.statusCode = 403;
+		this.response.end( "Please login to cardflow." );
+	}
+	
 })
 
 Router.route('/add/:id/:cardId', { where: 'server' })

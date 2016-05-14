@@ -1,5 +1,8 @@
 {
   "public": {
-
+    "loginState": {
+      "domain": "cardflow.com",
+      "cookieName": "meteor-user-id"
+    }
   }
 }
