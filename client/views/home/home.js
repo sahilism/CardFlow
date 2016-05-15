@@ -206,5 +206,9 @@ Template.navbar.events({
 		t.dataDict.set('searchResults', [])
 		$(".ib-c-s-"+this._id).toggle();
 		e.stopPropagation();
+	},
+	'click #toggleQuickNote': function(e, t){
+		e.preventDefault();
+		$("#addNoteModal").modal('show');
 	}
 });

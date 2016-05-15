@@ -1,70 +1,71 @@
 <template name="cards">
-<div class="cards-container">
-	<div class="cards-list">
-		<div class="canDrag">
-			{{#each pinnedCards id}}
-			 	{{> displayCard this}}
-			{{/each}}
-			{{#each userRootCards id}}
-			 	{{> displayCard this}}
-			{{/each}}
-		</div>
-		<input type="button" class="addCardButton" id="createRootCard" value="{{buttonText}}">
-	</div>
-	<div class="childcards-container">
-		{{#if selected_parent}}
-			{{> cards id=selected_parent}}
-		{{/if}}
-	</div>
-</div>
-<div class="modal fade" id="showCardInfo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Card Details</h4>
-      </div>
-      <div class="modal-body">
-        {{#with selectedCard}}
-					<div class="details">
-						<ul class="card-details">
-							<li>Title: {{cardTitle}}</li>
-							{{#if remind_at}}
-								<li>Reminder: {{formatReminderDate remind_at}}</li>
-							{{/if}}
-							{{#if notes}}
-								<li>Notes: <br>{{{formatText notes}}}</li>
-							{{/if}}
-							<li>Created: {{formatReminderDate createdAt}}</li>
-							<!-- <li>Direct Children: {{directChildren}}</li>
-							<li>Total Descendants: {{totalDescendants}}</li> -->
-							<li >
-								<span class="visible-md visible-lg visible-sm">
-									WebHook:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  <input type="text" class="" style="width: 450px;display: inline-block !important;" id="webhook" value="{{webhook}}">	
-								</span>
-								<span class="visible-xs">
-									WebHook:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <input type="text" class="" style="width: 200px;display: inline-block !important;" id="webhook" value="{{webhook}}">
-								</span>
-							</li>
-              <!-- <li>Bookmarklet: <a href="{{bookmarkletCode}}" class="cursor-p">Add this to bookmark</a></li> -->
-              <li>
-                <span class="visible-md visible-lg visible-sm">
-                  Bookmarklet:  <input type="text" class="bookletInfo" style="width: 450px;display: inline-block !important;" value="{{bookmarkletCode}}">
-                </span>
-                <span class="visible-xs">
-                  Bookmarklet: <input type="text" class="bookletInfo" style="width: 200px;display: inline-block !important;" value="{{bookmarkletCode}}">
-                </span>
-              </li>
-						</ul>
-					</div>
-        {{/with}}
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+  <div class="cards-container">
+  	<div class="cards-list">
+  		<div class="canDrag">
+  			{{#each pinnedCards id}}
+  			 	{{> displayCard this}}
+  			{{/each}}
+  			{{#each userRootCards id}}
+  			 	{{> displayCard this}}
+  			{{/each}}
+  		</div>
+  		<input type="button" class="addCardButton" id="createRootCard" value="{{buttonText}}">
+  	</div>
+  	<div class="childcards-container">
+  		{{#if selected_parent}}
+  			{{> cards id=selected_parent}}
+  		{{/if}}
+  	</div>
+  </div>
+  {{> addNoteModal}}
+  <div class="modal fade" id="showCardInfo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="myModalLabel">Card Details</h4>
+        </div>
+        <div class="modal-body">
+          {{#with selectedCard}}
+  					<div class="details">
+  						<ul class="card-details">
+  							<li>Title: {{cardTitle}}</li>
+  							{{#if remind_at}}
+  								<li>Reminder: {{formatReminderDate remind_at}}</li>
+  							{{/if}}
+  							{{#if notes}}
+  								<li>Notes: <br>{{{formatText notes}}}</li>
+  							{{/if}}
+  							<li>Created: {{formatReminderDate createdAt}}</li>
+  							<!-- <li>Direct Children: {{directChildren}}</li>
+  							<li>Total Descendants: {{totalDescendants}}</li> -->
+  							<li >
+  								<span class="visible-md visible-lg visible-sm">
+  									WebHook:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  <input type="text" class="" style="width: 450px;display: inline-block !important;" id="webhook" value="{{webhook}}">	
+  								</span>
+  								<span class="visible-xs">
+  									WebHook:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <input type="text" class="" style="width: 200px;display: inline-block !important;" id="webhook" value="{{webhook}}">
+  								</span>
+  							</li>
+                <!-- <li>Bookmarklet: <a href="{{bookmarkletCode}}" class="cursor-p">Add this to bookmark</a></li> -->
+                <li>
+                  <span class="visible-md visible-lg visible-sm">
+                    Bookmarklet:  <input type="text" class="bookletInfo" style="width: 450px;display: inline-block !important;" value="{{bookmarkletCode}}">
+                  </span>
+                  <span class="visible-xs">
+                    Bookmarklet: <input type="text" class="bookletInfo" style="width: 200px;display: inline-block !important;" value="{{bookmarkletCode}}">
+                  </span>
+                </li>
+  						</ul>
+  					</div>
+          {{/with}}
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
 </template>
 

@@ -43,6 +43,12 @@ Template.cards.onRendered(function () {
 	    }, 200);
 	    e.stopPropagation();
 	  }
+	  if(e.which === 65 && e.ctrlKey) {
+	    // ctrl+A pressed
+	    e.preventDefault();
+	    $('#addNoteModal').modal('show');
+	    e.stopPropagation();
+	  }
 	});
 
 	//tooltip
