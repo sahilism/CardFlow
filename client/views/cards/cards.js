@@ -756,21 +756,15 @@ Template.dropdownMenu.helpers({
 		var self = this;
 		var text = $(".mtt-input-"+this._id).val();
 		var res = cardsDict.get('searchResults') || [];
-		if(res.length > 0){
+		if(text){
 			return res;
 		}else{
-			if(text){
-				return [];
-			}else{
-				var aIds = cardsDict.get('associateIds');
-				return userCards.find({ $and:[
-					{ destinationSelected: { $exists: true } },
-					{ _id: { $nin: aIds } }
-				] } , { sort: { destinationSelected: -1 }, limit:5 });
-			}
-			
+			var aIds = cardsDict.get('associateIds');
+			return userCards.find({ $and:[
+				{ destinationSelected: { $exists: true } },
+				{ _id: { $nin: aIds } }
+			] } , { sort: { destinationSelected: -1 }, limit:5 });
 		}
-		
 	},
 	mergeSearchResults: function(){
 		return cardsDict.get('mergeSearchResults') || [];
