@@ -61,5 +61,10 @@ Schemas.userCards = new SimpleSchema({
         label: "Notes",
         optional: true
     },
+    destinationSelected:{
+      type: String,
+      label: "Notes",
+      optional: true  
+    }
 });
 userCards.attachSchema(Schemas.userCards)

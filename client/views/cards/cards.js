@@ -227,9 +227,16 @@ Template.cards.events({
 	'click #toggleSearch': function(e, t){
 		cardsDict.set('searchResults', []);
 		var id = this._id;
+		var self = this;
 		Meteor.setTimeout(function () {
 			$("#"+id+"_move").css('display', 'block');	
 			$(".mtt-input-"+id).focus();
+			if(self.parent_id === "root"){
+				cardsDict.set('associateIds', [self._id])	
+			}else{
+				cardsDict.set('associateIds', [self._id, self.parent_id])
+			}
+			getMoveNestedChildIds(id)
 		}, 200);
 		e.preventDefault();
 		e.stopPropagation();
@@ -602,7 +609,7 @@ var moveCard = function(source, dest){
 	});
 	// selectRootId(dest._id)
 	userCards.update({ _id: source._id}, {$set: { parent_id: dest._id, is_selected: true } });
-	userCards.update({ _id: dest._id}, {$set: { has_children: true} });
+	userCards.update({ _id: dest._id}, {$set: { has_children: true, destinationSelected: new Date() } });
 	if(source.parent_id !== "root"){
 		var res = userCards.findOne({ parent_id: source.parent_id});
 		if(!res){
@@ -674,6 +681,7 @@ var showDropdown = function (element) {
 };
 
 var getMoveNestedChildIds = function(id){
+	// console.log('called getMoveNestedChildIds');
   var childCards = userCards.find({ parent_id: id}).fetch();
   if(childCards.length > 0){
   	
@@ -745,7 +753,24 @@ Template.dropdownMenu.onCreated(function(){
 
 Template.dropdownMenu.helpers({
 	moveSearchResults: function(){
-		return cardsDict.get('searchResults') || [];
+		var self = this;
+		var text = $(".mtt-input-"+this._id).val();
+		var res = cardsDict.get('searchResults') || [];
+		if(res.length > 0){
+			return res;
+		}else{
+			if(text){
+				return [];
+			}else{
+				var aIds = cardsDict.get('associateIds');
+				return userCards.find({ $and:[
+					{ destinationSelected: { $exists: true } },
+					{ _id: { $nin: aIds } }
+				] } , { sort: { destinationSelected: -1 }, limit:5 });
+			}
+			
+		}
+		
 	},
 	mergeSearchResults: function(){
 		return cardsDict.get('mergeSearchResults') || [];
