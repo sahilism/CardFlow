@@ -67,13 +67,18 @@ body {
 	font-size: 12px !important;
 }
 .inbox-cards{
-	max-height: 200px;
+	max-height: 250px;
+	max-width: 250px;
   overflow-y: auto;
 }
 .inbox-list{
 	list-style: none;
   padding-left: 10px;
   padding-bottom: 10px;
+}
+.inbox-card-info{
+	border-bottom: 1px solid #999;
+	width: 90%;
 }
 
 #addToCard{

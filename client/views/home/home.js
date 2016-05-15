@@ -180,6 +180,13 @@ Template.navbar.events({
 		var self = this;
 		userCards.remove({ _id: self._id});
 	},
+	'click .anchorme-link': function(e, t){
+		var link = e.currentTarget.href;
+		var win = window.open(link, '_blank');
+  	win.focus();
+		e.preventDefault();
+		e.stopPropagation();		
+	},
 	'click .toggleInboxCardOptions': function(e, t){
 		// $(".inbox-card-div").css('display', 'none');
 		$(".inbox-card-"+this._id).toggle();

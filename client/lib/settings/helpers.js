@@ -16,3 +16,14 @@ Template.registerHelper("isAdmin",function(){
 Template.registerHelper('formatText', function(text){
   return text.replace(/\n/g, '<br/>');
 })
+Template.registerHelper('anchorme', function(text){
+  var options = {
+    "attributes":{
+      "class":"anchorme-link",
+      "id":"someIdHere",
+      "target":"_blank"
+    }
+  };
+
+  return anchorme.js(text,options);
+})
