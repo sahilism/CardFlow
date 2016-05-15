@@ -296,7 +296,29 @@ Template.displayCard.events({
 			$(e.currentTarget).parent().parent().next('.card').find('.parent-card-div').trigger('mousedown');
 			return;
 		}
-		if(e.ctrlKey && e.keyCode === 77){
+		if(e.ctrlKey && e.keyCode === 76){
+			// ctrl+l
+			// border-red
+			// border-blue
+			// border-orange
+			// border-4CAF50
+			e.preventDefault();
+			var color = self.color;
+			var newColor = "";
+			if(!color || !color.trim() ){
+				newColor = "border-red";
+			}else if(color === "border-red"){
+				newColor = "border-blue";
+			}else if(color === "border-blue"){
+				newColor = "border-orange";
+			}else if(color === "border-orange"){
+				newColor = "border-4CAF50";
+			}
+			userCards.update({_id: self._id}, {$set: { color: newColor } });
+			e.stopPropagation();
+			return;
+		}
+		else if(e.ctrlKey && e.keyCode === 77){
 			// ctrl+m
 			e.preventDefault();
 			if(this.parent_id === Template.parentData(2).id){
