@@ -77,11 +77,16 @@ body {
   padding-bottom: 10px;
 }
 .inbox-card-info{
-	border-bottom: 1px solid #999;
+	border-bottom: 1px solid #ccc;
 	width: 90%;
+	padding:1px 0px; 
 }
 
 #addToCard{
 	max-width: 100%;
   word-break: break-all;
+}
+.inbox-title a{
+  color: inherit; /* blue colors for links too */
+  text-decoration: inherit; /* no underline */
 }

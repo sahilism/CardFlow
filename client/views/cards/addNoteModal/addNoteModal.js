@@ -2,6 +2,7 @@ Template.addNoteModal.events({
   'keydown #quickNote': function (e, t) {
     if(e.keyCode === 13){
       var text = e.currentTarget.value;
+      saveQuickNote(text);
     }
   },
   'click #saveQuickNote': function(){
@@ -16,7 +17,7 @@ function saveQuickNote(text){
     return;
   }
   userCards.insert({user_id:Meteor.userId(),inboxTitle: text,has_children: false,is_selected:false,parent_id:"inbox",createdAt:Date.now()});
-  toastr.success("Note saved to inbox");
+  toastr.success("Note saved to inbox",'', { timeOut: 500 });
   $("#quickNote").val("");
   $("#addNoteModal").modal('hide')
 }
