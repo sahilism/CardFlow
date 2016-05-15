@@ -58,5 +58,8 @@ Template.profile.helpers({
 			Session.set("userCardsCount", result);
 		});
 		return Session.get("userCardsCount");
-	}
+	},
+	webhook: function(){
+		return Meteor.absoluteUrl()+"webhook/"+Meteor.userId()+"/inbox";
+	},
 });
