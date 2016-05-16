@@ -25,17 +25,17 @@ Template.cards.onDestroyed(function () {
 Template.cards.onRendered(function () {
 	$(document).keydown(function (e) {
 	  if(e.which === 70 && e.ctrlKey) {
-	    // enter pressed
+	    // ctrl + f - navbar search
 	    e.preventDefault();
 	    $('#navDropdown').addClass('open');
 	    Meteor.setTimeout(function () {
 	    	$(".nav-search-div").css('display', 'block');
-	    	$("#searchCards").focus();
+	    	$(".nav-search-div #searchCards").focus();
 	    }, 200);
 	    e.stopPropagation();
 	  }
 	  if(e.which === 73 && e.ctrlKey) {
-	    // enter pressed
+	    // ctrl + i --- Inbox
 	    e.preventDefault();
 	    $('#navDropdown').addClass('open');
 	    Meteor.setTimeout(function () {
