@@ -220,7 +220,7 @@ Template.cards.events({
 	'click .remind-menu li':function(e,t){
 		Meteor.call("addRemainder", this._id, e.currentTarget.id, function(err,res){
 			if(!err){
-				toastr.success("Reminder added.")
+				toastr.success("Reminder added.", "", { timeOut: 500 })
 			}
 		})
 	},

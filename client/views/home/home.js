@@ -108,6 +108,11 @@ Template.navbar.helpers({
 			return userCards.find({ destinationSelected: { $exists: true } }, { sort: { destinationSelected: -1 }, limit:5 });
 		}
 	},
+	navInstantSearchResults: function(e, t){
+		var t = Template.instance();
+		var res = t.dataDict.get('searchResults') || [];
+		return res;	
+	},
 	homePage: function(){
 		if(Router.current()){
 			return Router.current().route.getName() === "home"	
@@ -173,7 +178,7 @@ Template.navbar.events({
 		userCards.update({_id: self._id}, { $set: { has_children: true, destinationSelected: Date.now() } })
 		t.dataDict.set('searchResults', [])
 		$("#searchCards").val("");
-		selectRootId(self._id);
+		// selectRootId(self._id);
 	},
 	'click #setAsRootCard': function(e, t){
 		var self = this;

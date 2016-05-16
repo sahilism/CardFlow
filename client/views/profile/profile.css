@@ -1,12 +1,12 @@
 .profile 
 {
-    min-height: 200px;
-    display: inline-block;
+  display: inline-block;
+  word-break: break-word;
 }
 figcaption.ratings
 {
-    margin-top:20px;
-    }
+  margin-top:20px;
+}
 figcaption.ratings a
 {
     color:#f1c40f;

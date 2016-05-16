@@ -147,19 +147,19 @@ margin-right:10px;
 }
 .border-red{
   border-left-color: red !important;
-  border-left-width: 2px !important;
+  border-left-width: 1px !important;
 }
 .border-blue{
   border-left-color: blue !important;
-  border-left-width: 2px !important;
+  border-left-width: 1px !important;
 }
 .border-orange{
   border-left-color: orange !important;
-  border-left-width: 2px !important;
+  border-left-width: 1px !important;
 }
 .border-4CAF50{
   border-left-color: #4CAF50 !important;
-  border-left-width: 2px !important;
+  border-left-width: 1px !important;
 }
 .break-word{
   word-wrap: break-word;

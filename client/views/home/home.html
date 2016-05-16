@@ -20,7 +20,7 @@
               {{#each reminders}}
                 <li style="padding:0px 0px">
                     <a href="#" style="padding: 4px 10px;" class="sel_reminder"><span style="max-width: 250px;overflow: hidden;display: inline-block;">{{cardTitle}}</span>
-                    <span style="margin-top:2px" class="glyphicon glyphicon-remove remove_reminder pull-right"></span>
+                    <span style="padding: 2px 10px;" class="glyphicon glyphicon-remove remove_reminder pull-right"></span>
                     </a>
                 </li>
               {{/each}}
@@ -85,7 +85,7 @@
                   <div class="nav-search-div" style="display: none;">
                     <input type="text" id="searchCards" class="marg-l-10px marg-t-10px" placeholder="Start typing...">
                     <div class="marg-t-10 marg-l-10px">
-                      {{#each navSearchResults}}
+                      {{#each navInstantSearchResults}}
                         <div class="cursor-p pad-3 font-12" id="goToCard">{{cardTitle}}</div>
                       {{/each}}
                     </div>
