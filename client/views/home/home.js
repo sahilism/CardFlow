@@ -170,7 +170,7 @@ Template.navbar.events({
 		}
 
 		userCards.update({ _id: card}, {$set: { parent_id: self._id, cardTitle: cardInfo.inboxTitle }, $unset: { inboxTitle: "" } });
-		userCards.update({_id: self._id}, { $set: { has_children: true } })
+		userCards.update({_id: self._id}, { $set: { has_children: true, destinationSelected: Date.now() } })
 		t.dataDict.set('searchResults', [])
 		$("#searchCards").val("");
 		selectRootId(self._id);

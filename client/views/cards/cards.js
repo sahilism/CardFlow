@@ -609,7 +609,7 @@ var moveCard = function(source, dest){
 	});
 	// selectRootId(dest._id)
 	userCards.update({ _id: source._id}, {$set: { parent_id: dest._id, is_selected: true } });
-	userCards.update({ _id: dest._id}, {$set: { has_children: true, destinationSelected: new Date() } });
+	userCards.update({ _id: dest._id}, {$set: { has_children: true, destinationSelected: Date.now() } });
 	if(source.parent_id !== "root"){
 		var res = userCards.findOne({ parent_id: source.parent_id});
 		if(!res){
