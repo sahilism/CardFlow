@@ -99,10 +99,10 @@ Template.navbar.helpers({
 		}
 	},
 	navSearchResults: function(){
+		var t = Template.instance();
+		var res = t.dataDict.get('searchResults');
 		var text = $(".search-card-"+this._id).val();
 		if(text){
-			var t = Template.instance();
-			var res = t.dataDict.get('searchResults');
 			return res;	
 		}else{
 			return userCards.find({ destinationSelected: { $exists: true } }, { sort: { destinationSelected: -1 }, limit:5 });
