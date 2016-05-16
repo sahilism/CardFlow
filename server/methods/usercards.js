@@ -36,5 +36,25 @@ Meteor.methods({
 		var remind = new Date().addHours(hours);
 		remind = remind.getTime();
 		return userCards.update({_id: id}, {$set: {remind_at: remind}});
+	},
+	validEmail: function(email){
+		return Accounts.findUserByEmail(email);
+	},
+	sendCard: function(card, email){
+		var user = Accounts.findUserByEmail(email);
+		if(user){
+			card.parent_id = "inbox";
+			card.is_selected = false;
+			card.inboxTitle = card.cardTitle;
+			delete card.cardTitle;
+			card.user_id = user._id;
+			card.originalId = card._id;
+			delete card._id;
+			userCards.insert(card);
+			return true;
+		}else{
+			throw new Meteor.Error(404,"User not found");
+			return;
+		}
 	}
 });

@@ -14,6 +14,9 @@ body {
 .dropdown-menu > li > a > i{
 	width: 15px;
 }
+.dropdown-menu .divider{
+	clear: both;
+}
 #logo{
 	  cursor: pointer;
 	  width: 180px;
@@ -89,4 +92,7 @@ body {
 .inbox-title a{
   color: inherit; /* blue colors for links too */
   text-decoration: inherit; /* no underline */
+}
+.marg-b-10px{
+	margin-bottom: 10px !important;
 }

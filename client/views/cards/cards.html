@@ -166,6 +166,20 @@
       </div>
     </li>
     <li class="divider"></li>
+    <li role="presentation" class="dp-card" id="">
+      <a role="menuitem" tabindex="-1" href="#" class="" id="toggleUserEmail">
+        <i class="fa fa-exchange card-menu-icons"></i>Send this card to another user..
+      </a>
+      <div id="{{_id}}_userEmail" class="card-pad marg-t-10" style="display:none;">
+        <input type="text" id="userEmail" class="width-100pc email-input-{{_id}}" placeholder="Enter email...">
+        {{#if validEmail}}
+          <div class="pad-t-10 width-100pc">
+            <button class="btn btn-sm btn-success pull-right marg-b-10px" id="sendCard">Send</button>
+          </div>
+        {{/if}}
+      </div>
+    </li>
+    <li class="divider"></li>
     <li role="presentation" class="dp-card" id="dropdownMenu2">
       <a role="menuitem" tabindex="-1" href="#"><i class="fa fa-clock-o card-menu-icons"></i>Remind in..</a>
       <div id="{{_id}}_remaind" style="display:none;">

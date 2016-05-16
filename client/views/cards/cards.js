@@ -275,6 +275,28 @@ Template.cards.events({
 		var resCards = userCards.find(findQuery, { limit: 5 }).fetch();
 		cardsDict.set('mergeSearchResults', resCards)
 	},
+	'click #toggleUserEmail': function(e, t){
+		cardsDict.set('emailInput', []);
+		cardsDict.set('validEmail', false);
+		var id = this._id;
+		Meteor.setTimeout(function () {
+			$("#"+id+"_userEmail").css('display', 'block');	
+			$(".email-input-"+id).focus();
+		}, 200);
+		e.preventDefault();
+		e.stopPropagation();
+	},
+	'input #userEmail': function(e, t){
+		cardsDict.set('emailInput', e.currentTarget.value);
+		cardsDict.set('validEmail', false);
+		Meteor.call('validEmail', e.currentTarget.value, function (error, result) {
+			if(result){
+				cardsDict.set('validEmail', true);
+			}else{
+				cardsDict.set('validEmail', false);
+			}
+		});
+	}
 });
 
 Template.displayCard.helpers({
@@ -752,6 +774,9 @@ Template.dropdownMenu.onCreated(function(){
 });
 
 Template.dropdownMenu.helpers({
+	validEmail: function(){
+		return cardsDict.get('validEmail');
+	},
 	moveSearchResults: function(){
 		var self = this;
 		var text = $(".mtt-input-"+this._id).val();
@@ -803,6 +828,16 @@ Template.dropdownMenu.events({
 		var resCards = userCards.find(findQuery, { limit: 5 }).fetch();
 		cardsDict.set('searchResults', resCards)
 	},
+	'click #sendCard': function(e, t){
+		var email = $(".email-input-"+this._id).val();
+		Meteor.call('sendCard', this, email,function (error, result) {
+			if(error){
+				toastr.error(error.reason);
+			}else{
+				toastr.success("Card sent to user")
+			}
+		});
+	}
 });
 
 Template.dropdownMenu.onDestroyed(function(){
