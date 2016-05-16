@@ -1,6 +1,8 @@
 Router.onBeforeAction(function(){
-	if(Meteor.user()){
+	if(Meteor.user() || Meteor.loggingIn()){
 		this.next();
+	}else{
+		Router.go("/");
 	}
 },{only: 'admin'})
 Router.route("/",{
@@ -27,10 +29,9 @@ Router.route("/home",{
 			else{
 				Router.go("/");
 			}	
+		}else{
+			this.next();
 		}
-	},
-	waitOn:function(){
-
 	},
 	action:function(){
 		if(this.ready()){
@@ -40,10 +41,11 @@ Router.route("/home",{
 })
 Router.route("/account",{
 	template:"profile",
+	onBeforeAction: function(){
+		this.next();
+	},
 	action:function(){
-		if(Meteor.user()){
-			this.render();
-		}
+		this.render();
 	}
 })
 Router.route("/logout",{

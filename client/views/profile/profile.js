@@ -3,7 +3,6 @@ Template.profile.onCreated(function(){
 	Meteor.call('getProfileJson', Meteor.userId(), function (error, result) {
 		if(error){
 		}else{
-			console.log(result);
 			var obj = result;
 			var data = "application/json;," + encodeURIComponent(JSON.stringify(obj, 0, 2));
 			$('<a href="data:' + data + '" download="cards.json" style="color:white;font-size: 14px;">Download JSON</a>').appendTo('.downloadDiv');
