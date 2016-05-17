@@ -56,5 +56,15 @@ Meteor.methods({
 			throw new Meteor.Error(404,"User not found");
 			return;
 		}
+	},
+	changeChild: function(data){
+		data.forEach(function (e, i, a) {
+		  var puid = Random.id();
+		  a.forEach(function (f) {
+		    return f.parent_id == e._id && (f.parent_id = puid);
+		 });
+		 e._id = puid;
+		});
+		return data;
 	}
 });

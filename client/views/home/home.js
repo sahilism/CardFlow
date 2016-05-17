@@ -183,8 +183,11 @@ Template.navbar.events({
 	'click #setAsRootCard': function(e, t){
 		var self = this;
 		userCards.update({ _id: self._id}, {$set: { parent_id: "root", cardTitle: self.inboxTitle }, $unset: { inboxTitle: "" } });
+		if(self.originalId){
+
+		}
 		t.dataDict.set('searchResults', [])
-		selectRootId(self._id);
+		// selectRootId(self._id);
 	},
 	'click #deleteCard': function(e, t){
 		var self = this;
