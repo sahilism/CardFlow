@@ -41,21 +41,38 @@ Meteor.methods({
 		return Accounts.findUserByEmail(email);
 	},
 	sendCard: function(card, email){
+		var self = this;
+		//get all cards info
+		var allChildCards = Meteor.call('copyAllCards', card._id);
+
 		var user = Accounts.findUserByEmail(email);
 		if(user){
-			card.parent_id = "inbox";
-			card.is_selected = false;
-			card.inboxTitle = card.cardTitle;
-			delete card.cardTitle;
-			card.user_id = user._id;
-			card.originalId = card._id;
-			delete card._id;
-			userCards.insert(card);
+			//changing user_id
+			allChildCards.forEach(function (data) {
+				data.user_id = user._id;
+				if(data.parent_id === card.parent_id){
+					data.parent_id = "inbox";
+					data.is_selected = false;
+					data.inboxTitle = data.cardTitle;
+					data.receivedFrom = self.userId;
+					delete data.cardTitle;
+				}
+				userCards.insert(data);
+			});
 			return true;
 		}else{
 			throw new Meteor.Error(404,"User not found");
 			return;
 		}
+	},
+	copyAllCards: function(id){
+		var originalCard = userCards.findOne({})
+		var res = getAssociateIds(id, this.userId);
+		var allCardsInfo = userCards.find({ _id: { $in: res } }).fetch();
+		// console.log("Before changing ids", allCardsInfo);
+		var newCardsInfo = Meteor.call('changeChild', allCardsInfo);
+		// console.log("After changing ids", newCardsInfo);
+		return newCardsInfo;
 	},
 	changeChild: function(data){
 		data.forEach(function (e, i, a) {
@@ -66,5 +83,10 @@ Meteor.methods({
 		 e._id = puid;
 		});
 		return data;
+	},
+	removeChildCards: function(id){
+		// console.log(id);
+		removeChildCardsFn(id, this.userId);
+		return true;
 	}
 });

@@ -173,12 +173,10 @@ Template.navbar.events({
 		if(!card || !cardInfo){
 			return;
 		}
-
 		userCards.update({ _id: card}, {$set: { parent_id: self._id, cardTitle: cardInfo.inboxTitle }, $unset: { inboxTitle: "" } });
 		userCards.update({_id: self._id}, { $set: { has_children: true, destinationSelected: Date.now() } })
-		t.dataDict.set('searchResults', [])
-		$("#searchCards").val("");
-		// selectRootId(self._id);
+			t.dataDict.set('searchResults', []);
+		$("#searchCards").val("");	
 	},
 	'click #setAsRootCard': function(e, t){
 		var self = this;
@@ -192,6 +190,9 @@ Template.navbar.events({
 	'click #deleteCard': function(e, t){
 		var self = this;
 		userCards.remove({ _id: self._id});
+		Meteor.call('removeChildCards', self._id, function (error, result) {
+			
+		});
 	},
 	'click .anchorme-link': function(e, t){
 		var link = e.currentTarget.href;

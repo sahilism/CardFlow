@@ -46,3 +46,15 @@ getSelectedId = function(userId, parentId, pathIds){
   }
   return pathIds;
 }
+
+removeChildCardsFn = function(id, userId){
+  var childCards = userCards.find({ $and: [ { parent_id: id }, { user_id: userId } ] }).fetch();
+  if(childCards.length > 0){
+    childCards.forEach(function (cardInfo) {
+      userCards.remove({ _id: cardInfo._id});
+      // console.log(cardInfo._id, userId);
+      return removeChildCardsFn(cardInfo._id, userId)
+    });
+  }
+  return true;
+}
