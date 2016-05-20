@@ -45,11 +45,22 @@ Meteor.methods({
 		//get all cards info
 		var allChildCards = Meteor.call('copyAllCards', card._id);
 
-		var user = Accounts.findUserByEmail(email);
+		var user = Meteor.users.findOne({ 'services.facebook.email': email });
+		if(!user){
+			var user = Meteor.users.findOne({
+				$or: [
+					{ 'emails.address': email },
+					{ 'services.google.email': email },
+				]
+			});
+		}
+		
+		// console.log('sending cards to', JSON.stringify(user));
 		if(user){
 			//changing user_id
 			allChildCards.forEach(function (data) {
 				data.user_id = user._id;
+				data.createdAt = Date.now();
 				if(data.parent_id === card.parent_id){
 					data.parent_id = "inbox";
 					data.is_selected = false;
