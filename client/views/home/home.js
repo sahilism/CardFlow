@@ -21,7 +21,10 @@ Template.home.onRendered(function(){
 			var handle = Meteor.subscribe('getPathCards');
 			if(handle.ready()){
 				// console.log('handle ready');
-				Meteor.subscribe('allusercards');	
+				var inboxHandle = Meteor.subscribe('reminderAndInboxCards');
+				if(inboxHandle.ready()){
+					Meteor.subscribe('allusercards');	
+				}
 			}	
 		});
 	}

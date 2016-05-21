@@ -27,6 +27,17 @@ Meteor.publish('getPathCards', function () {
   }
   this.ready();
 });
+
+Meteor.publish('reminderAndInboxCards', function () {
+  if(this.userId){
+    return userCards.find({ $or: [
+        { remind_at: { $exists: true } },
+        { parent_id: 'inbox' }
+      ] });
+  }
+  this.ready();
+});
+
 var subs = { };
 Meteor.publish('getUsersCardsCount',function(){
 	var subscription = this;
