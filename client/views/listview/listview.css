@@ -20,3 +20,7 @@
   left: 50px;
   width: 100%;
 }
+
+.list-view .filename{
+  font-size:14px;
+}

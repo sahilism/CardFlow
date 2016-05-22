@@ -170,7 +170,7 @@ removeChildCardsFn = function(id, userId){
 getUserJSONForListView  = function(userId){
   var res = getUserJSON(userId);
   var obj = {};
-  obj["cardTitle"] = "root";
+  obj["cardTitle"] = "Root";
   obj['children'] = res;
   return obj;
 }

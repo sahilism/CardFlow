@@ -13,10 +13,9 @@ Template.ListView.onRendered(function(){
   }
   var id = 0;
   var res = getUserJSONForListView(Meteor.userId());
-  console.log(res)
   var data = res;
   var tree = d3.layout.treelist()
-      .childIndent(10)
+      .childIndent(30)
       .nodeHeight(30);
   var ul = d3.select(".list-view").append("ul").classed("treelist", "true");
 
