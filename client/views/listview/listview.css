@@ -1,0 +1,22 @@
+.list-view .selected{
+  color: orange;
+}
+.list-view .node {
+  position: absolute;
+  list-style: none;
+  cursor: default;
+}
+.list-view .node span {
+  margin-right: 3px;
+}
+
+.list-view .node .caret {
+  font-size: 14px;
+}
+
+.list-view{
+  position: absolute;
+  top: 100px !important;
+  left: 50px;
+  width: 100%;
+}

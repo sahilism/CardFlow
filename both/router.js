@@ -94,6 +94,13 @@ Router.route("/mindmap/home",{
 	}
 });
 
+Router.route("/list-view",{
+	template:"ListView",
+	waitOn:function(){
+		return Meteor.subscribe('allusercards');
+	}
+});
+
 
 Router.route("/help",{
 	template:"help",
