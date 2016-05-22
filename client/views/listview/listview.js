@@ -14,6 +14,7 @@ Template.ListView.onRendered(function(){
   var id = 0;
   var res = getUserJSONForListView(Meteor.userId());
   var data = res;
+  console.log(data);
   var tree = d3.layout.treelist()
       .childIndent(30)
       .nodeHeight(30);
@@ -43,6 +44,7 @@ Template.ListView.onRendered(function(){
         .style("top", parent.y +"px")
         .style("opacity", 0)
         .style("height", tree.nodeHeight() + "px")
+
         .on("click", function (d) {
             toggleChildren(d);
             render(data, d);
@@ -53,12 +55,14 @@ Template.ListView.onRendered(function(){
         .on("mouseout", function (d) {
             d3.selectAll(".selected").classed("selected", false);
         });
+      console.log(entered);
     //add arrows if it is a folder
-    // entered.append("span").attr("class", function (d) {
-    //     var icon = d.children ? " glyphicon-chevron-down"
-    //         : d._children ? "glyphicon-chevron-right" : "";
-    //     return "caret glyphicon " + icon;
-    // });
+    entered.append("span").attr("class", function (d) {
+        var icon = d.children ? " glyphicon-chevron-down"
+            : d._children ? "glyphicon-chevron-right" : "";
+        // return "caret glyphicon " + icon;
+        return "glyphicon "+icon;
+    });
       // //add icons for folder for file
       // entered.append("span").attr("class", function (d) {
       //     var icon = d.children || d._children ? "glyphicon-folder-close"
@@ -66,13 +70,19 @@ Template.ListView.onRendered(function(){
       //     return "glyphicon " + icon;
       // });
       //add text
+      entered.attr("data-id", function (d) {
+          return d._id;
+      });
+      entered.attr("data-parent-id", function (d) {
+          return d.parent_id;
+      });
       entered.append("span").attr("class", "filename")
           .html(function (d) { return d.cardTitle; });
       //update caret direction
-      nodeEls.select("span.caret").attr("class", function (d) {
+      nodeEls.select("span").attr("class", function (d) {
           var icon = d.children ? " glyphicon-chevron-down"
               : d._children ? "glyphicon-chevron-right" : "";
-          return "caret glyphicon " + icon;
+          return "glyphicon " + icon;
       });
       //update position with transition
       nodeEls.transition().duration(duration)
