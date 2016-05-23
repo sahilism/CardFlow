@@ -14,7 +14,7 @@ Template.ListView.onRendered(function(){
   var id = 0;
   var res = getUserJSONForListView(Meteor.userId());
   var data = res;
-  console.log(data);
+  // console.log(data);
   var tree = d3.layout.treelist()
       .childIndent(30)
       .nodeHeight(30);
@@ -55,7 +55,7 @@ Template.ListView.onRendered(function(){
         .on("mouseout", function (d) {
             d3.selectAll(".selected").classed("selected", false);
         });
-      console.log(entered);
+      // console.log(entered);
     //add arrows if it is a folder
     entered.append("span").attr("class", function (d) {
         var icon = d.children ? " glyphicon-chevron-down"

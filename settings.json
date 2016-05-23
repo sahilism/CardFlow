@@ -4,5 +4,9 @@
       "domain": "cardflow.com",
       "cookieName": "meteor-user-id"
     }
-  }
+  },
+  "kadira": { 
+    "appId": "wzCX4iQiYtGXoDrct", 
+    "appSecret": "28f09ec5-2e08-4191-a69c-dc7085496ae8" 
+   }
 }
