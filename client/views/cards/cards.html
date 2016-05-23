@@ -75,7 +75,7 @@
       <div class="appendDD" data-toggle="dropdown" aria-expanded="true" id="card-dd-{{_id}}" style="height: 34px;width: 14px;float: left;padding: 0px;margin: 0px;cursor:pointer;"><i class="fa fa-sort-desc fa-sm dropdown-toggle sort" style="opacity:0;"></i></div>  
     </div>
 	<div class="parent-card-div">
-   <input type="text" id="{{_id}}" class="card-input inputtitle"  autocapitalize="none" autocorrect="off" value="{{cardTitle}}" style="{{#if is_selected}}background:lightyellow;{{/if}}
+   <input type="text" id="{{_id}}" data-parent="{{parent_id}}" class="card-input inputtitle"  autocapitalize="none" autocorrect="off" value="{{cardTitle}}" style="{{#if is_selected}}background:lightyellow;{{/if}}
    {{#if is_completed}}  text-decoration: line-through;color: #DDD;{{/if}}" onfocus="this.value = this.value;">
     {{#if has_children}}
     <i style="font-size: 6px;float:right;margin-top:14px;margin-right:10px;color:#EEE" class="fa fa-circle fa-sm yellow"></i>

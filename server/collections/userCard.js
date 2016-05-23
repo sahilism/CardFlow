@@ -19,6 +19,8 @@ userCards.allow({
 	update: function (userId, doc, fields, modifier) {
 		var allGood = true;
 		var index = fields.indexOf('parent_id');
+		// console.log(doc.user_id);
+		// console.log(userId);
 		if(index > -1){
 			var set = modifier['$set'];
 			var parent_id = set["parent_id"];
@@ -33,6 +35,7 @@ userCards.allow({
 		if(doc.user_id !== userId){
 			allGood = false;
 		}
+		// console.log(allGood);
 		return allGood
 	},
 	remove: function (userId, doc) {

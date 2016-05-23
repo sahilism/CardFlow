@@ -124,11 +124,23 @@ Template.cards.events({
 		if(this.is_selected){
 			return;
 		}
+		var self = this;
+		var parentId = this.parent_id;
+		if(parentId){
+			$("[data-parent='"+parentId+"']").closest('.card').css('background', 'white');
+			$("[data-parent='"+parentId+"']").css('background', 'white');
+		}
+		$(e.currentTarget).closest('.card').css('background', 'lightyellow');
+		$("#"+self._id).css('background', 'lightyellow');
 		if(connectionStatus()){
-			userCards.find({$and: [{parent_id: this.parent_id},{is_selected: true}] }).forEach(function (p_id) {
-				userCards.update({_id: p_id._id}, {$set: {is_selected: false}});
+			userCards.find({$and: [{parent_id: self.parent_id},{is_selected: true}, { user_id: Meteor.userId() }] }).forEach(function (p_id) {
+				if(p_id._id === self._id){
+					userCards.update({_id: p_id._id}, {$set: {is_selected: true}});
+				}else{
+					userCards.update({_id: p_id._id}, {$set: {is_selected: false}});
+				}
 			});
-			userCards.update({_id: this._id}, {$set: {is_selected: true}});
+			userCards.update({_id: self._id}, {$set: {is_selected: true}});
 		}
 		else{
 			return false;
