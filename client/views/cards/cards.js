@@ -134,9 +134,7 @@ Template.cards.events({
 		$("#"+self._id).css('background', 'lightyellow');
 		if(connectionStatus()){
 			userCards.find({$and: [{parent_id: self.parent_id},{is_selected: true}, { user_id: Meteor.userId() }] }).forEach(function (p_id) {
-				if(p_id._id === self._id){
-					userCards.update({_id: p_id._id}, {$set: {is_selected: true}});
-				}else{
+				if(p_id._id !== self._id){
 					userCards.update({_id: p_id._id}, {$set: {is_selected: false}});
 				}
 			});
@@ -339,10 +337,6 @@ Template.displayCard.events({
 		}
 		if(e.ctrlKey && e.keyCode === 76){
 			// ctrl+l
-			// border-red
-			// border-blue
-			// border-orange
-			// border-4CAF50
 			e.preventDefault();
 			var color = self.color;
 			var newColor = "";
@@ -394,24 +388,24 @@ Template.displayCard.events({
 			if(count > 0){
 				if(this.parent_id === Template.parentData(2).id){
 					bootbox.confirm({
-				        message:"This will permanently delete the card and its children. Okay?",
-				        buttons: {
-				            'cancel': {
-				                label: 'Cancel',
-				                className: 'btn-default'
-				            },
-				            'confirm': {
-				                label: 'Delete',
-				                className: 'btn-primary'
-				            }
-				        },
-				        callback:function(res){
-				          if(res){
-				            if(Meteor.user()){
-				            	deleteChildCards(self._id);
-				            }
-				          }
-				        }
+			        message:"This will permanently delete the card and its children. Okay?",
+			        buttons: {
+			            'cancel': {
+			                label: 'Cancel',
+			                className: 'btn-default'
+			            },
+			            'confirm': {
+			                label: 'Delete',
+			                className: 'btn-primary'
+			            }
+			        },
+			        callback:function(res){
+			          if(res){
+			            if(Meteor.user()){
+			            	deleteChildCards(self._id);
+			            }
+			          }
+			        }
 				    })
 				   }
 			}
@@ -521,7 +515,7 @@ Template.displayCard.events({
 		}
 
 	},
-	'input .inputtitle,paste .inputtitle': function (e,tmpl) {
+	'input .inputtitle,paste .inputtitle': function(e, t){
 		if(connectionStatus()){
 			var card_text=e.currentTarget.value;
 			userCards.update({_id:this._id}, {$set: {cardTitle: card_text}});
@@ -529,7 +523,7 @@ Template.displayCard.events({
 		else{
 			return false;
 		}
-	},
+	 },
 	'click #showCardDetails': function(){
 		var self = this;
 		Session.set('selectedCard', self._id);
