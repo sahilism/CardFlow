@@ -90,9 +90,15 @@ Template.cards.helpers({
 		var res=userCards.findOne({_id: this._id})	
 	},
 	selected_parent:function(){
-		var selectedcard=userCards.findOne({$and : [{user_id:Meteor.userId()},{parent_id: this.id},{is_selected: true}]});
-		if(selectedcard){
-			return selectedcard._id;
+		var isPresent = cardsDict.get('child-of-'+this.id);
+		if(isPresent){
+			// console.log(isPresent);
+			return isPresent;
+		}else{
+			var selectedcard=userCards.findOne({$and : [{user_id:Meteor.userId()},{parent_id: this.id},{is_selected: true}]});
+			if(selectedcard){
+				return selectedcard._id;
+			}	
 		}
 	},
 	buttonText:function(){
@@ -132,6 +138,8 @@ Template.cards.events({
 		}
 		$(e.currentTarget).closest('.card').css('background', 'lightyellow');
 		$("#"+self._id).css('background', 'lightyellow');
+
+		cardsDict.set('child-of-'+self.parent_id, self._id);
 		if(connectionStatus()){
 			userCards.find({$and: [{parent_id: self.parent_id},{is_selected: true}, { user_id: Meteor.userId() }] }).forEach(function (p_id) {
 				if(p_id._id !== self._id){
