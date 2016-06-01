@@ -70,7 +70,7 @@
 </template>
 
 <template name="displayCard">
-	<div class="card {{#if color}}{{color}}{{/if}}" style="{{#if is_selected}}background:lightyellow;{{/if}};position:relative;">
+	<div class="card card-dd-{{_id}} {{#if color}}{{color}}{{/if}}" style="{{#if is_selected}}background:lightyellow;{{/if}};position:relative;">
 		<div id="append-dd-{{_id}}">
       <div class="appendDD" data-toggle="dropdown" aria-expanded="true" id="card-dd-{{_id}}" style="height: 34px;width: 14px;float: left;padding: 0px;margin: 0px;cursor:pointer;"><i class="fa fa-sort-desc fa-sm dropdown-toggle sort" style="opacity:0;"></i></div>  
     </div>

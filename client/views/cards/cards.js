@@ -1,4 +1,4 @@
-var cardsDict =  new ReactiveDict();
+cardsDict =  new ReactiveDict();
 var tempDict = new ReactiveDict();
 
 connectionStatus = function(){
@@ -130,16 +130,26 @@ Template.cards.events({
 		if(this.is_selected){
 			return;
 		}
+		// console.log('mousedown');
 		var self = this;
 		var parentId = this.parent_id;
-		if(parentId){
-			$("[data-parent='"+parentId+"']").closest('.card').css('background', 'white');
-			$("[data-parent='"+parentId+"']").css('background', 'white');
-		}
-		$(e.currentTarget).closest('.card').css('background', 'lightyellow');
-		$("#"+self._id).css('background', 'lightyellow');
 
+		
+
+
+		// $(".card-dd-"+self._id).css('background', 'lightyellow')
+		// $("#"+self._id).css('background', 'lightyellow');
+
+		document.getElementsByClassName("card-dd-"+self._id)[0].style.background = 'lightyellow';
+		document.getElementById(self._id).style.background = 'lightyellow';
+
+		$("[data-parent='"+parentId+"']").closest('.card').css('background', 'white');
+		$("[data-parent='"+parentId+"']").css('background', 'white');
+
+		// console.log('mouse down', self);
 		cardsDict.set('child-of-'+self.parent_id, self._id);
+
+		
 		if(connectionStatus()){
 			userCards.find({$and: [{parent_id: self.parent_id},{is_selected: true}, { user_id: Meteor.userId() }] }).forEach(function (p_id) {
 				if(p_id._id !== self._id){
