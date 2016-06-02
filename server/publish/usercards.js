@@ -1,18 +1,19 @@
 Meteor.publish('allusercards', function () {
-	if(this.userId){
-		var res=userCards.findOne({user_id: this.userId});
+  var self = this;
+	if(self.userId){
+		var res=userCards.findOne({user_id: self.userId});
 		if(res){
-			var parentcards= userCards.find({user_id: this.userId},{sort: {createdAt: -1}});
+			var parentcards= userCards.find({user_id: self.userId},{sort: {createdAt: -1}});
 			return parentcards;
 		}
 		else{
-			userCards.insert({user_id:this.userId,cardTitle:"My First Card",createdAt: Date.now(),parent_id : "root",is_selected:true,has_children : false});
-			var parentcards= userCards.find({user_id: this.userId},{sort: {createdAt: -1}});
+			userCards.insert({user_id:self.userId,cardTitle:"My First Card",createdAt: Date.now(),parent_id : "root",is_selected:true,has_children : false});
+			var parentcards= userCards.find({user_id: self.userId},{sort: {createdAt: -1}});
 			return parentcards;
 		}
 	}
 	else{
-		this.ready();
+		self.ready();
 	}
 });
 
@@ -21,21 +22,23 @@ Meteor.publish('sanityLogs', function () {
 });
 
 Meteor.publish('getPathCards', function () {
-  if(this.userId){
-    var res = getPathCardsFn(this.userId);
+  var self = this;
+  if(self.userId){
+    var res = getPathCardsFn(self.userId);
     return userCards.find({ _id: { $in: res }});
   }
-  this.ready();
+  self.ready();
 });
 
 Meteor.publish('reminderAndInboxCards', function () {
-  if(this.userId){
-    return userCards.find({ $or: [
+  var self = this;
+  if(self.userId){
+    return userCards.find({ $and: [ { user_id: self.userId }, { $or: [
         { remind_at: { $exists: true } },
         { parent_id: 'inbox' }
-      ] });
+      ] } ] });
   }
-  this.ready();
+  self.ready();
 });
 
 var subs = { };

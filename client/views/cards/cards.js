@@ -121,14 +121,16 @@ Template.cards.events({
 		$(e.currentTarget).find(".sort").css("opacity",0)
 	},
 	'mousedown .parent-card-div':function(e,tmpl){
-		if(this.is_selected){
+		var self = this;
+		if(self.is_selected){
 			return;
 		}
 		if(connectionStatus()){
-			userCards.find({$and: [{parent_id: this.parent_id},{is_selected: true}] }).forEach(function (p_id) {
-				userCards.update({_id: p_id._id}, {$set: {is_selected: false}});
+			userCards.find({$and: [{parent_id: self.parent_id},{is_selected: true}] }).forEach(function (pInfo) {
+				// console.log(pInfo);
+				userCards.update({_id: pInfo._id}, {$set: {is_selected: false}});
 			});
-			userCards.update({_id: this._id}, {$set: {is_selected: true}});
+			userCards.update({_id: self._id}, {$set: {is_selected: true}});
 		}
 		else{
 			return false;
@@ -491,6 +493,8 @@ Template.displayCard.events({
 			}
 			else{
 				if(connectionStatus()){
+					console.log(self);
+					console.log(Template.parentData(2));
 					if(self.parent_id === Template.parentData(2).id){
 						var ps_card=userCards.findOne({$and: [{parent_id:self.parent_id},{is_selected: true}]});
 						if(ps_card){
