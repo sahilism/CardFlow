@@ -1,8 +1,8 @@
 userCards.allow({
 	insert: function (userId, doc) {
 		if(doc.user_id === userId){
-			if(_.has(doc,"parent_id")){
-				userCards.update({_id:doc.parent_id}, {$set: {has_children: true}});
+			if(_.has(doc,"parent_id") && doc.parent_id !== "root"){
+				userCards.update({ $and:  [ { _id:doc.parent_id }, { user_id: userId } ] }, {$set: {has_children: true}});
 			}
 			if(_.has(doc,"user_id")){
 				if(userCards.find({user_id:doc.user_id}).count() > 10000){
